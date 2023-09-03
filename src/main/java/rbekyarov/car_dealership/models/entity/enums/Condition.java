@@ -1,6 +1,5 @@
 package rbekyarov.car_dealership.models.entity.enums;
 
-public enum DoorCount {
-    Door_2_3,
-    Door_4_5,
+public enum Condition {
+    New ,Used , For_Parts;
 }
