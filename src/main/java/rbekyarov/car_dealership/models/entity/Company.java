@@ -95,7 +95,7 @@ public class Company extends BaseEntity {
     }
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "bankAccounts", referencedColumnName = "id")
+    @JoinColumn(name = "bank_accounts_id", referencedColumnName = "id")
     public Set<BankAccount> getBankAccounts() {
         return bankAccounts;
     }
