@@ -55,7 +55,6 @@ public class Seller extends BaseEntity {
         this.position = position;
     }
     @OneToMany(mappedBy = "offer", targetEntity = Offer.class, fetch = FetchType.EAGER)
-
     public Set<Offer> getOffers() {
         return offers;
     }

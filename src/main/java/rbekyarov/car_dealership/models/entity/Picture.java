@@ -3,9 +3,10 @@ package rbekyarov.car_dealership.models.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+
 @Entity
 @Table(name = "cars")
-public class Picture extends BaseEntity{
+public class Picture extends BaseEntity {
     private String name;
     private User author;
 
@@ -14,13 +15,16 @@ public class Picture extends BaseEntity{
     public Picture() {
     }
 
+    @Column(nullable = false, unique = true)
     public String getName() {
         return name;
     }
-    @Column(nullable = false, unique = true)
+
+
     public void setName(String name) {
         this.name = name;
     }
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     public User getAuthor() {
@@ -30,6 +34,7 @@ public class Picture extends BaseEntity{
     public void setAuthor(User author) {
         this.author = author;
     }
+
     @Column
     public LocalDate getDateCreate() {
         return dateCreate;
