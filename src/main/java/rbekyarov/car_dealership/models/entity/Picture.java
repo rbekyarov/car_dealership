@@ -1,4 +1,41 @@
 package rbekyarov.car_dealership.models.entity;
 
-public class Picture {
+import jakarta.persistence.*;
+
+import java.time.LocalDate;
+@Entity
+@Table(name = "cars")
+public class Picture extends BaseEntity{
+    private String name;
+    private User author;
+
+    private LocalDate dateCreate;
+
+    public Picture() {
+    }
+
+    public String getName() {
+        return name;
+    }
+    @Column(nullable = false, unique = true)
+    public void setName(String name) {
+        this.name = name;
+    }
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+    @Column
+    public LocalDate getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(LocalDate dateCreate) {
+        this.dateCreate = dateCreate;
+    }
 }
