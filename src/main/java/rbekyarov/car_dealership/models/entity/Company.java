@@ -10,7 +10,7 @@ import java.util.Set;
 public class Company extends BaseEntity {
     private String name;
 
-    private String logoName;
+    private Picture logoName;
     private String country;
     private String city;
     private String address;
@@ -32,13 +32,12 @@ public class Company extends BaseEntity {
     public void setName(String name) {
         this.name = name;
     }
-
-    @Column
-    public String getLogoName() {
+    @ManyToOne
+    public Picture getLogoName() {
         return logoName;
     }
 
-    public void setLogoName(String logoName) {
+    public void setLogoName(Picture logoName) {
         this.logoName = logoName;
     }
 
