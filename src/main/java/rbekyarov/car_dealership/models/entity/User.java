@@ -5,6 +5,8 @@ import org.antlr.v4.runtime.misc.NotNull;
 import rbekyarov.car_dealership.models.entity.enums.Position;
 import rbekyarov.car_dealership.models.entity.enums.Role;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import rbekyarov.car_dealership.models.entity.enums.Currency;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "bank_accounts")
 public class BankAccount extends BaseEntity{
@@ -12,7 +14,8 @@ public class BankAccount extends BaseEntity{
     private String accountNumber;
     private Currency currency;
     private BigDecimal balance;
-
+    private User author;
+    private LocalDate dateCreate;
     public BankAccount() {
     }
 
@@ -64,5 +67,22 @@ public class BankAccount extends BaseEntity{
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
+    }
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public LocalDate getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(LocalDate dateCreate) {
+        this.dateCreate = dateCreate;
     }
 }

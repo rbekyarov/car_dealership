@@ -2,11 +2,15 @@ package rbekyarov.car_dealership.models.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "models")
 public class Model extends BaseEntity{
     private String name;
     private Brand brand;
+    private User author;
+    private LocalDate dateCreate;
 
     public Model() {
     }
@@ -27,5 +31,22 @@ public class Model extends BaseEntity{
 
     public void setBrand(Brand brand) {
         this.brand = brand;
+    }
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public LocalDate getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(LocalDate dateCreate) {
+        this.dateCreate = dateCreate;
     }
 }
