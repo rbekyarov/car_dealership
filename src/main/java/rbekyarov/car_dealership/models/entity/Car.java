@@ -75,8 +75,7 @@ public class Car extends BaseEntity {
         this.name = name;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "pictures_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "id", targetEntity = Picture.class, fetch = FetchType.EAGER)
     public Set<Picture> getPictures() {
         return pictures;
     }
@@ -177,8 +176,7 @@ public class Car extends BaseEntity {
         this.vendorPurchase = vendorPurchase;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cost_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "id", targetEntity = Cost.class, fetch = FetchType.EAGER)
     public Set<Cost> getCosts() {
         return costs;
     }

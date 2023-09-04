@@ -54,7 +54,7 @@ public class Seller extends BaseEntity {
     public void setPosition(Position position) {
         this.position = position;
     }
-    @OneToMany(mappedBy = "offer", targetEntity = Offer.class, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "id", targetEntity = Offer.class, fetch = FetchType.EAGER)
     public Set<Offer> getOffers() {
         return offers;
     }
@@ -62,7 +62,7 @@ public class Seller extends BaseEntity {
     public void setOffers(Set<Offer> offers) {
         this.offers = offers;
     }
-    @OneToMany(mappedBy = "sales", targetEntity = Sales.class, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "id", targetEntity = Sales.class, fetch = FetchType.EAGER)
     public Set<Sales> getSales() {
         return sales;
     }
