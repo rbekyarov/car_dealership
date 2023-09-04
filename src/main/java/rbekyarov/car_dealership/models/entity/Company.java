@@ -2,6 +2,7 @@ package rbekyarov.car_dealership.models.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -18,7 +19,8 @@ public class Company extends BaseEntity {
     private String managerName;
 
     private Set<BankAccount> bankAccounts;
-
+    private User author;
+    private LocalDate dateCreate;
     public Company() {
     }
 
@@ -102,5 +104,22 @@ public class Company extends BaseEntity {
 
     public void setBankAccounts(Set<BankAccount> bankAccounts) {
         this.bankAccounts = bankAccounts;
+    }
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
+
+    public LocalDate getDateCreate() {
+        return dateCreate;
+    }
+
+    public void setDateCreate(LocalDate dateCreate) {
+        this.dateCreate = dateCreate;
     }
 }

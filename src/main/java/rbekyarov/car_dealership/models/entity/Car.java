@@ -76,7 +76,7 @@ public class Car extends BaseEntity {
     }
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn( name = "picture_id", referencedColumnName = "id")
+    @JoinColumn( name = "car_id", referencedColumnName = "id")
     public Set<Picture> getPictures() {
         return pictures;
     }
@@ -180,7 +180,7 @@ public class Car extends BaseEntity {
     }
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn( name = "cost_id", referencedColumnName = "id")
+    @JoinColumn( name = "car_id", referencedColumnName = "id")
     public Set<Cost> getCosts() {
         return costs;
     }

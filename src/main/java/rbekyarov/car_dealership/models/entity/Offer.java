@@ -23,7 +23,7 @@ public class Offer extends BaseEntity{
     public Offer() {
     }
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn( name = "car_id", referencedColumnName = "id")
+    @JoinColumn( name = "offer_id", referencedColumnName = "id")
     public Set<Car> getCars() {
         return cars;
     }
