@@ -20,7 +20,7 @@ public class Client extends BaseEntity{
 
 
     private Set<Offer> offers;
-    private Set<Sales> sales;
+    private Set<Sale> sales;
     private User author;
     private LocalDate dateCreate;
 
@@ -83,7 +83,7 @@ public class Client extends BaseEntity{
         this.clientType = clientType;
     }
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn( name = "offer_id", referencedColumnName = "id")
+    @JoinColumn( name = "client_id", referencedColumnName = "id")
     public Set<Offer> getOffers() {
         return offers;
     }
@@ -92,12 +92,12 @@ public class Client extends BaseEntity{
         this.offers = offers;
     }
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn( name = "sales_id", referencedColumnName = "id")
-    public Set<Sales> getSales() {
+    @JoinColumn( name = "client_id", referencedColumnName = "id")
+    public Set<Sale> getSales() {
         return sales;
     }
 
-    public void setSales(Set<Sales> sales) {
+    public void setSales(Set<Sale> sales) {
         this.sales = sales;
     }
     @ManyToOne

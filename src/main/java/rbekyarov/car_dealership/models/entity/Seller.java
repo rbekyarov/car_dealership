@@ -9,13 +9,13 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
-@Table(name = "seller")
+@Table(name = "sellers")
 public class Seller extends BaseEntity {
     private String firstName;
     private String lastName;
     private Position position;
     private Set<Offer> offers;
-    private Set<Sales> sales;
+    private Set<Sale> sales;
     private BigDecimal salary;
     private BigDecimal monthlyProfit;
     private BigDecimal totalProfit;
@@ -55,7 +55,7 @@ public class Seller extends BaseEntity {
         this.position = position;
     }
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn( name = "offer_id", referencedColumnName = "id")
+    @JoinColumn( name = "seller_id", referencedColumnName = "id")
     public Set<Offer> getOffers() {
         return offers;
     }
@@ -64,12 +64,12 @@ public class Seller extends BaseEntity {
         this.offers = offers;
     }
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn( name = "sales_id", referencedColumnName = "id")
-    public Set<Sales> getSales() {
+    @JoinColumn( name = "seller_id", referencedColumnName = "id")
+    public Set<Sale> getSales() {
         return sales;
     }
 
-    public void setSales(Set<Sales> sales) {
+    public void setSales(Set<Sale> sales) {
         this.sales = sales;
     }
 

@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import java.util.Set;
 @Entity
 @Table(name = "sales")
-public class Sales extends BaseEntity {
+public class Sale extends BaseEntity {
     private Set<Car> cars;
     private Seller seller;
     private Client client;
@@ -21,10 +21,10 @@ public class Sales extends BaseEntity {
     private LocalDate dateCreate;
     private User author;
 
-    public Sales() {
+    public Sale() {
     }
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn( name = "car_id", referencedColumnName = "id")
+    @JoinColumn( name = "sale_id", referencedColumnName = "id")
     public Set<Car> getCars() {
         return cars;
     }

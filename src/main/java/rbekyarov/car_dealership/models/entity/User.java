@@ -55,7 +55,6 @@ public class User extends BaseEntity {
     }
 
     @Column
-    @NotNull
     @Enumerated(EnumType.STRING)
     public Role getRole() {
         return role;
@@ -65,7 +64,6 @@ public class User extends BaseEntity {
         this.role = role;
     }
     @Column
-    @NotNull
     @Enumerated(EnumType.STRING)
     public Position getPosition() {
         return position;
