@@ -37,5 +37,5 @@ public enum Color {
     Dark_Red ,
     Tobacco ,
     Chameleon ,
-    Red ;
+    Red
 }
