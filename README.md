@@ -1,6 +1,10 @@
 My project - this app manages a Car Dealership business processes
 
-Backend is currently being implemented.....
+Technology used in software development: backend - Spring Boot, frontend - React and MySql for database
+
+Finally the project will be deployed through three containers
+
+Now backend is currently being implemented.....
 
 DATA MODEL
 
