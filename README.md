@@ -1,3 +1,7 @@
+
+
+Car Dealership App
+
 My project - this app manages a Car Dealership business processes
 
 Technology used in software development: backend - Spring Boot, frontend - React and MySql for database
