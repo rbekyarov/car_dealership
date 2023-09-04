@@ -23,7 +23,8 @@ public class Sales extends BaseEntity {
 
     public Sales() {
     }
-    @OneToMany(mappedBy = "id", targetEntity = Car.class, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn( name = "car_id", referencedColumnName = "id")
     public Set<Car> getCars() {
         return cars;
     }

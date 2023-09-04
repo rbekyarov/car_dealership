@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "company")
+@Table(name = "companies")
 public class Company extends BaseEntity {
     private String name;
 
@@ -95,7 +95,7 @@ public class Company extends BaseEntity {
     }
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "bank_accounts_id", referencedColumnName = "id")
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
     public Set<BankAccount> getBankAccounts() {
         return bankAccounts;
     }
