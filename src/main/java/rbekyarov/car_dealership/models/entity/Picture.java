@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "cars")
+@Table(name = "pictures")
 public class Picture extends BaseEntity {
     private String name;
     private User author;

@@ -18,7 +18,7 @@ public class Car extends BaseEntity {
     private FuelType fuelType;
     private BigDecimal power;
     private BigDecimal cubature;
-    private Condition condition;
+    private ConditionCar conditionCar;
     private Color color;
     private DoorCount doorCount;
     private Vendor vendorPurchase;
@@ -75,7 +75,8 @@ public class Car extends BaseEntity {
         this.name = name;
     }
 
-    @OneToMany(mappedBy = "id", targetEntity = Picture.class, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn( name = "picture_id", referencedColumnName = "id")
     public Set<Picture> getPictures() {
         return pictures;
     }
@@ -138,15 +139,17 @@ public class Car extends BaseEntity {
     public void setCubature(BigDecimal cubature) {
         this.cubature = cubature;
     }
-
     @Enumerated(EnumType.STRING)
-    public Condition getCondition() {
-        return condition;
+    public ConditionCar getConditionCar() {
+        return conditionCar;
     }
 
-    public void setCondition(Condition condition) {
-        this.condition = condition;
+    public void setConditionCar(ConditionCar conditionCar) {
+        this.conditionCar = conditionCar;
     }
+
+
+
 
     @Enumerated(EnumType.STRING)
     public Color getColor() {
@@ -176,7 +179,8 @@ public class Car extends BaseEntity {
         this.vendorPurchase = vendorPurchase;
     }
 
-    @OneToMany(mappedBy = "id", targetEntity = Cost.class, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn( name = "cost_id", referencedColumnName = "id")
     public Set<Cost> getCosts() {
         return costs;
     }
