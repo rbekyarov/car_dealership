@@ -1,14 +1,13 @@
 package rbekyarov.car_dealership.models.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import rbekyarov.car_dealership.models.entity.enums.CancellationInvoice;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
-public class Invoice {
+@Entity
+@Table(name = "invoices")
+public class Invoice extends BaseEntity{
     private String companyName;
     private String companyCityName;
     private String companyAddress;
