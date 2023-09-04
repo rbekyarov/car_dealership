@@ -1,0 +1,3 @@
+My project - this app manages a Car Dealership business processes
+
+Backend is currently being implemented.....
