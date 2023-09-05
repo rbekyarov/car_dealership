@@ -12,4 +12,5 @@ Now backend is currently being implemented.....
 
 DATA MODEL
 
-![diagram](https://github.com/rbekyarov/car_dealership/assets/29566751/f78f7bc2-74ad-42c2-ab99-cafa2c36ee06)
+
+![diagram](https://github.com/rbekyarov/car_dealership/assets/29566751/830ff787-8709-41ff-9041-687f16bd8916)
