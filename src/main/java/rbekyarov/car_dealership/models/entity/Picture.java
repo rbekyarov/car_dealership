@@ -11,6 +11,7 @@ public class Picture extends BaseEntity {
     private User author;
 
     private LocalDate dateCreate;
+    private Car car;
 
     public Picture() {
     }
@@ -42,5 +43,15 @@ public class Picture extends BaseEntity {
 
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "car_id")
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
     }
 }

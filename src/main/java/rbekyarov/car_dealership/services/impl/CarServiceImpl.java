@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.CarDTO;
+import rbekyarov.car_dealership.models.dto.PictureDTO;
 import rbekyarov.car_dealership.models.entity.*;
 import rbekyarov.car_dealership.repository.CarRepository;
 import rbekyarov.car_dealership.services.*;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -22,26 +24,32 @@ public class CarServiceImpl implements CarService {
     private final UserService userService;
     private final ModelService modelService;
     private final VendorService vendorService;
+    private final PictureService pictureService;
     private final PricingPercentDataService pricingPercentDataService;
 
     public CarServiceImpl(CarRepository carRepository, ModelMapper modelMapper, UserService userService, ModelService modelService, VendorService vendorService,
-                          PricingPercentDataService pricingPercentDataService) {
+                          PictureService pictureService, PricingPercentDataService pricingPercentDataService) {
         this.carRepository = carRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.modelService = modelService;
         this.vendorService = vendorService;
+        this.pictureService = pictureService;
         this.pricingPercentDataService = pricingPercentDataService;
     }
 
     @Override
-    public List<Car> findAllBrands() {
+    public List<Car> findAllCars() {
         return carRepository.findAll();
     }
 
     @Override
-    public void addCar(CarDTO carDTO, HttpSession session) {
+    public void addCar(CarDTO carDTO,Set<Picture>pictures, HttpSession session) {
         Car car = modelMapper.map(carDTO, Car.class);
+
+
+        //Add Pictures
+        addPictureInCarAndAddPictureInRepo(pictures, session, car);
         //Generate Car Name
         String name = generateCarName(carDTO);
         car.setName(name);
@@ -61,8 +69,6 @@ public class CarServiceImpl implements CarService {
 
         //Set EmptyCost Set
         car.setCosts(new HashSet<>());
-        //Set EmptyPicture Set
-        car.setPictures(new HashSet<>());
 
         //get and set Author
         car.setAuthor(userService.getAuthorFromSession(session));
@@ -70,6 +76,8 @@ public class CarServiceImpl implements CarService {
         car.setDateCreate(LocalDate.now());
         carRepository.save(car);
     }
+
+
 
 
     @Override
@@ -80,6 +88,28 @@ public class CarServiceImpl implements CarService {
     @Override
     public Optional<Car> findById(Long id) {
         return carRepository.findById(id);
+    }
+
+    @Override
+    public BigDecimal calculatePriceOnCars(Set<Long> carsIds) {
+        BigDecimal sum = new BigDecimal("0");
+        for (Long id : carsIds) {
+            sum.add(carRepository.calculatePriceOnCars(id));
+        }
+
+       return sum;
+    }
+
+    @Override
+    public Set<Car> addCarInOfferAndSale(Set<Long> carIds) {
+        Set<Car>carSet = new HashSet<>();
+        for (Long carId : carIds) {
+            if (carRepository.findById(carId).isPresent()){
+                carSet.add(carRepository.findById(carId).orElseThrow());
+            }
+        }
+
+        return carSet;
     }
 
     @Override
@@ -97,5 +127,15 @@ public class CarServiceImpl implements CarService {
 
 
         return brandName + " " + modelName + " " + vinNumber;
+    }
+    private void addPictureInCarAndAddPictureInRepo(Set<Picture> pictures, HttpSession session, Car car) {
+        if(!pictures.isEmpty()){
+            for (Picture picture : pictures) {
+                car.addPicture(picture);
+                PictureDTO pictureDTO = new PictureDTO();
+                pictureDTO.setName(picture.getName());
+                pictureService.addPicture(pictureDTO, session);
+            }
+        }
     }
 }

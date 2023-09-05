@@ -441,4 +441,15 @@ public class Car extends BaseEntity {
     public void setAuthor(User author) {
         this.author = author;
     }
+
+
+    public void addPicture(Picture picture) {
+        this.pictures.add(picture);
+        picture.setCar(this);
+    }
+
+    public void removePicture(Picture picture) {
+        this.pictures.remove(picture);
+        picture.setCar(null);
+    }
 }
