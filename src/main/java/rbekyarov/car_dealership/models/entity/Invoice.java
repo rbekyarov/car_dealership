@@ -2,12 +2,14 @@ package rbekyarov.car_dealership.models.entity;
 
 import jakarta.persistence.*;
 import rbekyarov.car_dealership.models.entity.enums.CancellationInvoice;
+import rbekyarov.car_dealership.models.entity.enums.Currency;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
 @Entity
 @Table(name = "invoices")
-public class Invoice extends BaseEntity{
+public class Invoice extends BaseEntity {
     private String companyName;
     private String companyCityName;
     private String companyAddress;
@@ -17,6 +19,8 @@ public class Invoice extends BaseEntity{
     private String companyBankAccount;
     private String companyManagerName;
 
+    private Currency currency;
+    private Long bankAccountId;
     private String carName;
     private String carVinNumber;
     private String carRegDate;
@@ -39,6 +43,7 @@ public class Invoice extends BaseEntity{
 
     public Invoice() {
     }
+
     @Column
     public String getCompanyName() {
         return companyName;
@@ -47,6 +52,7 @@ public class Invoice extends BaseEntity{
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
+
     @Column
     public String getCompanyCityName() {
         return companyCityName;
@@ -55,6 +61,7 @@ public class Invoice extends BaseEntity{
     public void setCompanyCityName(String companyCityName) {
         this.companyCityName = companyCityName;
     }
+
     @Column
     public String getCompanyAddress() {
         return companyAddress;
@@ -63,6 +70,7 @@ public class Invoice extends BaseEntity{
     public void setCompanyAddress(String companyAddress) {
         this.companyAddress = companyAddress;
     }
+
     @Column
     public String getCompanyVatNumber() {
         return companyVatNumber;
@@ -71,6 +79,7 @@ public class Invoice extends BaseEntity{
     public void setCompanyVatNumber(String companyVatNumber) {
         this.companyVatNumber = companyVatNumber;
     }
+
     @Column
     public String getCompanyEmail() {
         return companyEmail;
@@ -79,6 +88,7 @@ public class Invoice extends BaseEntity{
     public void setCompanyEmail(String companyEmail) {
         this.companyEmail = companyEmail;
     }
+
     @Column
     public String getCompanyBankName() {
         return companyBankName;
@@ -87,6 +97,7 @@ public class Invoice extends BaseEntity{
     public void setCompanyBankName(String companyBankName) {
         this.companyBankName = companyBankName;
     }
+
     @Column
     public String getCompanyBankAccount() {
         return companyBankAccount;
@@ -95,6 +106,7 @@ public class Invoice extends BaseEntity{
     public void setCompanyBankAccount(String companyBankAccount) {
         this.companyBankAccount = companyBankAccount;
     }
+
     @Column
     public String getCompanyManagerName() {
         return companyManagerName;
@@ -103,6 +115,25 @@ public class Invoice extends BaseEntity{
     public void setCompanyManagerName(String companyManagerName) {
         this.companyManagerName = companyManagerName;
     }
+
+    @Column
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
+    @Column
+    public Long getBankAccountId() {
+        return bankAccountId;
+    }
+
+    public void setBankAccountId(Long bankAccountId) {
+        this.bankAccountId = bankAccountId;
+    }
+
     @Column
     public String getCarName() {
         return carName;
@@ -111,6 +142,7 @@ public class Invoice extends BaseEntity{
     public void setCarName(String carName) {
         this.carName = carName;
     }
+
     @Column
     public String getCarVinNumber() {
         return carVinNumber;
@@ -119,6 +151,7 @@ public class Invoice extends BaseEntity{
     public void setCarVinNumber(String carVinNumber) {
         this.carVinNumber = carVinNumber;
     }
+
     @Column
     public String getCarRegDate() {
         return carRegDate;
@@ -127,6 +160,7 @@ public class Invoice extends BaseEntity{
     public void setCarRegDate(String carRegDate) {
         this.carRegDate = carRegDate;
     }
+
     @Column
     public String getClientName() {
         return clientName;
@@ -135,6 +169,7 @@ public class Invoice extends BaseEntity{
     public void setClientName(String clientName) {
         this.clientName = clientName;
     }
+
     @Column
     public String getClientEmail() {
         return clientEmail;
@@ -143,6 +178,7 @@ public class Invoice extends BaseEntity{
     public void setClientEmail(String clientEmail) {
         this.clientEmail = clientEmail;
     }
+
     @Column
     public String getClientAddress() {
         return clientAddress;
@@ -151,6 +187,7 @@ public class Invoice extends BaseEntity{
     public void setClientAddress(String clientAddress) {
         this.clientAddress = clientAddress;
     }
+
     @Column
     public String getClientCityName() {
         return clientCityName;
@@ -159,6 +196,7 @@ public class Invoice extends BaseEntity{
     public void setClientCityName(String clientCityName) {
         this.clientCityName = clientCityName;
     }
+
     @Column
     public String getClientPhone() {
         return clientPhone;
@@ -167,6 +205,7 @@ public class Invoice extends BaseEntity{
     public void setClientPhone(String clientPhone) {
         this.clientPhone = clientPhone;
     }
+
     @Column
     public BigDecimal getPrice() {
         return price;
@@ -175,6 +214,7 @@ public class Invoice extends BaseEntity{
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
     @Column
     public Double getDiscount() {
         return discount;
@@ -183,6 +223,7 @@ public class Invoice extends BaseEntity{
     public void setDiscount(Double discount) {
         this.discount = discount;
     }
+
     @Column
     public BigDecimal getTotalPrice() {
         return totalPrice;
@@ -191,6 +232,7 @@ public class Invoice extends BaseEntity{
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
+
     @Column
     public String getAuthorName() {
         return authorName;
@@ -199,6 +241,7 @@ public class Invoice extends BaseEntity{
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
     }
+
     @Column
     public LocalDate getDateCreate() {
         return dateCreate;
@@ -207,6 +250,7 @@ public class Invoice extends BaseEntity{
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
     }
+
     @Enumerated(EnumType.STRING)
     public CancellationInvoice getCancellationInvoice() {
         return cancellationInvoice;
@@ -215,6 +259,7 @@ public class Invoice extends BaseEntity{
     public void setCancellationInvoice(CancellationInvoice cancellationInvoice) {
         this.cancellationInvoice = cancellationInvoice;
     }
+
     @Column
     public LocalDate getCancelledDateInvoice() {
         return cancelledDateInvoice;
