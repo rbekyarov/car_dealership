@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.CarDTO;
 import rbekyarov.car_dealership.models.entity.*;
 import rbekyarov.car_dealership.repository.CarRepository;
-import rbekyarov.car_dealership.repository.PricingPercentDataRepository;
 import rbekyarov.car_dealership.services.*;
 
 import java.math.BigDecimal;
@@ -14,7 +13,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -76,12 +74,12 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public void removeCarById(Long id) {
-
+        carRepository.deleteById(id);
     }
 
     @Override
     public Optional<Car> findById(Long id) {
-        return Optional.empty();
+        return carRepository.findById(id);
     }
 
     @Override
