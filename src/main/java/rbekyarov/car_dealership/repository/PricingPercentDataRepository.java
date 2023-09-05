@@ -10,18 +10,20 @@ import rbekyarov.car_dealership.models.entity.PricingPercentData;
 import rbekyarov.car_dealership.models.entity.enums.ActivePricingPercentData;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Repository
 public interface PricingPercentDataRepository extends JpaRepository<PricingPercentData, Long> {
 
     @Transactional
     @Modifying
-    @Query("update PricingPercentData as p SET p.percentSaleCar = :percentSaleCar,p.percentSaleCarMin = :percentSaleCarMin,p.percentCommission = :percentCommission,p.activePricingPercentData = :activePricingPercentData, p.author.id=:editAuthorId,p.dateCreate=:dateEdit where p.id=:id ")
+    @Query("update PricingPercentData as p SET p.percentSaleCar = :percentSaleCar,p.percentSaleCarMin = :percentSaleCarMin,p.percentCommission = :percentCommission,p.activePricingPercentData = :activePricingPercentData,p.percentVAT = :percentVAT, p.author.id=:editAuthorId,p.dateCreate=:dateEdit where p.id=:id ")
     void editPricingPercentData(
             @Param("percentSaleCar") int percentSaleCar,
             @Param("percentSaleCarMin") int percentSaleCarMin,
             @Param("percentCommission") int percentCommission,
             @Param("activePricingPercentData") ActivePricingPercentData activePricingPercentData,
+            @Param("percentVAT") int percentVAT,
                    @Param("id") Long id ,
                    @Param("editAuthorId") Long editAuthorId,
                    @Param("dateEdit") LocalDate dateEdit);
@@ -30,4 +32,6 @@ public interface PricingPercentDataRepository extends JpaRepository<PricingPerce
     @Modifying
     @Query("update PricingPercentData as p SET p.activePricingPercentData = 'NO'")
     void setAllActivePricingPercentDataToNO();
+    @Query("select p from PricingPercentData as p where p.activePricingPercentData = 'YES' ")
+    Optional<PricingPercentData> findActivePricingPercentData();
 }

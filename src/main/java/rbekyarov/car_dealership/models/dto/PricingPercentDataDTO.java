@@ -8,6 +8,7 @@ public class PricingPercentDataDTO {
     private int percentSaleCar;
     private int percentSaleCarMin;
     private int percentCommission;
+    private int percentVAT;
     private ActivePricingPercentData activePricingPercentData;
     public PricingPercentDataDTO() {
     }
@@ -46,5 +47,14 @@ public class PricingPercentDataDTO {
 
     public void setActivePricingPercentData(ActivePricingPercentData activePricingPercentData) {
         this.activePricingPercentData = activePricingPercentData;
+    }
+
+    public int getPercentVAT() {
+        return percentVAT;
+    }
+    @Min(0)
+    @Max(100)
+    public void setPercentVAT(int percentVAT) {
+        this.percentVAT = percentVAT;
     }
 }

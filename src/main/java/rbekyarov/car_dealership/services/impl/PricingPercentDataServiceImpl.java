@@ -62,7 +62,12 @@ public class PricingPercentDataServiceImpl implements PricingPercentDataService 
     }
 
     @Override
-    public void editPricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, ActivePricingPercentData activePricingPercentData, Long id, HttpSession session) {
+    public Optional<PricingPercentData> findActivePricingPercentData() {
+        return pricingPercentDataRepository.findActivePricingPercentData();
+    }
+
+    @Override
+    public void editPricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, ActivePricingPercentData activePricingPercentData,int percentVAT, Long id, HttpSession session) {
         if(activePricingPercentData.name().equals("YES")){
             //Set other record ActivePricingPercentData.NO
             pricingPercentDataRepository.setAllActivePricingPercentDataToNO();
@@ -74,7 +79,7 @@ public class PricingPercentDataServiceImpl implements PricingPercentDataService 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        pricingPercentDataRepository.editPricingPercentData(percentSaleCar,percentSaleCarMin,percentCommission,activePricingPercentData, id,editAuthorId, dateEdit);
+        pricingPercentDataRepository.editPricingPercentData(percentSaleCar,percentSaleCarMin,percentCommission,activePricingPercentData,percentVAT, id,editAuthorId, dateEdit);
     }
 
 

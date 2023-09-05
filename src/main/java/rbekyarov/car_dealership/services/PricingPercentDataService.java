@@ -16,6 +16,7 @@ public interface PricingPercentDataService {
     void removePricingPercentDataById(Long id);
 
     Optional<PricingPercentData> findById(Long id);
+    Optional<PricingPercentData> findActivePricingPercentData();
 
-    void editPricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, ActivePricingPercentData activePricingPercentData, Long id, HttpSession session);
+    void editPricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, ActivePricingPercentData activePricingPercentData,int percentVAT, Long id, HttpSession session);
 }

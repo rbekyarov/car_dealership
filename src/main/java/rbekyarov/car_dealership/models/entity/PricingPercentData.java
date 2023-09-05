@@ -12,6 +12,7 @@ public class PricingPercentData extends BaseEntity {
     private int percentSaleCarMin;
     private int percentCommission;
     private ActivePricingPercentData activePricingPercentData;
+    private int percentVAT;
     private User author;
 
     private LocalDate dateCreate;
@@ -49,6 +50,14 @@ public class PricingPercentData extends BaseEntity {
 
     public void setActivePricingPercentData(ActivePricingPercentData activePricingPercentData) {
         this.activePricingPercentData = activePricingPercentData;
+    }
+    @Column
+    public int getPercentVAT() {
+        return percentVAT;
+    }
+
+    public void setPercentVAT(int percentVAT) {
+        this.percentVAT = percentVAT;
     }
 
     @ManyToOne
