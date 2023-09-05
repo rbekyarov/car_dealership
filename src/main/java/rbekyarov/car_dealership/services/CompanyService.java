@@ -1,12 +1,10 @@
 package rbekyarov.car_dealership.services;
 
 import jakarta.servlet.http.HttpSession;
-import rbekyarov.car_dealership.models.dto.BrandDTO;
 import rbekyarov.car_dealership.models.dto.CompanyDTO;
-import rbekyarov.car_dealership.models.entity.BankAccount;
-import rbekyarov.car_dealership.models.entity.Brand;
 import rbekyarov.car_dealership.models.entity.Company;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 

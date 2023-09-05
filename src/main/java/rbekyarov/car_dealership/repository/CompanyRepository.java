@@ -7,13 +7,9 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import rbekyarov.car_dealership.models.entity.BankAccount;
 import rbekyarov.car_dealership.models.entity.Company;
-import rbekyarov.car_dealership.models.entity.enums.Currency;
-
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+
 
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
@@ -32,5 +28,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
             @Param("id") Long id,
             @Param("editAuthorId") Long editAuthorId,
             @Param("dateEdit") LocalDate dateEdit);
+
+
 
 }

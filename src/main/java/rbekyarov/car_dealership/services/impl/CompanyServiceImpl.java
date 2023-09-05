@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.CompanyDTO;
-import rbekyarov.car_dealership.models.entity.BankAccount;
 import rbekyarov.car_dealership.models.entity.Company;
 import rbekyarov.car_dealership.models.entity.User;
 import rbekyarov.car_dealership.repository.CompanyRepository;
@@ -12,6 +11,7 @@ import rbekyarov.car_dealership.repository.PictureRepository;
 import rbekyarov.car_dealership.services.CompanyService;
 import rbekyarov.car_dealership.services.UserService;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -67,4 +67,7 @@ public class CompanyServiceImpl implements CompanyService {
         companyRepository.editCompany(name,pictureId,country,city,address,vatNumber,email,managerName, id,editAuthorId, dateEdit);
     }
 
-}
+
+    }
+
+
