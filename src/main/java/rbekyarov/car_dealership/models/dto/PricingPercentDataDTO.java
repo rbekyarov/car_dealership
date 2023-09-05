@@ -2,12 +2,13 @@ package rbekyarov.car_dealership.models.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import rbekyarov.car_dealership.models.entity.enums.ActivePricingPercentData;
 
 public class PricingPercentDataDTO {
     private int percentSaleCar;
     private int percentSaleCarMin;
     private int percentCommission;
-
+    private ActivePricingPercentData activePricingPercentData;
     public PricingPercentDataDTO() {
     }
 
@@ -37,5 +38,13 @@ public class PricingPercentDataDTO {
 
     public void setPercentCommission(int percentCommission) {
         this.percentCommission = percentCommission;
+    }
+
+    public ActivePricingPercentData getActivePricingPercentData() {
+        return activePricingPercentData;
+    }
+
+    public void setActivePricingPercentData(ActivePricingPercentData activePricingPercentData) {
+        this.activePricingPercentData = activePricingPercentData;
     }
 }

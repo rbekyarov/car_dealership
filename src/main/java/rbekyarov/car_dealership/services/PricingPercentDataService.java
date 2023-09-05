@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import rbekyarov.car_dealership.models.dto.PricingPercentDataDTO;
 
 import rbekyarov.car_dealership.models.entity.PricingPercentData;
+import rbekyarov.car_dealership.models.entity.enums.ActivePricingPercentData;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,5 +17,5 @@ public interface PricingPercentDataService {
 
     Optional<PricingPercentData> findById(Long id);
 
-    void editPricingPercentData(int percentSaleCar,int percentSaleCarMin,int percentCommission, Long id, HttpSession session);
+    void editPricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, ActivePricingPercentData activePricingPercentData, Long id, HttpSession session);
 }

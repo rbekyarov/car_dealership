@@ -1,9 +1,7 @@
 package rbekyarov.car_dealership.models.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import rbekyarov.car_dealership.models.entity.enums.ActivePricingPercentData;
 
 import java.time.LocalDate;
 
@@ -13,13 +11,14 @@ public class PricingPercentData extends BaseEntity {
     private int percentSaleCar;
     private int percentSaleCarMin;
     private int percentCommission;
+    private ActivePricingPercentData activePricingPercentData;
     private User author;
 
     private LocalDate dateCreate;
 
     public PricingPercentData() {
     }
-
+@Column
     public int getPercentSaleCar() {
         return percentSaleCar;
     }
@@ -27,7 +26,7 @@ public class PricingPercentData extends BaseEntity {
     public void setPercentSaleCar(int percentSaleCar) {
         this.percentSaleCar = percentSaleCar;
     }
-
+    @Column
     public int getPercentSaleCarMin() {
         return percentSaleCarMin;
     }
@@ -35,7 +34,7 @@ public class PricingPercentData extends BaseEntity {
     public void setPercentSaleCarMin(int percentSaleCarMin) {
         this.percentSaleCarMin = percentSaleCarMin;
     }
-
+    @Column
     public int getPercentCommission() {
         return percentCommission;
     }
@@ -43,6 +42,15 @@ public class PricingPercentData extends BaseEntity {
     public void setPercentCommission(int percentCommission) {
         this.percentCommission = percentCommission;
     }
+    @Enumerated(EnumType.STRING)
+    public ActivePricingPercentData getActivePricingPercentData() {
+        return activePricingPercentData;
+    }
+
+    public void setActivePricingPercentData(ActivePricingPercentData activePricingPercentData) {
+        this.activePricingPercentData = activePricingPercentData;
+    }
+
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     public User getAuthor() {
@@ -60,4 +68,5 @@ public class PricingPercentData extends BaseEntity {
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
     }
+
 }

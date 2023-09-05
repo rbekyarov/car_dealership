@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.PricingPercentDataDTO;
 import rbekyarov.car_dealership.models.entity.PricingPercentData;
 import rbekyarov.car_dealership.models.entity.User;
+import rbekyarov.car_dealership.models.entity.enums.ActivePricingPercentData;
 import rbekyarov.car_dealership.repository.PricingPercentDataRepository;
 import rbekyarov.car_dealership.services.PricingPercentDataService;
 import rbekyarov.car_dealership.services.UserService;
@@ -52,13 +53,13 @@ public class PricingPercentDataServiceImpl implements PricingPercentDataService 
     }
 
     @Override
-    public void editPricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, Long id, HttpSession session) {
+    public void editPricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, ActivePricingPercentData activePricingPercentData, Long id, HttpSession session) {
         User editAuthor = userService.getAuthorFromSession(session);
         Long editAuthorId = editAuthor.getId();
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        pricingPercentDataRepository.editPricingPercentData(percentSaleCar,percentSaleCarMin,percentCommission, id,editAuthorId, dateEdit);
+        pricingPercentDataRepository.editPricingPercentData(percentSaleCar,percentSaleCarMin,percentCommission,activePricingPercentData, id,editAuthorId, dateEdit);
     }
 }
