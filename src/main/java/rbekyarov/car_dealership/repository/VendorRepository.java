@@ -12,12 +12,11 @@ import java.time.LocalDate;
 
 @Repository
 public interface VendorRepository extends JpaRepository<Vendor, Long> {
-    void editVendor(String name, String country, String city, String address, String vatNumber, String email, Long id, Long editAuthorId, LocalDate dateEdit);
 
     @Transactional
     @Modifying
     @Query("update Vendor as v SET v.name = :name,v.country = :country,v.city = :city,v.address = :address,v.vatNumber = :vatNumber,v.email = :email, v.author.id=:editAuthorId,v.dateCreate=:dateEdit where v.id=:id ")
-    void editBrand(
+    void editVendor(
             @Param("name") String name,
             @Param("country") String country,
             @Param("city") String city,
