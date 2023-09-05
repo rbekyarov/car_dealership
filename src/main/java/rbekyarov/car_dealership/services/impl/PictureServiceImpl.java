@@ -11,6 +11,8 @@ import rbekyarov.car_dealership.services.PictureService;
 import rbekyarov.car_dealership.services.UserService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Service
@@ -31,12 +33,16 @@ public class PictureServiceImpl implements PictureService {
     @Override
     public void addPicture(PictureDTO pictureDTO, HttpSession session) {
         Picture picture = modelMapper.map(pictureDTO, Picture.class);
+        String name = changePictureName(pictureDTO.getName());
+        picture.setName(name);
         //get and set Author
         picture.setAuthor(userService.getAuthorFromSession(session));
         // set dateCreated
         picture.setDateCreate(LocalDate.now());
         pictureRepository.save(picture);
     }
+
+
 
     @Override
     public void removePictureById(Long id) {
@@ -57,5 +63,13 @@ public class PictureServiceImpl implements PictureService {
         LocalDate dateEdit = LocalDate.now();
 
         pictureRepository.editPicture(name, id,editAuthorId, dateEdit);
+    }
+
+
+    private String changePictureName(String name) {
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss_");
+        String prefix = currentDateTime.format(formatter);
+        return prefix+name;
     }
 }
