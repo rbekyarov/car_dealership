@@ -35,12 +35,21 @@ public class PricingPercentDataServiceImpl implements PricingPercentDataService 
     @Override
     public void addPricingPercentData(PricingPercentDataDTO pricingPercentDataDTO, HttpSession session) {
         PricingPercentData pricingPercentData = modelMapper.map(pricingPercentDataDTO, PricingPercentData.class);
+
+        //Set NEW record ActivePricingPercentData.YES
+        pricingPercentData.setActivePricingPercentData(ActivePricingPercentData.YES);
+
+        //Set other record ActivePricingPercentData.NO
+        pricingPercentDataRepository.setAllActivePricingPercentDataToNO();
+
         //get and set Author
         pricingPercentData.setAuthor(userService.getAuthorFromSession(session));
         // set dateCreated
         pricingPercentData.setDateCreate(LocalDate.now());
         pricingPercentDataRepository.save(pricingPercentData);
     }
+
+
 
     @Override
     public void removePricingPercentDataById(Long id) {
@@ -54,6 +63,11 @@ public class PricingPercentDataServiceImpl implements PricingPercentDataService 
 
     @Override
     public void editPricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, ActivePricingPercentData activePricingPercentData, Long id, HttpSession session) {
+        if(activePricingPercentData.name().equals("YES")){
+            //Set other record ActivePricingPercentData.NO
+            pricingPercentDataRepository.setAllActivePricingPercentDataToNO();
+        }
+
         User editAuthor = userService.getAuthorFromSession(session);
         Long editAuthorId = editAuthor.getId();
 
@@ -62,4 +76,6 @@ public class PricingPercentDataServiceImpl implements PricingPercentDataService 
 
         pricingPercentDataRepository.editPricingPercentData(percentSaleCar,percentSaleCarMin,percentCommission,activePricingPercentData, id,editAuthorId, dateEdit);
     }
+
+
 }

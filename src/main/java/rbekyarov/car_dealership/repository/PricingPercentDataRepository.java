@@ -25,4 +25,9 @@ public interface PricingPercentDataRepository extends JpaRepository<PricingPerce
                    @Param("id") Long id ,
                    @Param("editAuthorId") Long editAuthorId,
                    @Param("dateEdit") LocalDate dateEdit);
+
+    @Transactional
+    @Modifying
+    @Query("update PricingPercentData as p SET p.activePricingPercentData = 'NO'")
+    void setAllActivePricingPercentDataToNO();
 }
