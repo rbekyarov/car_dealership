@@ -65,4 +65,14 @@ public class BankAccountServiceImpl implements BankAccountService {
 
         bankAccountRepository.editBankAccount(name, bankName, accountNumber, currency, balance, id, editAuthorId, dateEdit);
     }
+
+    @Override
+    public BigDecimal getCurrentBalance(Long bankAccountId) {
+        return bankAccountRepository.getCurrentBalance(bankAccountId);
+    }
+
+    @Override
+    public void editBalance(BigDecimal amount, Long bankAccountId) {
+        bankAccountRepository.editBalance(amount,bankAccountId);
+    }
 }

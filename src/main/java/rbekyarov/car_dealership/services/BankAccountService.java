@@ -25,4 +25,8 @@ public interface BankAccountService {
                          BigDecimal balance,
                          Long id,
                          HttpSession session);
+
+    BigDecimal getCurrentBalance(Long bankAccountId);
+
+    void editBalance(BigDecimal amount, Long bankAccountId);
 }

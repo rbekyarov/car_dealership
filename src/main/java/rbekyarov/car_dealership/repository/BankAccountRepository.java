@@ -28,4 +28,10 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Long> 
             @Param("id") Long id,
             @Param("editAuthorId") Long editAuthorId,
             @Param("dateEdit") LocalDate dateEdit);
+    @Query("select b.balance from BankAccount as b where b.id=:bankAccountId")
+    BigDecimal getCurrentBalance(Long bankAccountId);
+    @Transactional
+    @Modifying
+    @Query("update BankAccount as b SET b.balance = :amount where b.id=:bankAccountId ")
+    void editBalance(@Param("amount") BigDecimal amount,@Param("bankAccountId") Long bankAccountId);
 }
