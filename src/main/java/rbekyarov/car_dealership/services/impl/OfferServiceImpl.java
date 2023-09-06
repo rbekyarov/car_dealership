@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.OfferDTO;
 import rbekyarov.car_dealership.models.entity.Car;
 import rbekyarov.car_dealership.models.entity.Offer;
+import rbekyarov.car_dealership.models.entity.User;
 import rbekyarov.car_dealership.repository.OfferRepository;
 import rbekyarov.car_dealership.services.*;
 
@@ -79,6 +80,16 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public void editOffer(OfferDTO offerDTO, Long id, HttpSession session) {
+        Offer offer = offerRepository.findById(id).get();
+        Set<Long> carIds = offerDTO.getCarIds();
+        //Clear cars in the offer
 
+        User editAuthor = userService.getAuthorFromSession(session);
+        Long editAuthorId = editAuthor.getId();
+
+        //set dateEdit
+        LocalDate dateEdit = LocalDate.now();
+
+        //offerRepository.editBrand(name, id,editAuthorId, dateEdit);
     }
 }
