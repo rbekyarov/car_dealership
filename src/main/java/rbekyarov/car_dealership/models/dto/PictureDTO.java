@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 public class PictureDTO {
     private Long id;
     private String name;
+    private Long carId;
 
     public PictureDTO() {
     }
@@ -23,5 +24,13 @@ public class PictureDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getCarId() {
+        return carId;
+    }
+
+    public void setCarId(Long carId) {
+        this.carId = carId;
     }
 }
