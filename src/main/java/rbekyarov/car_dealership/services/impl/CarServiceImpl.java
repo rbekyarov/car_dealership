@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.CarDTO;
 import rbekyarov.car_dealership.models.dto.PictureDTO;
 import rbekyarov.car_dealership.models.entity.*;
+import rbekyarov.car_dealership.models.entity.enums.*;
 import rbekyarov.car_dealership.repository.CarRepository;
 import rbekyarov.car_dealership.services.*;
 
@@ -133,6 +134,66 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public void editCar(CarDTO carDTO, Long id, HttpSession session) {
+
+        Car car = carRepository.findById(id).get();
+        //EDIT pictures
+        Set<Picture> pictures = car.getPictures();
+        Set<Picture> picturesDTO = carDTO.getPictures();
+
+        //Generate Car Name
+        String name = generateCarName(carDTO);
+        //Basic data
+        Long vendorId = carDTO.getVendorId();
+        Long modelId = carDTO.getModelId();
+        String vinNumber = carDTO.getVinNumber();
+        ConditionCar conditionCar = carDTO.getConditionCar();
+        Category category = carDTO.getCategory();
+        BigDecimal power = carDTO.getPower();
+        BigDecimal cubature = carDTO.getCubature();
+        FuelType fuelType = carDTO.getFuelType();
+        DoorCount doorCount = carDTO.getDoorCount();
+        LocalDate regDate = carDTO.getRegDate();
+        Transmision transmision = carDTO.getTransmision();
+
+        //Options
+        Airbags airbags = carDTO.getAirbags();
+        Alarm alarm = carDTO.getAlarm();
+        AutoStartStop autoStartStop = carDTO.getAutoStartStop();
+        Climatic climatic = carDTO.getClimatic();
+        Color color = carDTO.getColor();
+        String comments = carDTO.getComments();
+        ElMirrors elMirrors = carDTO.getElMirrors();
+        ElWindows elWindows = carDTO.getElWindows();
+        Eurostandard eurostandard = carDTO.getEurostandard();
+        HalogenHeadlights halogenHeadlights = carDTO.getHalogenHeadlights();
+        LeatherSalon leatherSalon = carDTO.getLeatherSalon();
+        Metallic metallic = carDTO.getMetallic();
+        Navigation navigation = carDTO.getNavigation();
+        Parktronik parktronik = carDTO.getParktronik();
+        ServiceBook serviceBook = carDTO.getServiceBook();
+
+        StatusAvailable statusAvailable = carDTO.getStatusAvailable();
+
+
+        LocalDate dateIncome = carDTO.getDateIncome();
+        //for testing ->
+        //Long editAuthorId = 1L;
+        User editAuthor = userService.getAuthorFromSession(session);
+        Long editAuthorId = editAuthor.getId();
+        //set dateEdit
+        LocalDate dateEdit = LocalDate.now();
+        carRepository.editCar( name,
+                vendorId, modelId, vinNumber,
+                conditionCar, category, power,
+                cubature,fuelType,doorCount,
+                regDate,transmision,airbags,
+                alarm,autoStartStop,climatic,
+                color,comments,elMirrors,
+                elWindows,eurostandard,halogenHeadlights,
+                leatherSalon,metallic,navigation,
+                parktronik,serviceBook,statusAvailable,
+                dateIncome,editAuthorId,dateEdit,id);
+
 
     }
 
