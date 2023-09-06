@@ -19,6 +19,11 @@ public class Vendor extends BaseEntity {
     public Vendor() {
     }
 
+    public Vendor(String name, String vatNumber) {
+        this.name = name;
+        this.vatNumber = vatNumber;
+    }
+
     public Vendor(String name, String country, String city, String address, String vatNumber, String email, User author, LocalDate dateCreate) {
         this.name = name;
         this.country = country;
