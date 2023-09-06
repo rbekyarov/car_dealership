@@ -17,6 +17,14 @@ public class PricingPercentData extends BaseEntity {
 
     private LocalDate dateCreate;
 
+    public PricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, ActivePricingPercentData activePricingPercentData, int percentVAT) {
+        this.percentSaleCar = percentSaleCar;
+        this.percentSaleCarMin = percentSaleCarMin;
+        this.percentCommission = percentCommission;
+        this.activePricingPercentData = activePricingPercentData;
+        this.percentVAT = percentVAT;
+    }
+
     public PricingPercentData() {
     }
 @Column
