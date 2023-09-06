@@ -12,7 +12,13 @@ public class Model extends BaseEntity{
     private User author;
     private LocalDate dateCreate;
 
+
+
     public Model() {
+    }
+    public Model(String name, Brand brand) {
+        this.name = name;
+        this.brand = brand;
     }
 
     @Column(nullable = false)
