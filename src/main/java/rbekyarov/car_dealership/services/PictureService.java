@@ -4,13 +4,15 @@ import jakarta.servlet.http.HttpSession;
 import rbekyarov.car_dealership.models.dto.BrandDTO;
 import rbekyarov.car_dealership.models.dto.PictureDTO;
 import rbekyarov.car_dealership.models.entity.Brand;
+import rbekyarov.car_dealership.models.entity.Offer;
 import rbekyarov.car_dealership.models.entity.Picture;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface PictureService {
-
+    List<Picture> findAllPictures();
     void addPicture(PictureDTO pictureDTO, HttpSession session);
 
     void removePictureById(Long id);
@@ -18,4 +20,6 @@ public interface PictureService {
     Optional<Picture> findById(Long id);
 
     void editPicture(String name, Long id, HttpSession session);
+
+    void updatePicturesTableFieldsCarId(Set<Picture> pictures, Long carId);
 }

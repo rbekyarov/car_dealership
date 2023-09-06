@@ -20,4 +20,8 @@ public interface PictureRepository extends JpaRepository<Picture, Long> {
                    @Param("id") Long id ,
                    @Param("editAuthorId") Long editAuthorId,
                    @Param("dateEdit") LocalDate dateEdit);
+    @Transactional
+    @Modifying
+    @Query("update Picture as p SET p.car.id = :carId  where p.id=:id ")
+    void updatePicturesTableFieldsCarId( @Param("id") Long id ,@Param("carId") Long carId);
 }

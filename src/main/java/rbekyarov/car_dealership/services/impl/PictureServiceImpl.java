@@ -13,7 +13,9 @@ import rbekyarov.car_dealership.services.UserService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class PictureServiceImpl implements PictureService {
@@ -31,15 +33,22 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
+    public List<Picture> findAllPictures() {
+        return pictureRepository.findAll();
+    }
+
+    @Override
     public void addPicture(PictureDTO pictureDTO, HttpSession session) {
         Picture picture = modelMapper.map(pictureDTO, Picture.class);
+        //Change picture name
         String name = changePictureName(pictureDTO.getName());
         picture.setName(name);
         //get and set Author
-        picture.setAuthor(userService.getAuthorFromSession(session));
+        //picture.setAuthor(userService.getAuthorFromSession(session));
+        picture.setAuthor(userService.findById(1L).get());
         // set dateCreated
         picture.setDateCreate(LocalDate.now());
-        pictureRepository.save(picture);
+        pictureRepository.saveAndFlush(picture);
     }
 
 
@@ -63,6 +72,15 @@ public class PictureServiceImpl implements PictureService {
         LocalDate dateEdit = LocalDate.now();
 
         pictureRepository.editPicture(name, id,editAuthorId, dateEdit);
+    }
+
+    @Override
+    public void updatePicturesTableFieldsCarId(Set<Picture> pictures, Long carId) {
+        for (Picture picture : pictures) {
+
+            pictureRepository.updatePicturesTableFieldsCarId(picture.getId(), carId);
+        }
+
     }
 
 
