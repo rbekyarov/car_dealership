@@ -26,7 +26,7 @@ public class Seller extends BaseEntity {
     public Seller() {
     }
 
-    @Column(nullable = false)
+    @Column
     public String getFirstName() {
         return firstName;
     }
@@ -35,7 +35,7 @@ public class Seller extends BaseEntity {
         this.firstName = firstName;
     }
 
-    @Column(nullable = false)
+    @Column
     public String getLastName() {
         return lastName;
     }
@@ -45,7 +45,7 @@ public class Seller extends BaseEntity {
     }
 
     @Column
-    @NotNull
+    //@NotNull
     @Enumerated(EnumType.STRING)
     public Position getPosition() {
         return position;
