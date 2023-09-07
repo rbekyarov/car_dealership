@@ -42,11 +42,8 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public void addOffer(OfferDTO offerDTO, HttpSession session) {
-        //Offer offer = modelMapper.map(offerDTO, Offer.class);
         Offer offer = new Offer();
         Set<Long> carIds = offerDTO.getCarIds();
-
-
 
         //SET PRICE OFFER
         BigDecimal price = carService.calculatePriceOnCars(carIds);
@@ -71,17 +68,15 @@ public class OfferServiceImpl implements OfferService {
         // set dateCreated
         offer.setDateCreate(LocalDate.now());
 
-
-
-
         offerRepository.save(offer);
 
         //Change in the car_table fields offer_id
         //find Cars
-     Set<Car> cars = carService.addCarInOfferAndSale(carIds);
-       Long nextOfferId = offerRepository.findAll().size() + 0L;
-       carService.updateCarOfferIdFields(cars, nextOfferId);
-       //offer.setCars(cars);
+        Set<Car> cars = carService.addCarInOfferAndSale(carIds);
+        Long offerId = offerRepository.findAll().size() + 0L;
+
+        carService.updateCarOfferIdFields(cars, offerId);
+        //offer.setCars(cars);
 
     }
 
@@ -97,6 +92,7 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public void editOffer(OfferDTO offerDTO, Long id, HttpSession session) {
+
         Offer offer = offerRepository.findById(id).get();
         Set<Long> carIds = offerDTO.getCarIds();
         //Clear cars in the offer
@@ -107,12 +103,13 @@ public class OfferServiceImpl implements OfferService {
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        //offerRepository.editBrand(name, id,editAuthorId, dateEdit);
+        //offerRepository.editOffer(name, id,editAuthorId, dateEdit);
     }
+
     private static void calculateAndSetTotalPriceAndDiscount(OfferDTO offerDTO, Offer offer, BigDecimal price) {
         BigDecimal discountPercent = new BigDecimal(0);
 
-        if(offerDTO.getDiscount() ==null){
+        if (offerDTO.getDiscount() == null) {
             discountPercent = new BigDecimal(0);
         }
         BigDecimal percent = new BigDecimal("100");
