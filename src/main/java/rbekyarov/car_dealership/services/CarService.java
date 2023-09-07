@@ -19,7 +19,7 @@ public interface CarService {
 
     Optional<Car> findById(Long id);
 
-    void editCar(CarDTO carDTO, Long id, HttpSession session);
+    void editCar(CarDTO carDTO,Set<Picture>pictures, Long id, HttpSession session);
 
     BigDecimal calculatePriceOnCars(Set<Long> carsIds);
 

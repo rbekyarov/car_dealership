@@ -18,7 +18,6 @@ import java.util.Optional;
 import java.util.Set;
 
 
-
 @Service
 public class CarServiceImpl implements CarService {
 
@@ -47,26 +46,18 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void addCar(CarDTO carDTO,Set<Picture>pictures, HttpSession session) {
+    public void addCar(CarDTO carDTO, Set<Picture> pictures, HttpSession session) {
         Car car = modelMapper.map(carDTO, Car.class);
+
         //Check and get Next CarID in car table
         List<Car> allCars = carRepository.findAll();
-       Long nextCarId=  (allCars.size())+1L;
+        Long nextCarId = (allCars.size()) + 1L;
 
-       //Check and get Next PictureID in picture table
+        //Check and get Next PictureID in picture table
         Set<Picture> pictureSetChanged = new HashSet<>();
-        List<Picture> allPictures = pictureService.findAllPictures();
-
-        Long generator = (long) (allPictures.size());
-        for (Picture picture : pictures) {
-            generator++;
-            picture.setId(generator);
-            pictureSetChanged.add(picture);
-        }
-
+        addOrEditPicturesForCar(pictures, nextCarId, pictureSetChanged);
         //Add Pictures in database
         addPictureInCarAndAddPictureInRepo(pictures, session);
-
         //Generate Car Name
         String name = generateCarName(carDTO);
         car.setName(name);
@@ -75,19 +66,13 @@ public class CarServiceImpl implements CarService {
         //Set Model
         car.setModel(modelService.findById(carDTO.getModelId()).orElseThrow());
         //Set PRICES
-            //Find Pricing percents
-        PricingPercentData pricingPercentData = pricingPercentDataService.findActivePricingPercentData().orElseThrow();
-            //Set PriceSale: pricePurchase + (PercentSaleCar * pricePurchase/100) + CostsPrices(0)
-        BigDecimal priceSale = carDTO.getPricePurchase().add(carDTO.getPricePurchase().multiply(BigDecimal.valueOf(pricingPercentData.getPercentSaleCar() / 100.0)));
-        car.setPriceSale(priceSale);
-            //Set PriceSaleMin:
-        BigDecimal priceSaleMin = carDTO.getPricePurchase().add(carDTO.getPricePurchase().multiply(BigDecimal.valueOf(pricingPercentData.getPercentSaleCarMin() / 100.0)));
-        car.setPriceSaleMin(priceSaleMin);
+        calculatedPrices(carDTO, car);
 
 
         //get and set Author
-        car.setAuthor(userService.getAuthorFromSession(session));
-        //for testing -> car.setAuthor(userService.findById(1L).get());
+        //car.setAuthor(userService.getAuthorFromSession(session));
+        //for testing ->
+        car.setAuthor(userService.findById(1L).get());
         // set dateCreated
         car.setDateCreate(LocalDate.now());
         //Add car in database
@@ -97,7 +82,16 @@ public class CarServiceImpl implements CarService {
         pictureService.updatePicturesTableFieldsCarId(pictureSetChanged, nextCarId);
     }
 
-
+    private void calculatedPrices(CarDTO carDTO, Car car) {
+        //Find Pricing percents
+        PricingPercentData pricingPercentData = pricingPercentDataService.findActivePricingPercentData().orElseThrow();
+        //Set PriceSale: pricePurchase + (PercentSaleCar * pricePurchase/100) + CostsPrices(0)
+        BigDecimal priceSale = carDTO.getPricePurchase().add(carDTO.getPricePurchase().multiply(BigDecimal.valueOf(pricingPercentData.getPercentSaleCar() / 100.0)));
+        car.setPriceSale(priceSale);
+        //Set PriceSaleMin:
+        BigDecimal priceSaleMin = carDTO.getPricePurchase().add(carDTO.getPricePurchase().multiply(BigDecimal.valueOf(pricingPercentData.getPercentSaleCarMin() / 100.0)));
+        car.setPriceSaleMin(priceSaleMin);
+    }
 
 
     @Override
@@ -117,14 +111,14 @@ public class CarServiceImpl implements CarService {
             sum.add(carRepository.calculatePriceOnCars(id));
         }
 
-       return sum;
+        return sum;
     }
 
     @Override
     public Set<Car> addCarInOfferAndSale(Set<Long> carIds) {
-        Set<Car>carSet = new HashSet<>();
+        Set<Car> carSet = new HashSet<>();
         for (Long carId : carIds) {
-            if (carRepository.findById(carId).isPresent()){
+            if (carRepository.findById(carId).isPresent()) {
                 carSet.add(carRepository.findById(carId).orElseThrow());
             }
         }
@@ -133,13 +127,19 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void editCar(CarDTO carDTO, Long id, HttpSession session) {
+    public void editCar(CarDTO carDTO, Set<Picture> pictures, Long id, HttpSession session) {
 
-        Car car = carRepository.findById(id).get();
+        Set<Picture> pictureSetChanged = new HashSet<>();
         //EDIT pictures
-        Set<Picture> pictures = car.getPictures();
-        Set<Picture> picturesDTO = carDTO.getPictures();
-
+        addOrEditPicturesForCar(pictures, id, pictureSetChanged);
+        //Add Pictures in database
+        addPictureInCarAndAddPictureInRepo(pictures, session);
+        //Calculate Prices
+        Car car = carRepository.findById(id).get();
+        calculatedPrices(carDTO,car );
+        BigDecimal priceSale = car.getPriceSale();
+        BigDecimal priceSaleMin = car.getPriceSaleMin();
+        BigDecimal pricePurchase = carDTO.getPricePurchase();
         //Generate Car Name
         String name = generateCarName(carDTO);
         //Basic data
@@ -148,7 +148,7 @@ public class CarServiceImpl implements CarService {
         String vinNumber = carDTO.getVinNumber();
         ConditionCar conditionCar = carDTO.getConditionCar();
         Category category = carDTO.getCategory();
-        BigDecimal power = carDTO.getPower();
+        BigDecimal horsepower = carDTO.getHorsepower();
         BigDecimal cubature = carDTO.getCubature();
         FuelType fuelType = carDTO.getFuelType();
         DoorCount doorCount = carDTO.getDoorCount();
@@ -174,27 +174,50 @@ public class CarServiceImpl implements CarService {
 
         StatusAvailable statusAvailable = carDTO.getStatusAvailable();
 
-
+        LocalDate datePurchase = carDTO.getDatePurchase();
         LocalDate dateIncome = carDTO.getDateIncome();
         //for testing ->
-        //Long editAuthorId = 1L;
-        User editAuthor = userService.getAuthorFromSession(session);
-        Long editAuthorId = editAuthor.getId();
+        Long editAuthorId = 1L;
+        //User editAuthor = userService.getAuthorFromSession(session);
+        //Long editAuthorId = editAuthor.getId();
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
-        carRepository.editCar( name,
+        carRepository.editCar(name,
                 vendorId, modelId, vinNumber,
-                conditionCar, category, power,
-                cubature,fuelType,doorCount,
-                regDate,transmision,airbags,
-                alarm,autoStartStop,climatic,
-                color,comments,elMirrors,
-                elWindows,eurostandard,halogenHeadlights,
-                leatherSalon,metallic,navigation,
-                parktronik,serviceBook,statusAvailable,
-                dateIncome,editAuthorId,dateEdit,id);
+                conditionCar, category,
+                cubature, horsepower ,fuelType,doorCount,
+                regDate, transmision, airbags,
+                alarm, autoStartStop, climatic,
+                color, comments, elMirrors,
+                elWindows, eurostandard, halogenHeadlights,
+                leatherSalon, metallic, navigation,
+                parktronik, serviceBook, statusAvailable,datePurchase,
+                dateIncome, editAuthorId, dateEdit,pricePurchase,priceSale,priceSaleMin, id);
 
+        //Update Pictures table fields car_id
+        if (!pictureSetChanged.isEmpty()){
+            pictureService.updatePicturesTableFieldsCarId(pictureSetChanged, id);
+        }
 
+    }
+
+    private void addOrEditPicturesForCar(Set<Picture> pictures, Long id, Set<Picture> pictureSetChanged) {
+        if (!pictures.isEmpty()) {
+            //Check and get Next PictureID in picture table
+            List<Picture> allPictures = pictureService.findAllPictures();
+
+            Long generator = (long) (allPictures.size());
+            for (Picture picture : pictures) {
+                generator++;
+                picture.setId(generator);
+                pictureSetChanged.add(picture);
+            }
+
+            //Update Pictures table fields car_id
+            if (!pictureSetChanged.isEmpty()){
+                pictureService.updatePicturesTableFieldsCarId(pictureSetChanged, id);
+            }
+        }
     }
 
     private String generateCarName(CarDTO carDTO) {
@@ -208,8 +231,9 @@ public class CarServiceImpl implements CarService {
 
         return brandName + " " + modelName + " " + vinNumber;
     }
+
     private void addPictureInCarAndAddPictureInRepo(Set<Picture> pictures, HttpSession session) {
-        if(!pictures.isEmpty()){
+        if (!pictures.isEmpty()) {
             for (Picture picture : pictures) {
 
                 PictureDTO pictureDTO = new PictureDTO();

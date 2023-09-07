@@ -17,7 +17,7 @@ public class CarDTO {
     private Long modelId;
     private Transmision transmision;
     private FuelType fuelType;
-    private BigDecimal power;
+    private BigDecimal horsepower;
     private BigDecimal cubature;
     private ConditionCar conditionCar;
     private Color color;
@@ -104,12 +104,12 @@ public class CarDTO {
         this.fuelType = fuelType;
     }
 
-    public BigDecimal getPower() {
-        return power;
+    public BigDecimal getHorsepower() {
+        return horsepower;
     }
 
-    public void setPower(BigDecimal power) {
-        this.power = power;
+    public void setHorsepower(BigDecimal horsepower) {
+        this.horsepower = horsepower;
     }
 
     public BigDecimal getCubature() {
