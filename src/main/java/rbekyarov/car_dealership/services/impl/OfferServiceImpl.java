@@ -7,6 +7,7 @@ import rbekyarov.car_dealership.models.dto.OfferDTO;
 import rbekyarov.car_dealership.models.entity.Car;
 import rbekyarov.car_dealership.models.entity.Offer;
 import rbekyarov.car_dealership.models.entity.User;
+import rbekyarov.car_dealership.models.entity.enums.StatusOffer;
 import rbekyarov.car_dealership.repository.OfferRepository;
 import rbekyarov.car_dealership.services.*;
 
@@ -41,29 +42,41 @@ public class OfferServiceImpl implements OfferService {
 
     @Override
     public void addOffer(OfferDTO offerDTO, HttpSession session) {
-        Offer offer = modelMapper.map(offerDTO, Offer.class);
+        //Offer offer = modelMapper.map(offerDTO, Offer.class);
+        Offer offer = new Offer();
         Set<Long> carIds = offerDTO.getCarIds();
 
         //ADD Cars
         Set<Car> cars = carService.addCarInOfferAndSale(carIds);
         offer.setCars(cars);
+
         //SET PRICE OFFER
         BigDecimal price = carService.calculatePriceOnCars(carIds);
         offer.setPrice(price);
-        //SET TOTAL PRICE OFFER
-        BigDecimal discountPercent = offerDTO.getDiscount();
-        BigDecimal percent = new BigDecimal("100");
-        BigDecimal discount = discountPercent.divide(percent);
-        offer.setTotalPrice(price.subtract(discount));
+
+        //CALCULATE AND SET TOTAL PRICE AND DISCOUNT OFFER
+        calculateAndSetTotalPriceAndDiscount(offerDTO, offer, price);
+
+        // SET STATUS OFFER - for new offer  - always will be 'proposed'
+        offer.setStatusOffer(StatusOffer.proposed);
 
         //get and set Client
         offer.setClient(clientService.findById(offerDTO.getClientId()).orElseThrow());
+
         //get and set Seller
         offer.setSeller(sellerService.findById(offerDTO.getSellerId()).orElseThrow());
+
         //get and set Author
-        offer.setAuthor(userService.getAuthorFromSession(session));
+        //offer.setAuthor(userService.getAuthorFromSession(session));
+        offer.setAuthor(userService.findById(1L).get());
+
         // set dateCreated
         offer.setDateCreate(LocalDate.now());
+
+
+        //Change in the car_table fields offer_id
+
+
         offerRepository.save(offer);
 
     }
@@ -91,5 +104,18 @@ public class OfferServiceImpl implements OfferService {
         LocalDate dateEdit = LocalDate.now();
 
         //offerRepository.editBrand(name, id,editAuthorId, dateEdit);
+    }
+    private static void calculateAndSetTotalPriceAndDiscount(OfferDTO offerDTO, Offer offer, BigDecimal price) {
+        BigDecimal discountPercent = new BigDecimal(0);
+
+        if(offerDTO.getDiscount() ==null){
+            discountPercent = new BigDecimal(0);
+        }
+        BigDecimal percent = new BigDecimal("100");
+        BigDecimal discountP = discountPercent.divide(percent);
+        BigDecimal discount = price.multiply(discountP);
+        BigDecimal totalPrice = price.subtract(discount);
+        offer.setDiscount(discount);
+        offer.setTotalPrice(totalPrice);
     }
 }
