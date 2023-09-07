@@ -13,6 +13,7 @@ import rbekyarov.car_dealership.services.UserService;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -81,6 +82,11 @@ public class PictureServiceImpl implements PictureService {
             pictureRepository.updatePicturesTableFieldsCarId(picture.getId(), carId);
         }
 
+    }
+
+    @Override
+    public List<Picture> getAllPicturesByCar(Long id) {
+        return pictureRepository.findAllById(Collections.singleton(id)).stream().toList();
     }
 
 

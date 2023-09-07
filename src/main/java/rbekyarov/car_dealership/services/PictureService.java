@@ -1,10 +1,7 @@
 package rbekyarov.car_dealership.services;
 
 import jakarta.servlet.http.HttpSession;
-import rbekyarov.car_dealership.models.dto.BrandDTO;
 import rbekyarov.car_dealership.models.dto.PictureDTO;
-import rbekyarov.car_dealership.models.entity.Brand;
-import rbekyarov.car_dealership.models.entity.Offer;
 import rbekyarov.car_dealership.models.entity.Picture;
 
 import java.util.List;
@@ -22,4 +19,6 @@ public interface PictureService {
     void editPicture(String name, Long id, HttpSession session);
 
     void updatePicturesTableFieldsCarId(Set<Picture> pictures, Long carId);
+
+    List<Picture> getAllPicturesByCar(Long id);
 }
