@@ -16,9 +16,10 @@ public interface CostRepository extends JpaRepository<Cost, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Cost as c SET c.vendor.id = :vendorId, c.description = :description,c.invoiceNo = :invoiceNo,c.amount = :amount,c.dateCost = :dateCost, c.author.id=:editAuthorId, c.dateCreate=:dateEdit where c.id=:id ")
+    @Query("update Cost as c SET c.vendor.id = :vendorId,c.car.id = :carId, c.description = :description,c.invoiceNo = :invoiceNo,c.amount = :amount,c.dateCost = :dateCost, c.author.id=:editAuthorId, c.dateCreate=:dateEdit where c.id=:id ")
     void editCost(
             @Param("vendorId") Long vendorId,
+            @Param("carId") Long carId,
                    @Param("description") String description,
                    @Param("invoiceNo") String invoiceNo,
                    @Param("amount") BigDecimal amount,

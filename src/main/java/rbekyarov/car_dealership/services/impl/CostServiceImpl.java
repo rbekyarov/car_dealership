@@ -16,6 +16,7 @@ import rbekyarov.car_dealership.services.UserService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -46,14 +47,14 @@ public class CostServiceImpl implements CostService {
         Cost cost = modelMapper.map(costDTO, Cost.class);
         //checking the cost if it is for a car
         Car car = carService.findById(costDTO.getCarId()).get();
-        if(costDTO.getCarId() != null){
+        if (costDTO.getCarId() != null) {
             BigDecimal priceCosts = car.getPriceCosts();
             BigDecimal priceSaleMin = car.getPriceSaleMin();
             priceSaleMin = priceSaleMin.add(costDTO.getAmount());
             BigDecimal priceSale = car.getPriceSale();
             priceSale = priceSale.add(costDTO.getAmount());
-            priceCosts =priceCosts.add(costDTO.getAmount());
-            carService.updatePricesAfterAddCost(priceCosts,priceSale,priceSaleMin,car.getId());
+            priceCosts = priceCosts.add(costDTO.getAmount());
+            carService.updatePricesAfterAddCost(priceCosts, priceSale, priceSaleMin, car.getId());
         }
         cost.setVendor(vendorRepository.findById(costDTO.getVendorId()).orElseThrow());
         //cost.setAuthor(userService.getAuthorFromSession(session));
@@ -75,13 +76,42 @@ public class CostServiceImpl implements CostService {
     }
 
     @Override
-    public void editCost(Long vendorId, String description, String invoiceNo, BigDecimal amount, LocalDate dateCost, Long id, HttpSession session) {
-        User editAuthor = userService.getAuthorFromSession(session);
-        Long editAuthorId = editAuthor.getId();
+    public void editCost(Long vendorId, Long carId, String description, String invoiceNo, BigDecimal amount, LocalDate dateCost, Long id, HttpSession session) {
 
+        //Checked car is changed
+        Cost costForEdit = costRepository.findById(id).get();
+        if (carId != null) {
+            if (!Objects.equals(carId, costForEdit.getCar().getId())) {
+                //Remove cost and deductible prices old car
+                BigDecimal deductibleAmount = costForEdit.getAmount();
+                Car currentCar = costForEdit.getCar();
+
+                BigDecimal priceCosts = currentCar.getPriceCosts();
+                BigDecimal priceSaleMin = currentCar.getPriceSaleMin();
+                priceSaleMin = priceSaleMin.subtract(deductibleAmount);
+                BigDecimal priceSale = currentCar.getPriceSale();
+                priceSale = priceSale.subtract(deductibleAmount);
+                priceCosts = priceCosts.subtract(deductibleAmount);
+                carService.updatePricesAfterAddCost(priceCosts, priceSale, priceSaleMin, currentCar.getId());
+                // Add cost and calculate prices new Car
+                Car newCar = carService.findById(carId).get();
+                BigDecimal priceCostsNewCar;
+                BigDecimal priceSaleMinNewCar = newCar.getPriceSaleMin();
+                priceSaleMinNewCar = priceSaleMinNewCar.add(amount);
+                BigDecimal priceSaleNewCar = newCar.getPriceSale();
+                priceSaleNewCar = priceSaleNewCar.add(amount);
+                priceCostsNewCar = priceCosts.add(amount);
+                carService.updatePricesAfterAddCost(priceCostsNewCar, priceSaleNewCar, priceSaleMinNewCar, carId);
+            }
+        }
+
+
+        //User editAuthor = userService.getAuthorFromSession(session);
+        //Long editAuthorId = editAuthor.getId();
+        Long editAuthorId = 1L;
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        costRepository.editCost(vendorId,description,invoiceNo,amount,dateCost, id,editAuthorId, dateEdit);
+        costRepository.editCost(vendorId, carId, description, invoiceNo, amount, dateCost, id, editAuthorId, dateEdit);
     }
 }
