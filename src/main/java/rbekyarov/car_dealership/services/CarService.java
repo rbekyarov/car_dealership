@@ -24,4 +24,6 @@ public interface CarService {
     BigDecimal calculatePriceOnCars(Set<Long> carsIds);
 
     Set<Car> addCarInOfferAndSale(Set<Long> carIds);
+
+    void updatePricesAfterAddCost(BigDecimal priceCosts, BigDecimal priceSale, BigDecimal priceSaleMin, Long id);
 }

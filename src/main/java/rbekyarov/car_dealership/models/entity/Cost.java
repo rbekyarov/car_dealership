@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Table(name = "costs")
 public class Cost extends BaseEntity {
     private Vendor vendor;
+    private Car car;
     private String description;
     private String invoiceNo;
     private BigDecimal amount;
@@ -37,6 +38,14 @@ public class Cost extends BaseEntity {
 
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
+    }
+    @ManyToOne
+    public Car getCar() {
+        return car;
+    }
+
+    public void setCar(Car car) {
+        this.car = car;
     }
 
     @Column

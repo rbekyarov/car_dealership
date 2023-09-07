@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 public class CostDTO {
     private Long id;
+    private Long carId;
     private Long vendorId;
     private String description;
     private String invoiceNo;
@@ -23,6 +24,14 @@ public class CostDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getCarId() {
+        return carId;
+    }
+
+    public void setCarId(Long carId) {
+        this.carId = carId;
     }
 
     @NotNull

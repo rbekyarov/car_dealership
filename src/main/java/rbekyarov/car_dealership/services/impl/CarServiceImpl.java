@@ -67,6 +67,9 @@ public class CarServiceImpl implements CarService {
         car.setModel(modelService.findById(carDTO.getModelId()).orElseThrow());
         //Set PRICES
         calculatedPrices(carDTO, car);
+        car.setPriceCosts(new BigDecimal(0));
+        car.setPriceCommission(new BigDecimal(0));
+        car.setPriceProfit(new BigDecimal(0));
 
 
         //get and set Author
@@ -124,6 +127,11 @@ public class CarServiceImpl implements CarService {
         }
 
         return carSet;
+    }
+
+    @Override
+    public void updatePricesAfterAddCost(BigDecimal priceCosts, BigDecimal priceSale, BigDecimal priceSaleMin, Long id) {
+        carRepository.updatePricesAfterAddCost(priceCosts,priceSale,priceSaleMin,id);
     }
 
     @Override
