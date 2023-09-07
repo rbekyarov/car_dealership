@@ -40,7 +40,8 @@ public class ClientServiceImpl implements ClientService {
     public void addClient(ClientDTO clientDTO, HttpSession session) {
         Client client = modelMapper.map(clientDTO, Client.class);
         //get and set Author
-        client.setAuthor(userService.getAuthorFromSession(session));
+        //client.setAuthor(userService.getAuthorFromSession(session));
+        client.setAuthor(userService.findById(1L).get());
         // set dateCreated
         client.setDateCreate(LocalDate.now());
         clientRepository.save(client);
