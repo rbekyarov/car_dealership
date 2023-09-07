@@ -136,6 +136,16 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public void updateCarOfferIdFields(Set<Car> cars, Long nextOfferId) {
+        for (Car car : cars) {
+            int i = nextOfferId.intValue();
+            carRepository.updateCarOfferIdField(car.getId(), i);
+        }
+
+
+    }
+
+    @Override
     public void editCar(CarDTO carDTO, Set<Picture> pictures, Long id, HttpSession session) {
 
         Set<Picture> pictureSetChanged = new HashSet<>();

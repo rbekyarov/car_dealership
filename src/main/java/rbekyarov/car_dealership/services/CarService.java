@@ -26,4 +26,6 @@ public interface CarService {
     Set<Car> addCarInOfferAndSale(Set<Long> carIds);
 
     void updatePricesAfterAddCost(BigDecimal priceCosts, BigDecimal priceSale, BigDecimal priceSaleMin, Long id);
+
+    void updateCarOfferIdFields(Set<Car> cars, Long nextOfferId);
 }

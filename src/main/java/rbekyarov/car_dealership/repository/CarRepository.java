@@ -76,4 +76,10 @@ public interface CarRepository extends JpaRepository<Car,Long> {
                                   @Param("priceSale") BigDecimal priceSale,
                                   @Param("priceSaleMin") BigDecimal priceSaleMin,
                                   @Param("id")Long id);
+
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "update cars as c set c.offer_id = :i where c.id = :id")
+    void updateCarOfferIdField(@Param("id") Long id, @Param("i") int i);
 }

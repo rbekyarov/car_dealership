@@ -46,9 +46,7 @@ public class OfferServiceImpl implements OfferService {
         Offer offer = new Offer();
         Set<Long> carIds = offerDTO.getCarIds();
 
-        //ADD Cars
-        Set<Car> cars = carService.addCarInOfferAndSale(carIds);
-        offer.setCars(cars);
+
 
         //SET PRICE OFFER
         BigDecimal price = carService.calculatePriceOnCars(carIds);
@@ -74,10 +72,16 @@ public class OfferServiceImpl implements OfferService {
         offer.setDateCreate(LocalDate.now());
 
 
-        //Change in the car_table fields offer_id
 
 
         offerRepository.save(offer);
+
+        //Change in the car_table fields offer_id
+        //find Cars
+     Set<Car> cars = carService.addCarInOfferAndSale(carIds);
+       Long nextOfferId = offerRepository.findAll().size() + 0L;
+       carService.updateCarOfferIdFields(cars, nextOfferId);
+       //offer.setCars(cars);
 
     }
 
