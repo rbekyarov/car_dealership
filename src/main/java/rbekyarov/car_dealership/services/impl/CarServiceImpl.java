@@ -109,9 +109,10 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public BigDecimal calculatePriceOnCars(Set<Long> carsIds) {
-        BigDecimal sum = new BigDecimal("0");
+        BigDecimal sum = new BigDecimal("0.0");
         for (Long id : carsIds) {
-            sum.add(carRepository.calculatePriceOnCars(id));
+            BigDecimal price = carRepository.calculatePriceOnCars(id);
+            sum=sum.add(price);
         }
 
         return sum;
