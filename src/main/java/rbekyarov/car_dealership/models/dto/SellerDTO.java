@@ -14,7 +14,11 @@ public class SellerDTO {
     public SellerDTO() {
     }
 
-    @NotNull
+    public SellerDTO(String firstName) {
+        this.firstName = firstName;
+    }
+
+   // @NotNull
     public String getFirstName() {
         return firstName;
     }
@@ -23,7 +27,7 @@ public class SellerDTO {
         this.firstName = firstName;
     }
 
-    @NotNull
+   // @NotNull
     public String getLastName() {
         return lastName;
     }
@@ -32,7 +36,7 @@ public class SellerDTO {
         this.lastName = lastName;
     }
 
-    @NotNull
+   // @NotNull
     public Position getPosition() {
         return position;
     }
@@ -41,7 +45,7 @@ public class SellerDTO {
         this.position = position;
     }
 
-    @Positive
+   // @Positive
     public BigDecimal getSalary() {
         return salary;
     }
