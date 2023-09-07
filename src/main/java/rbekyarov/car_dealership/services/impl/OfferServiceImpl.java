@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.OfferDTO;
 import rbekyarov.car_dealership.models.entity.Car;
+import rbekyarov.car_dealership.models.entity.Client;
 import rbekyarov.car_dealership.models.entity.Offer;
 import rbekyarov.car_dealership.models.entity.User;
 import rbekyarov.car_dealership.models.entity.enums.StatusOffer;
@@ -13,9 +14,8 @@ import rbekyarov.car_dealership.services.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+
 
 @Service
 public class OfferServiceImpl implements OfferService {
@@ -76,7 +76,7 @@ public class OfferServiceImpl implements OfferService {
         Long offerId = offerRepository.findAll().size() + 0L;
 
         carService.updateCarOfferIdFields(cars, offerId);
-        //offer.setCars(cars);
+
 
     }
 
@@ -93,17 +93,65 @@ public class OfferServiceImpl implements OfferService {
     @Override
     public void editOffer(OfferDTO offerDTO, Long id, HttpSession session) {
 
-        Offer offer = offerRepository.findById(id).get();
         Set<Long> carIds = offerDTO.getCarIds();
-        //Clear cars in the offer
 
-        User editAuthor = userService.getAuthorFromSession(session);
-        Long editAuthorId = editAuthor.getId();
+        //CALC PRICE OFFER
+        BigDecimal price = carService.calculatePriceOnCars(carIds);
+
+
+        //CALCULATE AND GET TOTAL PRICE AND DISCOUNT OFFER
+        Map<BigDecimal, BigDecimal> priceAndDiscount = new LinkedHashMap<>();
+        priceAndDiscount = calculateAndGetTotalPriceAndDiscount(offerDTO, price);
+        BigDecimal totalPrice = new BigDecimal(0);
+        BigDecimal discount = new BigDecimal(0);
+        for (Map.Entry<BigDecimal, BigDecimal> entry : priceAndDiscount.entrySet()) {
+            totalPrice = totalPrice.add(entry.getKey());
+            discount = discount.add(entry.getValue());
+        }
+
+        // GET STATUS OFFER
+        StatusOffer statusOffer = offerDTO.getStatusOffer();
+
+        //get Client
+        Long clientId = offerDTO.getClientId();
+
+        //get Seller
+        Long sellerId = offerDTO.getSellerId();
+
+
+        //User editAuthor = userService.getAuthorFromSession(session);
+        //Long editAuthorId = editAuthor.getId();
+        Long editAuthorId = 1L;
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        //offerRepository.editOffer(name, id,editAuthorId, dateEdit);
+        offerRepository.editOffer(price, totalPrice, discount, statusOffer, clientId, sellerId, id, editAuthorId, dateEdit);
+
+        //Change and Clear in the car_table fields offer_id
+        //Clear
+        List<Car> carList = carService.findAllCarsOnThisOfferId(id);
+        carService.clearValueOfferIdsOnThisCars(carList);
+        //Change
+        Set<Car> cars = carService.addCarInOfferAndSale(carIds);
+        carService.updateCarOfferIdFields(cars, id);
+
+    }
+
+    private Map<BigDecimal, BigDecimal> calculateAndGetTotalPriceAndDiscount(OfferDTO offerDTO, BigDecimal price) {
+        BigDecimal discountPercent = new BigDecimal(0);
+
+        if (offerDTO.getDiscount() == null) {
+            discountPercent = new BigDecimal(0);
+        }
+        BigDecimal percent = new BigDecimal("100");
+        discountPercent = offerDTO.getDiscount();
+        BigDecimal discountP = discountPercent.divide(percent);
+        BigDecimal discount = price.multiply(discountP);
+        BigDecimal totalPrice = price.subtract(discount);
+        Map<BigDecimal, BigDecimal> result = new LinkedHashMap<>();
+        result.put(totalPrice, discount);
+        return result;
     }
 
     private static void calculateAndSetTotalPriceAndDiscount(OfferDTO offerDTO, Offer offer, BigDecimal price) {
@@ -113,6 +161,7 @@ public class OfferServiceImpl implements OfferService {
             discountPercent = new BigDecimal(0);
         }
         BigDecimal percent = new BigDecimal("100");
+        discountPercent = offerDTO.getDiscount();
         BigDecimal discountP = discountPercent.divide(percent);
         BigDecimal discount = price.multiply(discountP);
         BigDecimal totalPrice = price.subtract(discount);

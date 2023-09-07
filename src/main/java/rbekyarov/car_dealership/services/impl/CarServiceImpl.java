@@ -146,6 +146,19 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public List<Car> findAllCarsOnThisOfferId(Long id) {
+        return carRepository.findAllCarsOnThisOfferId(id);
+    }
+
+    @Override
+    public void clearValueOfferIdsOnThisCars(List<Car> carList) {
+        for (Car car : carList) {
+            carRepository.clearValueOfferIdOnThisCar(car.getId());
+        }
+
+    }
+
+    @Override
     public void editCar(CarDTO carDTO, Set<Picture> pictures, Long id, HttpSession session) {
 
         Set<Picture> pictureSetChanged = new HashSet<>();

@@ -28,4 +28,8 @@ public interface CarService {
     void updatePricesAfterAddCost(BigDecimal priceCosts, BigDecimal priceSale, BigDecimal priceSaleMin, Long id);
 
     void updateCarOfferIdFields(Set<Car> cars, Long nextOfferId);
+
+    List<Car> findAllCarsOnThisOfferId(Long id);
+
+    void clearValueOfferIdsOnThisCars(List<Car> carList);
 }

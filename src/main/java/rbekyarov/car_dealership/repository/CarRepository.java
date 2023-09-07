@@ -12,6 +12,7 @@ import rbekyarov.car_dealership.models.entity.enums.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -82,4 +83,12 @@ public interface CarRepository extends JpaRepository<Car,Long> {
     @Query(nativeQuery = true,
             value = "update cars as c set c.offer_id = :i where c.id = :id")
     void updateCarOfferIdField(@Param("id") Long id, @Param("i") int i);
+    @Query(nativeQuery = true,
+            value = "SELECT * FROM cars WHERE offer_id = :id")
+    List<Car> findAllCarsOnThisOfferId(@Param("id") Long id);
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "UPDATE cars SET offer_id = null WHERE id = :id")
+    void clearValueOfferIdOnThisCar(@Param("id") Long id);
 }
