@@ -37,7 +37,8 @@ public class SellerServiceImpl implements SellerService {
     public void addSeller(SellerDTO sellerDTO, HttpSession session) {
         Seller seller = modelMapper.map(sellerDTO, Seller.class);
         //get and set Author
-        seller.setAuthor(userService.getAuthorFromSession(session));
+       // seller.setAuthor(userService.getAuthorFromSession(session));
+        seller.setAuthor(userService.findById(1L).get());
         // set dateCreated
         seller.setDateCreate(LocalDate.now());
         sellerRepository.save(seller);
