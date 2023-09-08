@@ -5,10 +5,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.OfferDTO;
 import rbekyarov.car_dealership.models.entity.Car;
-import rbekyarov.car_dealership.models.entity.Client;
 import rbekyarov.car_dealership.models.entity.Offer;
-import rbekyarov.car_dealership.models.entity.User;
 import rbekyarov.car_dealership.models.entity.enums.StatusOffer;
+import rbekyarov.car_dealership.repository.CostRepository;
 import rbekyarov.car_dealership.repository.OfferRepository;
 import rbekyarov.car_dealership.services.*;
 
@@ -25,14 +24,17 @@ public class OfferServiceImpl implements OfferService {
     private final CarService carService;
     private final ClientService clientService;
     private final SellerService sellerService;
+    private final CostRepository costRepository;
 
-    public OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper, UserService userService, CarService carService, ClientService clientService, SellerService sellerService) {
+    public OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper, UserService userService, CarService carService, ClientService clientService, SellerService sellerService,
+                            CostRepository costRepository) {
         this.offerRepository = offerRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.carService = carService;
         this.clientService = clientService;
         this.sellerService = sellerService;
+        this.costRepository = costRepository;
     }
 
     @Override
@@ -44,6 +46,9 @@ public class OfferServiceImpl implements OfferService {
     public void addOffer(OfferDTO offerDTO, HttpSession session) {
         Offer offer = new Offer();
         Set<Long> carIds = offerDTO.getCarIds();
+        //Add Car in Offer
+        Set<Car> carSet = carService.addCarInOfferAndSale(carIds);
+        offer.setCars(carSet);
 
         //SET PRICE OFFER
         BigDecimal price = carService.calculatePriceOnCars(carIds);
@@ -68,14 +73,8 @@ public class OfferServiceImpl implements OfferService {
         // set dateCreated
         offer.setDateCreate(LocalDate.now());
 
+
         offerRepository.save(offer);
-
-        //Change in the car_table fields offer_id
-        //find Cars
-        Set<Car> cars = carService.addCarInOfferAndSale(carIds);
-        Long offerId = offerRepository.findAll().size() + 0L;
-
-        carService.updateCarOfferIdFields(cars, offerId);
 
 
     }
@@ -119,22 +118,26 @@ public class OfferServiceImpl implements OfferService {
         Long sellerId = offerDTO.getSellerId();
 
 
-//        User editUser = userService.getAuthorFromSession(session);
-//        Long editUserId = editUser.getId();
-        Long editUserId = 1L;
+         //User editUser = userService.getAuthorFromSession(session);
+         //Long editUserId = editUser.getId();
+         Long editUserId = 1L;
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        offerRepository.editOffer(price, totalPrice, discount, statusOffer, clientId, sellerId, id, editUserId, dateEdit);
+        //Add Car in Offer
+        Set<Car> carSet = carService.addCarInOfferAndSale(carIds);
 
-        //Change and Clear in the car_table fields offer_id
         //Clear
         List<Car> carList = carService.findAllCarsOnThisOfferId(id);
         carService.clearValueOfferIdsOnThisCars(carList);
+
+        offerRepository.editOffer(price, totalPrice, discount, statusOffer, clientId, sellerId, id, editUserId, dateEdit);
+
         //Change
         Set<Car> cars = carService.addCarInOfferAndSale(carIds);
         carService.updateCarOfferIdFields(cars, id);
+
 
     }
 
