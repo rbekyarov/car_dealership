@@ -32,13 +32,13 @@ public class BrandController {
     }
 
     @PutMapping("/{id}")
-    void updateClient(@PathVariable Long id, @RequestBody BrandDTO brandDTO, HttpSession session) {
+    void updateBrand(@PathVariable Long id, @RequestBody BrandDTO brandDTO, HttpSession session) {
          brandService.editBrand(brandDTO.getName(), id,session);
 
     }
 
     @DeleteMapping("/{id}")
-    public void deleteClient(@PathVariable Long id) {
+    public void deleteBrand(@PathVariable Long id) {
         brandService.removeBrandById(id);
     }
 }
