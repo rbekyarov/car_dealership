@@ -87,8 +87,8 @@ public class Car extends BaseEntity {
     public void setPictures(Set<Picture> pictures) {
         this.pictures = pictures;
     }
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinColumn( name = "car_id", referencedColumnName = "id")
+    @OneToMany(cascade = CascadeType.ALL)
+    //@JoinColumn( name = "car_id", referencedColumnName = "id")
     public Set<Offer> getOffers() {
         return offers;
     }
