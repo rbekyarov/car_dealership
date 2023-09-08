@@ -10,6 +10,8 @@ public class Brand extends BaseEntity {
     private String name;
     private User author;
     private LocalDate dateCreate;
+    private User editUser;
+    private LocalDate dateEdite;
     public Brand() {
     }
 
@@ -26,7 +28,7 @@ public class Brand extends BaseEntity {
         this.name = name;
     }
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
     public User getAuthor() {
         return author;
     }
@@ -41,5 +43,22 @@ public class Brand extends BaseEntity {
 
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
+    }
+    @ManyToOne
+    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
+    public User getEditUser() {
+        return editUser;
+    }
+
+    public void setEditUser(User editUser) {
+        this.editUser = editUser;
+    }
+
+    public LocalDate getDateEdite() {
+        return dateEdite;
+    }
+
+    public void setDateEdite(LocalDate dateEdite) {
+        this.dateEdite = dateEdite;
     }
 }

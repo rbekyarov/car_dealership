@@ -15,7 +15,10 @@ public class BankAccount extends BaseEntity{
     private Currency currency;
     private BigDecimal balance;
     private User author;
+
     private LocalDate dateCreate;
+    private User editUser;
+    private LocalDate dateEdite;
     public BankAccount() {
     }
 
@@ -69,7 +72,7 @@ public class BankAccount extends BaseEntity{
         this.balance = balance;
     }
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
     public User getAuthor() {
         return author;
     }
@@ -84,5 +87,22 @@ public class BankAccount extends BaseEntity{
 
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
+    }
+    @ManyToOne
+    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
+    public User getEditUser() {
+        return editUser;
+    }
+
+    public void setEditUser(User editUser) {
+        this.editUser = editUser;
+    }
+
+    public LocalDate getDateEdite() {
+        return dateEdite;
+    }
+
+    public void setDateEdite(LocalDate dateEdite) {
+        this.dateEdite = dateEdite;
     }
 }

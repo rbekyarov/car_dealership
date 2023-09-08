@@ -17,7 +17,8 @@ public class Cost extends BaseEntity {
     private User author;
 
     private LocalDate dateCreate;
-
+    private User editUser;
+    private LocalDate dateEdite;
     public Cost() {
     }
 
@@ -100,6 +101,23 @@ public class Cost extends BaseEntity {
 
     public void setInvoiceNo(String invoiceNo) {
         this.invoiceNo = invoiceNo;
+    }
+    @ManyToOne
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
+    public User getEditUser() {
+        return editUser;
+    }
+
+    public void setEditUser(User editUser) {
+        this.editUser = editUser;
+    }
+
+    public LocalDate getDateEdite() {
+        return dateEdite;
+    }
+
+    public void setDateEdite(LocalDate dateEdite) {
+        this.dateEdite = dateEdite;
     }
 }
 

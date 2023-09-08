@@ -19,7 +19,8 @@ public class Offer extends BaseEntity{
     private BigDecimal totalPrice;
     private LocalDate dateCreate;
     private User author;
-
+    private User editUser;
+    private LocalDate dateEdite;
     public Offer() {
     }
     @OneToMany(cascade = CascadeType.ALL)
@@ -90,12 +91,29 @@ public class Offer extends BaseEntity{
         this.dateCreate = dateCreate;
     }
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
     public User getAuthor() {
         return author;
     }
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+    @ManyToOne
+    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
+    public User getEditUser() {
+        return editUser;
+    }
+
+    public void setEditUser(User editUser) {
+        this.editUser = editUser;
+    }
+
+    public LocalDate getDateEdite() {
+        return dateEdite;
+    }
+
+    public void setDateEdite(LocalDate dateEdite) {
+        this.dateEdite = dateEdite;
     }
 }

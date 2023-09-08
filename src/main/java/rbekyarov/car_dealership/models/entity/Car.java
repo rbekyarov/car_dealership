@@ -12,6 +12,7 @@ import java.util.Set;
 public class Car extends BaseEntity {
     private String name;
     private Set<Picture> pictures;
+    private Set<Offer> offers;
     private String vinNumber;
     private Model model;
     private Transmision transmision;
@@ -62,6 +63,8 @@ public class Car extends BaseEntity {
 
     //author
     private User author;
+    private User editUser;
+    private LocalDate dateEdite;
 
     public Car() {
     }
@@ -83,6 +86,15 @@ public class Car extends BaseEntity {
 
     public void setPictures(Set<Picture> pictures) {
         this.pictures = pictures;
+    }
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinColumn( name = "car_id", referencedColumnName = "id")
+    public Set<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(Set<Offer> offers) {
+        this.offers = offers;
     }
 
     @Column
@@ -432,7 +444,7 @@ public class Car extends BaseEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
     public User getAuthor() {
         return author;
     }
@@ -440,5 +452,21 @@ public class Car extends BaseEntity {
     public void setAuthor(User author) {
         this.author = author;
     }
+    @ManyToOne
+    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
+    public User getEditUser() {
+        return editUser;
+    }
 
+    public void setEditUser(User editUser) {
+        this.editUser = editUser;
+    }
+
+    public LocalDate getDateEdite() {
+        return dateEdite;
+    }
+
+    public void setDateEdite(LocalDate dateEdite) {
+        this.dateEdite = dateEdite;
+    }
 }

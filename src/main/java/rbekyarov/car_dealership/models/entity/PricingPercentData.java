@@ -14,8 +14,9 @@ public class PricingPercentData extends BaseEntity {
     private ActivePricingPercentData activePricingPercentData;
     private int percentVAT;
     private User author;
-
     private LocalDate dateCreate;
+    private User editUser;
+    private LocalDate dateEdite;
 
     public PricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, ActivePricingPercentData activePricingPercentData, int percentVAT) {
         this.percentSaleCar = percentSaleCar;
@@ -69,7 +70,7 @@ public class PricingPercentData extends BaseEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "author_id", referencedColumnName = "id")
     public User getAuthor() {
         return author;
     }
@@ -84,6 +85,23 @@ public class PricingPercentData extends BaseEntity {
 
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
+    }
+    @ManyToOne
+    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
+    public User getEditUser() {
+        return editUser;
+    }
+
+    public void setEditUser(User editUser) {
+        this.editUser = editUser;
+    }
+
+    public LocalDate getDateEdite() {
+        return dateEdite;
+    }
+
+    public void setDateEdite(LocalDate dateEdite) {
+        this.dateEdite = dateEdite;
     }
 
 }
