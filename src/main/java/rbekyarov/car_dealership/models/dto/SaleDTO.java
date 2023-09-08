@@ -12,6 +12,7 @@ public class SaleDTO {
     private Set<Long> carIds;
     private Long sellerId;
     private Long clientId;
+    private Long companyId;
     private StatusSalesInvoiced statusSalesInvoiced;
     private BigDecimal discount;
 
@@ -40,6 +41,14 @@ public class SaleDTO {
 
     public void setClientId(Long clientId) {
         this.clientId = clientId;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public StatusSalesInvoiced getStatusSalesInvoiced() {

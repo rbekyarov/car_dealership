@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public interface SaleRepository extends JpaRepository<Sale, Long> {
     @Transactional
     @Modifying
-    @Query("update Sale as s SET s.price=:price,s.totalPrice=:totalPrice,s.discount=:discount,s.statusSalesInvoiced=:statusSalesInvoiced,s.client.id=:clientId,s.seller.id=:sellerId,s.editUser.id=:editUserId,s.dateEdite=:dateEdit  where s.id=:id ")
+    @Query("update Sale as s SET s.price=:price,s.totalPrice=:totalPrice,s.discount=:discount,s.statusSalesInvoiced=:statusSalesInvoiced,s.client.id=:clientId,s.seller.id=:sellerId,s.editUser.id=:editUserId,s.dateEdite=:dateEdit,s.company.id=:companyId  where s.id=:id ")
     void editSale(@Param("price") BigDecimal price,
                    @Param("totalPrice") BigDecimal totalPrice,
                    @Param("discount") BigDecimal discount,
@@ -26,7 +26,8 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
                    @Param("sellerId") Long sellerId,
                    @Param("id") Long id,
                    @Param("editUserId") Long editUserId,
-                   @Param("dateEdit") LocalDate dateEdit
+                   @Param("dateEdit") LocalDate dateEdit,
+                  @Param("companyId") Long companyId
 
     );
 

@@ -13,6 +13,7 @@ public class Offer extends BaseEntity{
     private Set<Car> cars;
     private Seller seller;
     private Client client;
+    private Company company;
     private StatusOffer statusOffer;
     private BigDecimal price;
     private BigDecimal discount;
@@ -47,7 +48,15 @@ public class Offer extends BaseEntity{
     public Client getClient() {
         return client;
     }
+    @ManyToOne
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    public Company getCompany() {
+        return company;
+    }
 
+    public void setCompany(Company company) {
+        this.company = company;
+    }
     public void setClient(Client client) {
         this.client = client;
     }

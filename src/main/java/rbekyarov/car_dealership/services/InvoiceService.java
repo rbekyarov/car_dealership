@@ -1,10 +1,8 @@
 package rbekyarov.car_dealership.services;
 
 import jakarta.servlet.http.HttpSession;
-import rbekyarov.car_dealership.models.dto.BrandDTO;
-import rbekyarov.car_dealership.models.dto.InvoiceDTO;
-import rbekyarov.car_dealership.models.entity.Brand;
 import rbekyarov.car_dealership.models.entity.Invoice;
+import rbekyarov.car_dealership.models.entity.Sale;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -15,7 +13,7 @@ public interface InvoiceService {
     List<Invoice> findAllRealInvoice();
     List<Invoice> findAllCancelledInvoice();
 
-    void addInvoice(InvoiceDTO invoiceDTO, HttpSession session);
+    void addInvoice(Sale sale, HttpSession session);
 
     void cancellationInvoiceById(Long id);
 

@@ -14,6 +14,7 @@ public class Sale extends BaseEntity {
     private Set<Car> cars;
     private Seller seller;
     private Client client;
+    private Company company;
     private StatusSalesInvoiced statusSalesInvoiced;
     private BigDecimal price;
     private BigDecimal discount;
@@ -51,6 +52,16 @@ public class Sale extends BaseEntity {
     public void setClient(Client client) {
         this.client = client;
     }
+    @ManyToOne
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
     @Enumerated(EnumType.STRING)
     public StatusSalesInvoiced getStatusSalesInvoiced() {
         return statusSalesInvoiced;

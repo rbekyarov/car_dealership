@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.InvoiceDTO;
 import rbekyarov.car_dealership.models.entity.Invoice;
+import rbekyarov.car_dealership.models.entity.Sale;
 import rbekyarov.car_dealership.repository.InvoiceRepository;
 import rbekyarov.car_dealership.services.BankAccountService;
 import rbekyarov.car_dealership.services.InvoiceService;
@@ -45,9 +46,10 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public void addInvoice(InvoiceDTO invoiceDTO, HttpSession session) {
-             ///?????//
+    public void addInvoice(Sale sale, HttpSession session) {
+
     }
+
 
     @Override
     public void cancellationInvoiceById(Long id) {

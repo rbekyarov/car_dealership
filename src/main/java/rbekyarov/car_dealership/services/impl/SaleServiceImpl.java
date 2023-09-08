@@ -25,15 +25,17 @@ public class SaleServiceImpl implements SaleService {
     private final CarService carService;
     private final ClientService clientService;
     private final SellerService sellerService;
+    private final CompanyService companyService;
     private final CostRepository costRepository;
 
-    public SaleServiceImpl(SaleRepository saleRepository, ModelMapper modelMapper, UserService userService, CarService carService, ClientService clientService, SellerService sellerService, CostRepository costRepository) {
+    public SaleServiceImpl(SaleRepository saleRepository, ModelMapper modelMapper, UserService userService, CarService carService, ClientService clientService, SellerService sellerService, CompanyService companyService, CostRepository costRepository) {
         this.saleRepository = saleRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.carService = carService;
         this.clientService = clientService;
         this.sellerService = sellerService;
+        this.companyService = companyService;
         this.costRepository = costRepository;
     }
 
@@ -65,6 +67,9 @@ public class SaleServiceImpl implements SaleService {
 
         //get and set Seller
         sale.setSeller(sellerService.findById(saleDTO.getSellerId()).orElseThrow());
+
+        //get and set Company
+        sale.setCompany(companyService.findById(saleDTO.getCompanyId()).orElseThrow());
 
         //get and set Author
         //sale.setAuthor(userService.getAuthorFromSession(session));
@@ -112,6 +117,8 @@ public class SaleServiceImpl implements SaleService {
         //get Seller
         Long sellerId = saleDTO.getSellerId();
 
+        //get Company
+        Long companyId = saleDTO.getCompanyId();
 
         //User editUser = userService.getAuthorFromSession(session);
         //Long editUserId = editUser.getId();
@@ -124,7 +131,7 @@ public class SaleServiceImpl implements SaleService {
         List<Car> carList = carService.findAllCarsOnThisOfferId(id);
         carService.clearValueOfferIdsOnThisCars(carList);
 
-        saleRepository.editSale(price, totalPrice, discount, saleDTOStatusSalesInvoiced, clientId, sellerId, id, editUserId, dateEdit);
+        saleRepository.editSale(price, totalPrice, discount, saleDTOStatusSalesInvoiced, clientId, sellerId, id, editUserId, dateEdit,companyId);
 
         //Change
         Set<Car> cars = carService.addCarInOfferAndSale(carIds);

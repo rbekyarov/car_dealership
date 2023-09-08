@@ -24,16 +24,18 @@ public class OfferServiceImpl implements OfferService {
     private final CarService carService;
     private final ClientService clientService;
     private final SellerService sellerService;
+    private final CompanyService companyService;
     private final CostRepository costRepository;
 
     public OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper, UserService userService, CarService carService, ClientService clientService, SellerService sellerService,
-                            CostRepository costRepository) {
+                            CompanyService companyService, CostRepository costRepository) {
         this.offerRepository = offerRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.carService = carService;
         this.clientService = clientService;
         this.sellerService = sellerService;
+        this.companyService = companyService;
         this.costRepository = costRepository;
     }
 
@@ -65,6 +67,9 @@ public class OfferServiceImpl implements OfferService {
 
         //get and set Seller
         offer.setSeller(sellerService.findById(offerDTO.getSellerId()).orElseThrow());
+
+        //get and set Company
+        offer.setCompany(companyService.findById(offerDTO.getCompanyId()).orElseThrow());
 
         //get and set Author
         //offer.setAuthor(userService.getAuthorFromSession(session));
@@ -117,6 +122,9 @@ public class OfferServiceImpl implements OfferService {
         //get Seller
         Long sellerId = offerDTO.getSellerId();
 
+        //get Company
+        Long companyId = offerDTO.getCompanyId();
+
 
          //User editUser = userService.getAuthorFromSession(session);
          //Long editUserId = editUser.getId();
@@ -129,7 +137,7 @@ public class OfferServiceImpl implements OfferService {
         List<Car> carList = carService.findAllCarsOnThisOfferId(id);
         carService.clearValueOfferIdsOnThisCars(carList);
 
-        offerRepository.editOffer(price, totalPrice, discount, statusOffer, clientId, sellerId, id, editUserId, dateEdit);
+        offerRepository.editOffer(price, totalPrice, discount, statusOffer, clientId, sellerId, id, editUserId, dateEdit,companyId);
 
         //Change
         Set<Car> cars = carService.addCarInOfferAndSale(carIds);
