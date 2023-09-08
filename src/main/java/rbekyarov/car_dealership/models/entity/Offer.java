@@ -23,8 +23,9 @@ public class Offer extends BaseEntity{
     private LocalDate dateEdite;
     public Offer() {
     }
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn( name = "offer_id", referencedColumnName = "id")
+    //@OneToMany(mappedBy = "offers", cascade = CascadeType.ALL)
     public Set<Car> getCars() {
         return cars;
     }
