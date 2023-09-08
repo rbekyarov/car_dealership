@@ -66,13 +66,13 @@ public class PictureServiceImpl implements PictureService {
 
     @Override
     public void editPicture(String name, Long id, HttpSession session) {
-        User editAuthor = userService.getAuthorFromSession(session);
-        Long editAuthorId = editAuthor.getId();
+        User editUser = userService.getAuthorFromSession(session);
+        Long editUserId = editUser.getId();
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        pictureRepository.editPicture(name, id,editAuthorId, dateEdit);
+        pictureRepository.editPicture(name, id,editUserId, dateEdit);
     }
 
     @Override

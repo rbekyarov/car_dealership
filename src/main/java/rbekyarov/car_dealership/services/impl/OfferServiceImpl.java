@@ -119,14 +119,14 @@ public class OfferServiceImpl implements OfferService {
         Long sellerId = offerDTO.getSellerId();
 
 
-        //User editAuthor = userService.getAuthorFromSession(session);
-        //Long editAuthorId = editAuthor.getId();
-        Long editAuthorId = 1L;
+//        User editUser = userService.getAuthorFromSession(session);
+//        Long editUserId = editUser.getId();
+        Long editUserId = 1L;
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        offerRepository.editOffer(price, totalPrice, discount, statusOffer, clientId, sellerId, id, editAuthorId, dateEdit);
+        offerRepository.editOffer(price, totalPrice, discount, statusOffer, clientId, sellerId, id, editUserId, dateEdit);
 
         //Change and Clear in the car_table fields offer_id
         //Clear

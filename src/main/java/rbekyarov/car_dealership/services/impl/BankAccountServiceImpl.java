@@ -57,13 +57,13 @@ public class BankAccountServiceImpl implements BankAccountService {
 
     @Override
     public void editBankAccount(String name, String bankName, String accountNumber, Currency currency, BigDecimal balance, Long id, HttpSession session) {
-        User editAuthor = userService.getAuthorFromSession(session);
-        Long editAuthorId = editAuthor.getId();
+        User editUser = userService.getAuthorFromSession(session);
+        Long editUserId = editUser.getId();
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        bankAccountRepository.editBankAccount(name, bankName, accountNumber, currency, balance, id, editAuthorId, dateEdit);
+        bankAccountRepository.editBankAccount(name, bankName, accountNumber, currency, balance, id, editUserId, dateEdit);
     }
 
     @Override

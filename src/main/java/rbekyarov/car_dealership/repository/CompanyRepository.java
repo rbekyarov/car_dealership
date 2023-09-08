@@ -15,7 +15,7 @@ import java.time.LocalDate;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Transactional
     @Modifying
-    @Query("update Company as c SET c.name = :name,c.logoName = :pictureId,c.country = :country,c.city = :city,c.address = :address, c.vatNumber=:vatNumber,c.email=:email,c.managerName=:managerName,c.author.id=:editAuthorId,c.dateCreate=:dateEdit where c.id=:id ")
+    @Query("update Company as c SET c.name = :name,c.logoName = :pictureId,c.country = :country,c.city = :city,c.address = :address, c.vatNumber=:vatNumber,c.email=:email,c.managerName=:managerName,c.editUser.id=:editUserId,c.dateEdite=:dateEdit where c.id=:id ")
     void editCompany(
             @Param("name") String name,
             @Param("pictureId") Long pictureId,
@@ -26,7 +26,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
             @Param("email") String email,
             @Param("managerName") String managerName,
             @Param("id") Long id,
-            @Param("editAuthorId") Long editAuthorId,
+            @Param("editUserId") Long editUserId,
             @Param("dateEdit") LocalDate dateEdit);
 
 

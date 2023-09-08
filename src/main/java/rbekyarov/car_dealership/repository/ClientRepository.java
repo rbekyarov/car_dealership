@@ -16,7 +16,7 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Client as c SET c.name = :name,c.vatOrId = :vatOrId,c.email = :email,c.phone = :phone,c.city = :city,c.address = :address,c.clientType = :clientType, c.author.id=:editAuthorId,c.dateCreate=:dateEdit where c.id=:id ")
+    @Query("update Client as c SET c.name = :name,c.vatOrId = :vatOrId,c.email = :email,c.phone = :phone,c.city = :city,c.address = :address,c.clientType = :clientType, c.editUser.id=:editUserId,c.dateEdite=:dateEdit where c.id=:id ")
     void editClient(
             @Param("name") String name,
             @Param("vatOrId") String vatOrId,
@@ -26,6 +26,6 @@ public interface ClientRepository extends JpaRepository<Client, Long> {
             @Param("address") String address,
             @Param("clientType") ClientType clientType,
             @Param("id") Long id,
-            @Param("editAuthorId") Long editAuthorId,
+            @Param("editUserId") Long editUserId,
             @Param("dateEdit") LocalDate dateEdit);
 }

@@ -16,10 +16,10 @@ public interface ModelRepository extends JpaRepository<Model, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Model as m SET m.name = :name, m.brand.id = :brandId, m.author.id=:editAuthorId, m.dateCreate=:dateEdit where m.id=:id ")
+    @Query("update Model as m SET m.name = :name, m.brand.id = :brandId, m.editUser.id=:editUserId,m.dateEdite=:dateEdit where m.id=:id ")
     void editModel(@Param("name") String name,
                    @Param("brandId") Long brandId ,
                    @Param("id") Long id ,
-                   @Param("editAuthorId") Long editAuthorId,
+                   @Param("editUserId") Long editUserId,
                    @Param("dateEdit") LocalDate dateEdit);
 }

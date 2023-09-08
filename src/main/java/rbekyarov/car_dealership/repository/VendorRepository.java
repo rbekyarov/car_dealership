@@ -15,7 +15,7 @@ public interface VendorRepository extends JpaRepository<Vendor, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Vendor as v SET v.name = :name,v.country = :country,v.city = :city,v.address = :address,v.vatNumber = :vatNumber,v.email = :email, v.author.id=:editAuthorId,v.dateCreate=:dateEdit where v.id=:id ")
+    @Query("update Vendor as v SET v.name = :name,v.country = :country,v.city = :city,v.address = :address,v.vatNumber = :vatNumber,v.email = :email, v.editUser.id=:editUserId,v.dateEdite=:dateEdit\n where v.id=:id ")
     void editVendor(
             @Param("name") String name,
             @Param("country") String country,
@@ -24,7 +24,7 @@ public interface VendorRepository extends JpaRepository<Vendor, Long> {
             @Param("vatNumber") String vatNumber,
             @Param("email") String email,
             @Param("id") Long id,
-            @Param("editAuthorId") Long editAuthorId,
+            @Param("editUserId") Long editUserId,
             @Param("dateEdit") LocalDate dateEdit);
 
 }

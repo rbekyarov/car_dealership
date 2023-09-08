@@ -18,7 +18,7 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Offer as o SET o.price=:price,o.totalPrice=:totalPrice,o.discount=:discount,o.statusOffer=:statusOffer,o.client.id=:clientId,o.seller.id=:sellerId,o.author.id=:editAuthorId,o.dateCreate=:dateEdit  where o.id=:id ")
+    @Query("update Offer as o SET o.price=:price,o.totalPrice=:totalPrice,o.discount=:discount,o.statusOffer=:statusOffer,o.client.id=:clientId,o.seller.id=:sellerId,o.editUser.id=:editUserId,o.dateEdite=:dateEdit  where o.id=:id ")
     void editOffer(@Param("price") BigDecimal price,
                    @Param("totalPrice") BigDecimal totalPrice,
                    @Param("discount") BigDecimal discount,
@@ -26,7 +26,7 @@ public interface OfferRepository extends JpaRepository<Offer, Long> {
                    @Param("clientId") Long clientId,
                    @Param("sellerId") Long sellerId,
                    @Param("id") Long id,
-                   @Param("editAuthorId") Long editAuthorId,
+                   @Param("editUserId") Long editUserId,
                    @Param("dateEdit") LocalDate dateEdit
 
     );

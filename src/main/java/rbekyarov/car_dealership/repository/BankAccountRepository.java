@@ -18,7 +18,7 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Long> 
 
     @Transactional
     @Modifying
-    @Query("update BankAccount as b SET b.name = :name,b.bankName = :bankName,b.accountNumber = :accountNumber,b.currency = :currency,b.balance = :balance, b.author.id=:editAuthorId,b.dateCreate=:dateEdit where b.id=:id ")
+    @Query("update BankAccount as b SET b.name = :name,b.bankName = :bankName,b.accountNumber = :accountNumber,b.currency = :currency,b.balance = :balance, b.editUser.id=:editUserId,b.dateEdite=:dateEdit where b.id=:id ")
     void editBankAccount(
             @Param("name") String name,
             @Param("bankName") String bankName,
@@ -26,7 +26,7 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Long> 
             @Param("currency") Currency currency,
             @Param("balance") BigDecimal balance,
             @Param("id") Long id,
-            @Param("editAuthorId") Long editAuthorId,
+            @Param("editUserId") Long editUserId,
             @Param("dateEdit") LocalDate dateEdit);
     @Query("select b.balance from BankAccount as b where b.id=:bankAccountId")
     BigDecimal getCurrentBalance(Long bankAccountId);

@@ -209,9 +209,9 @@ public class CarServiceImpl implements CarService {
         LocalDate datePurchase = carDTO.getDatePurchase();
         LocalDate dateIncome = carDTO.getDateIncome();
         //for testing ->
-        Long editAuthorId = 1L;
-        //User editAuthor = userService.getAuthorFromSession(session);
-        //Long editAuthorId = editAuthor.getId();
+        Long editUserId = 1L;
+        //User editUser = userService.getAuthorFromSession(session);
+        //Long editUserId = editUser.getId();
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
         carRepository.editCar(name,
@@ -224,7 +224,7 @@ public class CarServiceImpl implements CarService {
                 elWindows, eurostandard, halogenHeadlights,
                 leatherSalon, metallic, navigation,
                 parktronik, serviceBook, statusAvailable,datePurchase,
-                dateIncome, editAuthorId, dateEdit,pricePurchase,priceSale,priceSaleMin, id);
+                dateIncome, editUserId, dateEdit,pricePurchase,priceSale,priceSaleMin, id);
 
         //Update Pictures table fields car_id
         if (!pictureSetChanged.isEmpty()){

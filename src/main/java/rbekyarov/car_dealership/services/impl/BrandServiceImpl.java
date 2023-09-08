@@ -54,13 +54,13 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public void editBrand(String name, Long id, HttpSession session) {
-        User editAuthor = userService.getAuthorFromSession(session);
-        Long editAuthorId = editAuthor.getId();
+        User editUser = userService.getAuthorFromSession(session);
+        Long editUserId = editUser.getId();
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        brandRepository.editBrand(name, id,editAuthorId, dateEdit);
+        brandRepository.editBrand(name, id,editUserId, dateEdit);
 
     }
 }

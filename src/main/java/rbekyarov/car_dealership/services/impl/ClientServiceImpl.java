@@ -59,12 +59,12 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void editClient(String name, String vatOrId, String email, String phone, String city, String address, ClientType clientType, Long id, HttpSession session) {
-        User editAuthor = userService.getAuthorFromSession(session);
-        Long editAuthorId = editAuthor.getId();
+        User editUser = userService.getAuthorFromSession(session);
+        Long editUserId = editUser.getId();
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        clientRepository.editClient(name, vatOrId, email, phone, city, address, clientType, id, editAuthorId, dateEdit);
+        clientRepository.editClient(name, vatOrId, email, phone, city, address, clientType, id, editUserId, dateEdit);
     }
 }

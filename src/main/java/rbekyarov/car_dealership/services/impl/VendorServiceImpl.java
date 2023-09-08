@@ -56,12 +56,12 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public void editVendor(String name, String country, String city, String address, String vatNumber, String email, Long id, HttpSession session) {
-        User editAuthor = userService.getAuthorFromSession(session);
-        Long editAuthorId = editAuthor.getId();
+        User editUser = userService.getAuthorFromSession(session);
+        Long editUserId = editUser.getId();
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        vendorRepository.editVendor(name,country,city,address,vatNumber,email, id,editAuthorId, dateEdit);
+        vendorRepository.editVendor(name,country,city,address,vatNumber,email, id,editUserId, dateEdit);
     }
 }

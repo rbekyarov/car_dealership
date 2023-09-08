@@ -58,13 +58,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void editCompany(String name, Long pictureId, String country, String city, String address, String vatNumber, String email, String managerName, Long id, HttpSession session) {
-        User editAuthor = userService.getAuthorFromSession(session);
-        Long editAuthorId = editAuthor.getId();
+        User editUser = userService.getAuthorFromSession(session);
+        Long editUserId = editUser.getId();
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        companyRepository.editCompany(name,pictureId,country,city,address,vatNumber,email,managerName, id,editAuthorId, dateEdit);
+        companyRepository.editCompany(name,pictureId,country,city,address,vatNumber,email,managerName, id,editUserId, dateEdit);
     }
 
 

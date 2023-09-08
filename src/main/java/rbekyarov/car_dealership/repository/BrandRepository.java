@@ -16,10 +16,10 @@ public interface BrandRepository extends JpaRepository<Brand, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Brand as b SET b.name = :name, b.author.id=:editAuthorId,b.dateCreate=:dateEdit where b.id=:id ")
+    @Query("update Brand as b SET b.name = :name, b.editUser.id=:editUserId,b.dateEdite=:dateEdit where b.id=:id ")
     void editBrand(@Param("name") String name,
                       @Param("id") Long id ,
-                      @Param("editAuthorId") Long editAuthorId,
-                      @Param("dateEdit") LocalDate dateEdit);
+                   @Param("editUserId") Long editUserId,
+                   @Param("dateEdit") LocalDate dateEdit);
 
 }

@@ -106,12 +106,12 @@ public class CostServiceImpl implements CostService {
         }
 
 
-        //User editAuthor = userService.getAuthorFromSession(session);
-        //Long editAuthorId = editAuthor.getId();
-        Long editAuthorId = 1L;
+//        User editUser = userService.getAuthorFromSession(session);
+//        Long editUserId = editUser.getId();
+        Long editUserId = 1L;
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        costRepository.editCost(vendorId, carId, description, invoiceNo, amount, dateCost, id, editAuthorId, dateEdit);
+        costRepository.editCost(vendorId, carId, description, invoiceNo, amount, dateCost, id, editUserId, dateEdit);
     }
 }

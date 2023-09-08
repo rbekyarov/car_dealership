@@ -56,12 +56,12 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public void editSeller(String firstName, String lastName, Position position, BigDecimal salary, Long id, HttpSession session) {
-        User editAuthor = userService.getAuthorFromSession(session);
-        Long editAuthorId = editAuthor.getId();
+        User editUser = userService.getAuthorFromSession(session);
+        Long editUserId = editUser.getId();
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        sellerRepository.editSeller(firstName,lastName,position,salary, id,editAuthorId, dateEdit);
+        sellerRepository.editSeller(firstName,lastName,position,salary, id,editUserId, dateEdit);
     }
 }

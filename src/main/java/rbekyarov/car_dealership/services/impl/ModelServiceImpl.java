@@ -58,12 +58,12 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public void editModel(String name, Long brandId, Long id, HttpSession session) {
-        User editAuthor = userService.getAuthorFromSession(session);
-        Long editAuthorId = editAuthor.getId();
+        User editUser = userService.getAuthorFromSession(session);
+        Long editUserId = editUser.getId();
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        modelRepository.editModel(name,brandId, id,editAuthorId, dateEdit);
+        modelRepository.editModel(name,brandId, id,editUserId, dateEdit);
     }
 }

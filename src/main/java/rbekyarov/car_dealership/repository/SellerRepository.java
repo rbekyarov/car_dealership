@@ -17,13 +17,13 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Seller as s SET s.firstName = :firstName,s.lastName = :lastName,s.position = :position,s.salary = :salary, s.author.id=:editAuthorId,s.dateCreate=:dateEdit where s.id=:id ")
+    @Query("update Seller as s SET s.firstName = :firstName,s.lastName = :lastName,s.position = :position,s.salary = :salary, s.editUser.id=:editUserId,s.dateEdite=:dateEdit\n where s.id=:id ")
     void editSeller(
             @Param("firstName") String firstName,
             @Param("lastName") String lastName,
             @Param("position") Position position,
             @Param("salary") BigDecimal salary,
             @Param("id") Long id,
-            @Param("editAuthorId") Long editAuthorId,
+            @Param("editUserId") Long editUserId,
             @Param("dateEdit") LocalDate dateEdit);
 }

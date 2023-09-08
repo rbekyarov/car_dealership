@@ -73,13 +73,13 @@ public class PricingPercentDataServiceImpl implements PricingPercentDataService 
             pricingPercentDataRepository.setAllActivePricingPercentDataToNO();
         }
 
-        User editAuthor = userService.getAuthorFromSession(session);
-        Long editAuthorId = editAuthor.getId();
+        User editUser = userService.getAuthorFromSession(session);
+        Long editUserId = editUser.getId();
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        pricingPercentDataRepository.editPricingPercentData(percentSaleCar,percentSaleCarMin,percentCommission,activePricingPercentData,percentVAT, id,editAuthorId, dateEdit);
+        pricingPercentDataRepository.editPricingPercentData(percentSaleCar,percentSaleCarMin,percentCommission,activePricingPercentData,percentVAT, id,editUserId, dateEdit);
     }
 
 

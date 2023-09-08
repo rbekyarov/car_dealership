@@ -17,21 +17,22 @@ public interface PricingPercentDataRepository extends JpaRepository<PricingPerce
 
     @Transactional
     @Modifying
-    @Query("update PricingPercentData as p SET p.percentSaleCar = :percentSaleCar,p.percentSaleCarMin = :percentSaleCarMin,p.percentCommission = :percentCommission,p.activePricingPercentData = :activePricingPercentData,p.percentVAT = :percentVAT, p.author.id=:editAuthorId,p.dateCreate=:dateEdit where p.id=:id ")
+    @Query("update PricingPercentData as p SET p.percentSaleCar = :percentSaleCar,p.percentSaleCarMin = :percentSaleCarMin,p.percentCommission = :percentCommission,p.activePricingPercentData = :activePricingPercentData,p.percentVAT = :percentVAT, p.editUser.id=:editUserId,p.dateEdite=:dateEdit\n where p.id=:id ")
     void editPricingPercentData(
             @Param("percentSaleCar") int percentSaleCar,
             @Param("percentSaleCarMin") int percentSaleCarMin,
             @Param("percentCommission") int percentCommission,
             @Param("activePricingPercentData") ActivePricingPercentData activePricingPercentData,
             @Param("percentVAT") int percentVAT,
-                   @Param("id") Long id ,
-                   @Param("editAuthorId") Long editAuthorId,
-                   @Param("dateEdit") LocalDate dateEdit);
+            @Param("id") Long id,
+            @Param("editUserId") Long editUserId,
+            @Param("dateEdit") LocalDate dateEdit);
 
     @Transactional
     @Modifying
     @Query("update PricingPercentData as p SET p.activePricingPercentData = 'NO'")
     void setAllActivePricingPercentDataToNO();
+
     @Query("select p from PricingPercentData as p where p.activePricingPercentData = 'YES' ")
     Optional<PricingPercentData> findActivePricingPercentData();
 }

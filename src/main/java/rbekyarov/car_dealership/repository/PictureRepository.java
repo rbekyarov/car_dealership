@@ -15,11 +15,11 @@ public interface PictureRepository extends JpaRepository<Picture, Long> {
 
     @Transactional
     @Modifying
-    @Query("update Picture as p SET p.name = :name, p.author.id=:editAuthorId,p.dateCreate=:dateEdit where p.id=:id ")
+    @Query("update Picture as p SET p.name = :name, p.editUser.id=:editUserId,p.dateEdite=:dateEdit\n where p.id=:id ")
     void editPicture(@Param("name") String name,
                    @Param("id") Long id ,
-                   @Param("editAuthorId") Long editAuthorId,
-                   @Param("dateEdit") LocalDate dateEdit);
+                     @Param("editUserId") Long editUserId,
+                     @Param("dateEdit") LocalDate dateEdit);
     @Transactional
     @Modifying
     @Query("update Picture as p SET p.car.id = :carId  where p.id=:id ")
