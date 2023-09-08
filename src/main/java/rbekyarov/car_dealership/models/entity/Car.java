@@ -13,6 +13,7 @@ public class Car extends BaseEntity {
     private String name;
     private Set<Picture> pictures;
     private Set<Offer> offers;
+    private Set<Sale> sales;
     private String vinNumber;
     private Model model;
     private Transmision transmision;
@@ -88,13 +89,20 @@ public class Car extends BaseEntity {
         this.pictures = pictures;
     }
     @OneToMany(cascade = CascadeType.ALL)
-    //@JoinColumn( name = "car_id", referencedColumnName = "id")
     public Set<Offer> getOffers() {
         return offers;
     }
 
     public void setOffers(Set<Offer> offers) {
         this.offers = offers;
+    }
+    @OneToMany(cascade = CascadeType.ALL)
+    public Set<Sale> getSales() {
+        return sales;
+    }
+
+    public void setSales(Set<Sale> sales) {
+        this.sales = sales;
     }
 
     @Column

@@ -24,7 +24,7 @@ public class Sale extends BaseEntity {
     private LocalDate dateEdite;
     public Sale() {
     }
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE)
     @JoinColumn( name = "sale_id", referencedColumnName = "id")
     public Set<Car> getCars() {
         return cars;

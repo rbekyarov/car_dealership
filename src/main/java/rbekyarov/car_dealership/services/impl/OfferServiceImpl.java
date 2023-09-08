@@ -125,9 +125,6 @@ public class OfferServiceImpl implements OfferService {
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        //Add Car in Offer
-        Set<Car> carSet = carService.addCarInOfferAndSale(carIds);
-
         //Clear
         List<Car> carList = carService.findAllCarsOnThisOfferId(id);
         carService.clearValueOfferIdsOnThisCars(carList);
