@@ -12,6 +12,8 @@ public class Cost extends BaseEntity {
     private Car car;
     private String description;
     private String invoiceNo;
+    private Currency currency;
+
     private BigDecimal amount;
     private LocalDate dateCost;
     private User author;
@@ -102,6 +104,16 @@ public class Cost extends BaseEntity {
     public void setInvoiceNo(String invoiceNo) {
         this.invoiceNo = invoiceNo;
     }
+    @ManyToOne
+    @JoinColumn(name = "currency_id", referencedColumnName = "id")
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     public User getEditUser() {

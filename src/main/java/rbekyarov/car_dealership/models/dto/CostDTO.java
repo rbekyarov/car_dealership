@@ -1,6 +1,7 @@
 package rbekyarov.car_dealership.models.dto;
 
 import jakarta.validation.constraints.NotNull;
+import rbekyarov.car_dealership.models.entity.Currency;
 import rbekyarov.car_dealership.models.entity.Vendor;
 
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ public class CostDTO {
     private String description;
     private String invoiceNo;
     private BigDecimal amount;
+    private Long currencyId;
     private LocalDate dateCost;
 
     public CostDTO() {
@@ -57,6 +59,14 @@ public class CostDTO {
 
     public void setInvoiceNo(String invoiceNo) {
         this.invoiceNo = invoiceNo;
+    }
+
+    public Long getCurrencyId() {
+        return currencyId;
+    }
+
+    public void setCurrencyId(Long currencyId) {
+        this.currencyId = currencyId;
     }
 
     public BigDecimal getAmount() {

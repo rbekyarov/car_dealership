@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.CostDTO;
 import rbekyarov.car_dealership.models.entity.Car;
 import rbekyarov.car_dealership.models.entity.Cost;
-import rbekyarov.car_dealership.models.entity.User;
 import rbekyarov.car_dealership.repository.CostRepository;
 import rbekyarov.car_dealership.repository.VendorRepository;
 import rbekyarov.car_dealership.services.CarService;
 import rbekyarov.car_dealership.services.CostService;
+import rbekyarov.car_dealership.services.CurrencyService;
 import rbekyarov.car_dealership.services.UserService;
 
 import java.math.BigDecimal;
@@ -26,14 +26,16 @@ public class CostServiceImpl implements CostService {
     private final ModelMapper modelMapper;
     private final UserService userService;
     private final CarService carService;
+    private final CurrencyService currencyService;
     private final VendorRepository vendorRepository;
 
     public CostServiceImpl(CostRepository costRepository, ModelMapper modelMapper, UserService userService,
-                           CarService carService, VendorRepository vendorRepository) {
+                           CarService carService, CurrencyService currencyService, VendorRepository vendorRepository) {
         this.costRepository = costRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.carService = carService;
+        this.currencyService = currencyService;
         this.vendorRepository = vendorRepository;
     }
 
@@ -47,7 +49,10 @@ public class CostServiceImpl implements CostService {
         Cost cost = modelMapper.map(costDTO, Cost.class);
         //checking the cost if it is for a car
         Car car = carService.findById(costDTO.getCarId()).get();
+
         if (costDTO.getCarId() != null) {
+ //Check Currency ????
+
             BigDecimal priceCosts = car.getPriceCosts();
             BigDecimal priceSaleMin = car.getPriceSaleMin();
             priceSaleMin = priceSaleMin.add(costDTO.getAmount());
@@ -56,12 +61,16 @@ public class CostServiceImpl implements CostService {
             priceCosts = priceCosts.add(costDTO.getAmount());
             carService.updatePricesAfterAddCost(priceCosts, priceSale, priceSaleMin, car.getId());
         }
+        //SET CURRENCY
+        cost.setCurrency(currencyService.findById(costDTO.getCurrencyId()).orElseThrow());
+        //SET VENDOR
         cost.setVendor(vendorRepository.findById(costDTO.getVendorId()).orElseThrow());
         //cost.setAuthor(userService.getAuthorFromSession(session));
         cost.setAuthor(userService.findById(1L).get());
         // set dateCreated
         cost.setDateCreate(LocalDate.now());
         cost.setCar(car);
+
         costRepository.save(cost);
     }
 
@@ -76,7 +85,7 @@ public class CostServiceImpl implements CostService {
     }
 
     @Override
-    public void editCost(Long vendorId, Long carId, String description, String invoiceNo, BigDecimal amount, LocalDate dateCost, Long id, HttpSession session) {
+    public void editCost(Long vendorId, Long carId, String description, String invoiceNo, BigDecimal amount,Long currencyId, LocalDate dateCost, Long id, HttpSession session) {
 
         //Checked car is changed
         Cost costForEdit = costRepository.findById(id).get();
@@ -85,7 +94,7 @@ public class CostServiceImpl implements CostService {
                 //Remove cost and deductible prices old car
                 BigDecimal deductibleAmount = costForEdit.getAmount();
                 Car currentCar = costForEdit.getCar();
-
+//Check Currency ????
                 BigDecimal priceCosts = currentCar.getPriceCosts();
                 BigDecimal priceSaleMin = currentCar.getPriceSaleMin();
                 priceSaleMin = priceSaleMin.subtract(deductibleAmount);
@@ -112,6 +121,6 @@ public class CostServiceImpl implements CostService {
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        costRepository.editCost(vendorId, carId, description, invoiceNo, amount, dateCost, id, editUserId, dateEdit);
+        costRepository.editCost(vendorId, carId, description, invoiceNo, amount,currencyId, dateCost, id, editUserId, dateEdit);
     }
 }

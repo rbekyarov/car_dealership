@@ -20,6 +20,6 @@ public interface CostService {
 
     Optional<Cost> findById(Long id);
 
-    void editCost(Long vendorId,Long carId,String description,String invoiceNo,BigDecimal amount,LocalDate dateCost, Long id, HttpSession session);
+    void editCost(Long vendorId,Long carId,String description,String invoiceNo,BigDecimal amount,Long currencyId, LocalDate dateCost, Long id, HttpSession session);
 
 }
