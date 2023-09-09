@@ -1,12 +1,13 @@
 package rbekyarov.car_dealership.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 import rbekyarov.car_dealership.models.entity.enums.Position;
 import rbekyarov.car_dealership.models.entity.enums.Role;
 
 import java.time.LocalDate;
-
+@JsonIgnoreProperties("password")
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
