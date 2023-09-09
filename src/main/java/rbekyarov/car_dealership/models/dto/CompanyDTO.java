@@ -17,6 +17,11 @@ public class CompanyDTO {
     public CompanyDTO() {
     }
 
+    public CompanyDTO(String name, String vatNumber) {
+        this.name = name;
+        this.vatNumber = vatNumber;
+    }
+
     public Long getId() {
         return id;
     }
