@@ -8,11 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import rbekyarov.car_dealership.exception.ResourceNotFoundException;
-import rbekyarov.car_dealership.models.dto.BrandDTO;
 import rbekyarov.car_dealership.models.dto.VendorDTO;
-import rbekyarov.car_dealership.models.entity.Brand;
 import rbekyarov.car_dealership.models.entity.Vendor;
-import rbekyarov.car_dealership.services.BrandService;
 import rbekyarov.car_dealership.services.VendorService;
 
 import java.util.HashMap;
@@ -28,7 +25,7 @@ public class VendorController {
     private VendorService vendorService;
 
     @GetMapping
-    public ResponseEntity<?>getAllVendors() {
+    public ResponseEntity<?> getAllVendors() {
         List<Vendor> allVendors = vendorService.findAllVendors();
         return new ResponseEntity<>(allVendors, HttpStatus.OK);
     }
@@ -46,7 +43,7 @@ public class VendorController {
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            vendorService.addVendor(vendorDTO,session);
+            vendorService.addVendor(vendorDTO, session);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -54,7 +51,7 @@ public class VendorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?>updateVendor(@PathVariable Long id, @RequestBody @Valid VendorDTO vendorDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updateVendor(@PathVariable Long id, @RequestBody @Valid VendorDTO vendorDTO, HttpSession session, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
@@ -67,13 +64,13 @@ public class VendorController {
             String email = vendorDTO.getEmail();
             String vatNumber = vendorDTO.getVatNumber();
 
-            vendorService.editVendor( name, country, city, address, vatNumber, email,  id,  session);
+            vendorService.editVendor(name, country, city, address, vatNumber, email, id, session);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteBrand(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Boolean>> deleteVendor(@PathVariable Long id) {
         vendorService.removeVendorById(id);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);

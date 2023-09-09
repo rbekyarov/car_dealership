@@ -8,15 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import rbekyarov.car_dealership.exception.ResourceNotFoundException;
-import rbekyarov.car_dealership.models.dto.BrandDTO;
 import rbekyarov.car_dealership.models.dto.ClientDTO;
-import rbekyarov.car_dealership.models.entity.Brand;
 import rbekyarov.car_dealership.models.entity.Client;
 import rbekyarov.car_dealership.models.entity.enums.ClientType;
-import rbekyarov.car_dealership.services.BrandService;
 import rbekyarov.car_dealership.services.ClientService;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +44,7 @@ public class ClientController {
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            clientService.addClient(clientDTO,session);
+            clientService.addClient(clientDTO, session);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -56,7 +52,7 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?>updateClient(@PathVariable Long id, @RequestBody @Valid ClientDTO clientDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updateClient(@PathVariable Long id, @RequestBody @Valid ClientDTO clientDTO, HttpSession session, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 

@@ -36,7 +36,8 @@ public class BrandServiceImpl implements BrandService {
     public void addBrand(BrandDTO brandDTO, HttpSession session) {
         Brand brand = modelMapper.map(brandDTO, Brand.class);
         //get and set Author
-        brand.setAuthor(userService.getAuthorFromSession(session));
+       // brand.setAuthor(userService.getAuthorFromSession(session));
+        brand.setAuthor(userService.findById(1L).get());
         // set dateCreated
         brand.setDateCreate(LocalDate.now());
         brandRepository.save(brand);
