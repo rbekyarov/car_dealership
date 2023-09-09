@@ -26,6 +26,11 @@ public class Company extends BaseEntity {
     public Company() {
     }
 
+    public Company(String name, String vatNumber) {
+        this.name = name;
+        this.vatNumber = vatNumber;
+    }
+
     @Column(nullable = false)
     public String getName() {
         return name;
