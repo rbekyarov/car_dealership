@@ -19,7 +19,7 @@ import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/api/vendors")
+@RequestMapping("/api/pricing_percent_dates")
 public class PricingPercentDataController {
 
     @Autowired
