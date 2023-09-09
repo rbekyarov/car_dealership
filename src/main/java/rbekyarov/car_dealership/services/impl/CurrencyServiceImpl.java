@@ -14,6 +14,7 @@ import rbekyarov.car_dealership.services.UserService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class CurrencyServiceImpl implements CurrencyService {
 
@@ -42,10 +43,12 @@ public class CurrencyServiceImpl implements CurrencyService {
         currency.setDateCreate(LocalDate.now());
 
         if (currencyDTO.getIsMainCurrency().name().equals("YES")) {
-            for (Currency allCurrency : findAllCurrencies()) {
-                currencyRepository.updateCurrencyIsMain(allCurrency.getId());
+            List<Currency> allCurrencies = currencyRepository.findAll();
+            if (allCurrencies.size() > 0) {
+                for (Currency allCurrency : allCurrencies) {
+                    currencyRepository.updateCurrencyIsMain(allCurrency.getId());
+                }
             }
-
         }
         currencyRepository.save(currency);
     }
