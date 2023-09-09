@@ -1,11 +1,14 @@
 package rbekyarov.car_dealership.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import rbekyarov.car_dealership.models.entity.enums.ClientType;
 
 import java.time.LocalDate;
 import java.util.Set;
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Entity
 @Table(name = "clients")
 public class Client extends BaseEntity{
@@ -83,7 +86,8 @@ public class Client extends BaseEntity{
     public void setClientType(ClientType clientType) {
         this.clientType = clientType;
     }
-    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
     @JoinColumn( name = "client_id", referencedColumnName = "id")
     public Set<Offer> getOffers() {
         return offers;
@@ -92,7 +96,8 @@ public class Client extends BaseEntity{
     public void setOffers(Set<Offer> offers) {
         this.offers = offers;
     }
-    @OneToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn( name = "client_id", referencedColumnName = "id")
     public Set<Sale> getSales() {
         return sales;
@@ -101,6 +106,7 @@ public class Client extends BaseEntity{
     public void setSales(Set<Sale> sales) {
         this.sales = sales;
     }
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     public User getAuthor() {
