@@ -79,7 +79,7 @@ public class Car extends BaseEntity {
         this.name = name;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn( name = "car_id", referencedColumnName = "id")
     public Set<Picture> getPictures() {
         return pictures;
