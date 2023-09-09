@@ -1,5 +1,7 @@
 package rbekyarov.car_dealership.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import rbekyarov.car_dealership.models.entity.enums.IsMainCurrency;
 
@@ -57,7 +59,7 @@ public class Currency extends BaseEntity {
     public void setExchangeRate(double exchangeRate) {
         this.exchangeRate = exchangeRate;
     }
-
+    @JsonIgnoreProperties({"email", "role","position","id"})
     @ManyToOne
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     public User getAuthor() {
@@ -75,7 +77,7 @@ public class Currency extends BaseEntity {
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
     }
-
+    @JsonIgnoreProperties({"email", "role","position","id"})
     @ManyToOne
     @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
     public User getEditUser() {
