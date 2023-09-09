@@ -38,9 +38,12 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void addCompany(CompanyDTO companyDTO, HttpSession session) {
         Company company = modelMapper.map(companyDTO, Company.class);
-        company.setLogoName(pictureRepository.findById(companyDTO.getPictureId()).orElseThrow());
+        //company.setLogoName(pictureRepository.findById(companyDTO.getPictureId()).orElseThrow());
         //get and set Author
-        company.setAuthor(userService.getAuthorFromSession(session));
+
+        //company.setAuthor(userService.getAuthorFromSession(session));
+        company.setAuthor(userService.findById(1L).get());
+
         // set dateCreated
         company.setDateCreate(LocalDate.now());
         companyRepository.save(company);
