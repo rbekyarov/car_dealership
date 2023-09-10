@@ -43,6 +43,7 @@ public class CurrencyServiceImpl implements CurrencyService {
         currency.setDateCreate(LocalDate.now());
 
         if (currencyDTO.getIsMainCurrency().name().equals("YES")) {
+            currency.setExchangeRate(1.00);
             List<Currency> allCurrencies = currencyRepository.findAll();
             if (allCurrencies.size() > 0) {
                 for (Currency allCurrency : allCurrencies) {
