@@ -51,7 +51,6 @@ public class CarDTO {
     private LocalDate regDate;
     private LocalDate dateIncome;
     private LocalDate datePurchase;
-    private Long currencyId;
     private BigDecimal pricePurchase;
 
     public CarDTO() {
@@ -313,13 +312,6 @@ public class CarDTO {
         this.datePurchase = datePurchase;
     }
 
-    public Long getCurrencyId() {
-        return currencyId;
-    }
-
-    public void setCurrencyId(Long currencyId) {
-        this.currencyId = currencyId;
-    }
 
     public BigDecimal getPricePurchase() {
         return pricePurchase;

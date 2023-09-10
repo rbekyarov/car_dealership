@@ -65,9 +65,8 @@ public class CostController {
             String invoiceNo = costDTO.getInvoiceNo();
             BigDecimal amount = costDTO.getAmount();
             LocalDate dateCost = costDTO.getDateCost();
-            Long currencyId = costDTO.getCurrencyId();
 
-            costService.editCost(vendorId, carId, description, invoiceNo, amount,currencyId, dateCost, id, session);
+            costService.editCost(vendorId, carId, description, invoiceNo, amount, dateCost, id, session);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

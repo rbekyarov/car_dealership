@@ -14,7 +14,6 @@ public class CostDTO {
     private String description;
     private String invoiceNo;
     private BigDecimal amount;
-    private Long currencyId;
     private LocalDate dateCost;
 
     public CostDTO() {
@@ -61,13 +60,6 @@ public class CostDTO {
         this.invoiceNo = invoiceNo;
     }
 
-    public Long getCurrencyId() {
-        return currencyId;
-    }
-
-    public void setCurrencyId(Long currencyId) {
-        this.currencyId = currencyId;
-    }
 
     public BigDecimal getAmount() {
         return amount;

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.CostDTO;
 import rbekyarov.car_dealership.models.entity.Car;
 import rbekyarov.car_dealership.models.entity.Cost;
+import rbekyarov.car_dealership.models.entity.Currency;
 import rbekyarov.car_dealership.repository.CostRepository;
 import rbekyarov.car_dealership.repository.VendorRepository;
 import rbekyarov.car_dealership.services.CarService;
@@ -51,18 +52,20 @@ public class CostServiceImpl implements CostService {
         Car car = carService.findById(costDTO.getCarId()).get();
 
         if (costDTO.getCarId() != null) {
- //Check Currency ????
+            //Check Currency
 
+            BigDecimal amount = costDTO.getAmount();
             BigDecimal priceCosts = car.getPriceCosts();
             BigDecimal priceSaleMin = car.getPriceSaleMin();
-            priceSaleMin = priceSaleMin.add(costDTO.getAmount());
+            priceSaleMin = priceSaleMin.add(amount);
             BigDecimal priceSale = car.getPriceSale();
-            priceSale = priceSale.add(costDTO.getAmount());
-            priceCosts = priceCosts.add(costDTO.getAmount());
+            priceSale = priceSale.add(amount);
+            priceCosts = priceCosts.add(amount);
             carService.updatePricesAfterAddCost(priceCosts, priceSale, priceSaleMin, car.getId());
         }
         //SET CURRENCY
-        cost.setCurrency(currencyService.findById(costDTO.getCurrencyId()).orElseThrow());
+        Currency currency = currencyService.findMainCurrency();
+        cost.setCurrency(currency);
         //SET VENDOR
         cost.setVendor(vendorRepository.findById(costDTO.getVendorId()).orElseThrow());
         //cost.setAuthor(userService.getAuthorFromSession(session));
@@ -74,10 +77,6 @@ public class CostServiceImpl implements CostService {
         costRepository.save(cost);
     }
 
-    @Override
-    public void removeCostById(Long id) {
-        costRepository.deleteById(id);
-    }
 
     @Override
     public Optional<Cost> findById(Long id) {
@@ -85,7 +84,7 @@ public class CostServiceImpl implements CostService {
     }
 
     @Override
-    public void editCost(Long vendorId, Long carId, String description, String invoiceNo, BigDecimal amount,Long currencyId, LocalDate dateCost, Long id, HttpSession session) {
+    public void editCost(Long vendorId, Long carId, String description, String invoiceNo, BigDecimal amount, LocalDate dateCost, Long id, HttpSession session) {
 
         //Checked car is changed
         Cost costForEdit = costRepository.findById(id).get();
@@ -94,7 +93,6 @@ public class CostServiceImpl implements CostService {
                 //Remove cost and deductible prices old car
                 BigDecimal deductibleAmount = costForEdit.getAmount();
                 Car currentCar = costForEdit.getCar();
-//Check Currency ????
                 BigDecimal priceCosts = currentCar.getPriceCosts();
                 BigDecimal priceSaleMin = currentCar.getPriceSaleMin();
                 priceSaleMin = priceSaleMin.subtract(deductibleAmount);
@@ -121,6 +119,12 @@ public class CostServiceImpl implements CostService {
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        costRepository.editCost(vendorId, carId, description, invoiceNo, amount,currencyId, dateCost, id, editUserId, dateEdit);
+        costRepository.editCost(vendorId, carId, description, invoiceNo, amount, dateCost, id, editUserId, dateEdit);
+    }
+
+
+    @Override
+    public void removeCostById(Long id) {
+        costRepository.deleteById(id);
     }
 }

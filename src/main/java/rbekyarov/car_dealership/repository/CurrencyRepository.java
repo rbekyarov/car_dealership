@@ -10,6 +10,7 @@ import rbekyarov.car_dealership.models.entity.Currency;
 import rbekyarov.car_dealership.models.entity.enums.IsMainCurrency;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 public interface CurrencyRepository extends JpaRepository<Currency, Long> {
@@ -30,4 +31,6 @@ public interface CurrencyRepository extends JpaRepository<Currency, Long> {
     @Modifying
     @Query("update Currency as c SET c.isMainCurrency = 'NO' where c.id=:id ")
     void updateCurrencyIsMain(@Param("id") Long id);
+    @Query("select c from Currency as c where c.isMainCurrency = 'YES' ")
+    List<Currency> findMainCurrency();
 }

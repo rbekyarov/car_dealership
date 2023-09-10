@@ -19,4 +19,5 @@ public interface CurrencyService {
     void editCurrency(CurrencyDTO currencyDTO, Long id, HttpSession session);
 
 
+    Currency  findMainCurrency();
 }

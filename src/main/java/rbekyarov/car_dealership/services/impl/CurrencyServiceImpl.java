@@ -85,4 +85,14 @@ public class CurrencyServiceImpl implements CurrencyService {
 
         currencyRepository.editCurrency(code, name, exchangeRate, isMainCurrency, id, editUserId, dateEdit);
     }
+
+    @Override
+    public Currency findMainCurrency() {
+        List<Currency> mainCurrency = currencyRepository.findMainCurrency();
+        Currency currency = new Currency();
+        for (Currency currencyOnList : mainCurrency) {
+            currency = currencyOnList;
+        }
+        return currency;
+    }
 }

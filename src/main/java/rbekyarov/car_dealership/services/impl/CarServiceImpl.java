@@ -66,7 +66,7 @@ public class CarServiceImpl implements CarService {
         //Set Model
         car.setModel(modelService.findById(carDTO.getModelId()).orElseThrow());
         //Set Currency
-        Currency currency = currencyService.findById(carDTO.getCurrencyId()).orElseThrow();
+        Currency currency = currencyService.findMainCurrency();
         car.setCurrency(currency);
         //Set PRICES
         calculatedPrices(carDTO, car);
@@ -213,7 +213,6 @@ public class CarServiceImpl implements CarService {
 
         LocalDate datePurchase = carDTO.getDatePurchase();
         LocalDate dateIncome = carDTO.getDateIncome();
-        Long currencyId = carDTO.getCurrencyId();
         //for testing ->
         Long editUserId = 1L;
         //User editUser = userService.getAuthorFromSession(session);
@@ -230,7 +229,7 @@ public class CarServiceImpl implements CarService {
                 elWindows, eurostandard, halogenHeadlights,
                 leatherSalon, metallic, navigation,
                 parktronik, serviceBook, statusAvailable,datePurchase,
-                dateIncome, editUserId, dateEdit,currencyId,pricePurchase,priceSale,priceSaleMin, id);
+                dateIncome, editUserId, dateEdit,pricePurchase,priceSale,priceSaleMin, id);
 
         //Update Pictures table fields car_id
         if (!pictureSetChanged.isEmpty()){
