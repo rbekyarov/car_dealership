@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import rbekyarov.car_dealership.models.dto.SaleDTO;
 import rbekyarov.car_dealership.models.entity.Car;
+import rbekyarov.car_dealership.models.entity.Currency;
 import rbekyarov.car_dealership.models.entity.Sale;
 import rbekyarov.car_dealership.models.entity.enums.StatusSalesInvoiced;
 import rbekyarov.car_dealership.repository.CostRepository;
@@ -26,9 +27,10 @@ public class SaleServiceImpl implements SaleService {
     private final ClientService clientService;
     private final SellerService sellerService;
     private final CompanyService companyService;
+    private final CurrencyService currencyService;
     private final CostRepository costRepository;
 
-    public SaleServiceImpl(SaleRepository saleRepository, ModelMapper modelMapper, UserService userService, CarService carService, ClientService clientService, SellerService sellerService, CompanyService companyService, CostRepository costRepository) {
+    public SaleServiceImpl(SaleRepository saleRepository, ModelMapper modelMapper, UserService userService, CarService carService, ClientService clientService, SellerService sellerService, CompanyService companyService, CurrencyService currencyService, CostRepository costRepository) {
         this.saleRepository = saleRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
@@ -36,6 +38,7 @@ public class SaleServiceImpl implements SaleService {
         this.clientService = clientService;
         this.sellerService = sellerService;
         this.companyService = companyService;
+        this.currencyService = currencyService;
         this.costRepository = costRepository;
     }
 
@@ -51,7 +54,9 @@ public class SaleServiceImpl implements SaleService {
         //Add Car in SALE
         Set<Car> carSet = carService.addCarInOfferAndSale(carIds);
         sale.setCars(carSet);
-
+        //SET CURRENCY
+        Currency currency = currencyService.findMainCurrency();
+        sale.setCurrency(currency);
         //SET PRICE SALE
         BigDecimal price = carService.calculatePriceOnCars(carIds);
         sale.setPrice(price);

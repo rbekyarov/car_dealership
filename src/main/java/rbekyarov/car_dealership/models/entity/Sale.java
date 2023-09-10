@@ -16,6 +16,7 @@ public class Sale extends BaseEntity {
     private Client client;
     private Company company;
     private StatusSalesInvoiced statusSalesInvoiced;
+    private Currency currency;
     private BigDecimal price;
     private BigDecimal discount;
     private BigDecimal totalPrice;
@@ -69,6 +70,15 @@ public class Sale extends BaseEntity {
 
     public void setStatusSalesInvoiced(StatusSalesInvoiced statusSalesInvoiced) {
         this.statusSalesInvoiced = statusSalesInvoiced;
+    }
+    @ManyToOne
+    @JoinColumn(name = "currency_id", referencedColumnName = "id")
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
     @Column
     public BigDecimal getPrice() {

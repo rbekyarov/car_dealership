@@ -5,6 +5,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.OfferDTO;
 import rbekyarov.car_dealership.models.entity.Car;
+import rbekyarov.car_dealership.models.entity.Currency;
 import rbekyarov.car_dealership.models.entity.Offer;
 import rbekyarov.car_dealership.models.entity.enums.StatusOffer;
 import rbekyarov.car_dealership.repository.CostRepository;
@@ -25,10 +26,11 @@ public class OfferServiceImpl implements OfferService {
     private final ClientService clientService;
     private final SellerService sellerService;
     private final CompanyService companyService;
+    private final CurrencyService currencyService;
     private final CostRepository costRepository;
 
     public OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper, UserService userService, CarService carService, ClientService clientService, SellerService sellerService,
-                            CompanyService companyService, CostRepository costRepository) {
+                            CompanyService companyService, CurrencyService currencyService, CostRepository costRepository) {
         this.offerRepository = offerRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
@@ -36,6 +38,7 @@ public class OfferServiceImpl implements OfferService {
         this.clientService = clientService;
         this.sellerService = sellerService;
         this.companyService = companyService;
+        this.currencyService = currencyService;
         this.costRepository = costRepository;
     }
 
@@ -48,9 +51,13 @@ public class OfferServiceImpl implements OfferService {
     public void addOffer(OfferDTO offerDTO, HttpSession session) {
         Offer offer = new Offer();
         Set<Long> carIds = offerDTO.getCarIds();
+
         //Add Car in Offer
         Set<Car> carSet = carService.addCarInOfferAndSale(carIds);
         offer.setCars(carSet);
+        //SET CURRENCY
+        Currency currency = currencyService.findMainCurrency();
+        offer.setCurrency(currency);
 
         //SET PRICE OFFER
         BigDecimal price = carService.calculatePriceOnCars(carIds);

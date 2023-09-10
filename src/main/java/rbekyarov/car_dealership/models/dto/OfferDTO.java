@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import rbekyarov.car_dealership.models.entity.enums.StatusOffer;
 
 import java.math.BigDecimal;
+import java.util.Map;
 import java.util.Set;
 
 public class OfferDTO {
@@ -25,6 +26,9 @@ public class OfferDTO {
     public void setCarIds(Set<Long> carIds) {
         this.carIds = carIds;
     }
+
+
+
     @NotNull
     public Long getSellerId() {
         return sellerId;
@@ -45,6 +49,7 @@ public class OfferDTO {
     public Long getCompanyId() {
         return companyId;
     }
+
 
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;

@@ -15,6 +15,7 @@ public class Offer extends BaseEntity{
     private Client client;
     private Company company;
     private StatusOffer statusOffer;
+    private Currency currency;
     private BigDecimal price;
     private BigDecimal discount;
     private BigDecimal totalPrice;
@@ -68,6 +69,16 @@ public class Offer extends BaseEntity{
     public void setStatusOffer(StatusOffer statusOffer) {
         this.statusOffer = statusOffer;
     }
+    @ManyToOne
+    @JoinColumn(name = "currency_id", referencedColumnName = "id")
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
+
     @Column
     public BigDecimal getPrice() {
         return price;
