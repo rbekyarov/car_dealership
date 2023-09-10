@@ -1,12 +1,14 @@
 package rbekyarov.car_dealership.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import rbekyarov.car_dealership.models.entity.enums.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Entity
 @Table(name = "cars")
 public class Car extends BaseEntity {
@@ -80,7 +82,7 @@ public class Car extends BaseEntity {
         this.name = name;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn( name = "car_id", referencedColumnName = "id")
     public Set<Picture> getPictures() {
         return pictures;
@@ -89,7 +91,7 @@ public class Car extends BaseEntity {
     public void setPictures(Set<Picture> pictures) {
         this.pictures = pictures;
     }
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     public Set<Offer> getOffers() {
         return offers;
     }
@@ -97,7 +99,7 @@ public class Car extends BaseEntity {
     public void setOffers(Set<Offer> offers) {
         this.offers = offers;
     }
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     public Set<Sale> getSales() {
         return sales;
     }
@@ -199,7 +201,7 @@ public class Car extends BaseEntity {
         this.vendorPurchase = vendorPurchase;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn( name = "car_id", referencedColumnName = "id")
     public Set<Cost> getCosts() {
         return costs;
