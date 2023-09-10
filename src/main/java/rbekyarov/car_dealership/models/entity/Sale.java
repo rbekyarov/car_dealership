@@ -1,6 +1,9 @@
 package rbekyarov.car_dealership.models.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import rbekyarov.car_dealership.models.entity.enums.StatusOffer;
 import rbekyarov.car_dealership.models.entity.enums.StatusSalesInvoiced;
@@ -8,6 +11,7 @@ import rbekyarov.car_dealership.models.entity.enums.StatusSalesInvoiced;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Entity
 @Table(name = "sales")
 public class Sale extends BaseEntity {
@@ -26,7 +30,7 @@ public class Sale extends BaseEntity {
     private LocalDate dateEdite;
     public Sale() {
     }
-    @OneToMany(cascade = CascadeType.MERGE)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn( name = "sale_id", referencedColumnName = "id")
     public Set<Car> getCars() {
         return cars;
@@ -35,7 +39,8 @@ public class Sale extends BaseEntity {
     public void setCars(Set<Car> cars) {
         this.cars = cars;
     }
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     public Seller getSeller() {
         return seller;

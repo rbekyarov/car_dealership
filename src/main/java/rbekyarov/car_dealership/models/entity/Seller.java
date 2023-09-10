@@ -1,5 +1,6 @@
 package rbekyarov.car_dealership.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 import rbekyarov.car_dealership.models.entity.enums.Position;
@@ -64,7 +65,8 @@ public class Seller extends BaseEntity {
     public void setOffers(Set<Offer> offers) {
         this.offers = offers;
     }
-    @OneToMany(cascade = CascadeType.ALL)
+
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn( name = "seller_id", referencedColumnName = "id")
     public Set<Sale> getSales() {
         return sales;

@@ -1,12 +1,15 @@
 package rbekyarov.car_dealership.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import rbekyarov.car_dealership.models.entity.enums.StatusOffer;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Entity
 @Table(name = "offers")
 public class Offer extends BaseEntity{
@@ -35,7 +38,8 @@ public class Offer extends BaseEntity{
     public void setCars(Set<Car> cars) {
         this.cars = cars;
     }
-    @ManyToOne
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "seller_id", referencedColumnName = "id")
     public Seller getSeller() {
         return seller;
