@@ -6,16 +6,14 @@ import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.CarDTO;
 import rbekyarov.car_dealership.models.dto.PictureDTO;
 import rbekyarov.car_dealership.models.entity.*;
+import rbekyarov.car_dealership.models.entity.Currency;
 import rbekyarov.car_dealership.models.entity.enums.*;
 import rbekyarov.car_dealership.repository.CarRepository;
 import rbekyarov.car_dealership.services.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -27,16 +25,18 @@ public class CarServiceImpl implements CarService {
     private final ModelService modelService;
     private final VendorService vendorService;
     private final PictureService pictureService;
+    private final CurrencyService currencyService;
     private final PricingPercentDataService pricingPercentDataService;
 
     public CarServiceImpl(CarRepository carRepository, ModelMapper modelMapper, UserService userService, ModelService modelService, VendorService vendorService,
-                          PictureService pictureService, PricingPercentDataService pricingPercentDataService) {
+                          PictureService pictureService, CurrencyService currencyService, PricingPercentDataService pricingPercentDataService) {
         this.carRepository = carRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.modelService = modelService;
         this.vendorService = vendorService;
         this.pictureService = pictureService;
+        this.currencyService = currencyService;
         this.pricingPercentDataService = pricingPercentDataService;
     }
 
@@ -65,6 +65,9 @@ public class CarServiceImpl implements CarService {
         car.setVendorPurchase(vendorService.findById(carDTO.getVendorId()).orElseThrow());
         //Set Model
         car.setModel(modelService.findById(carDTO.getModelId()).orElseThrow());
+        //Set Currency
+        Currency currency = currencyService.findById(carDTO.getCurrencyId()).orElseThrow();
+        car.setCurrency(currency);
         //Set PRICES
         calculatedPrices(carDTO, car);
         car.setPriceCosts(new BigDecimal(0));
@@ -168,10 +171,12 @@ public class CarServiceImpl implements CarService {
         addPictureInCarAndAddPictureInRepo(pictures, session);
         //Calculate Prices
         Car car = carRepository.findById(id).get();
-        calculatedPrices(carDTO,car );
+
+        calculatedPrices(carDTO,car);
         BigDecimal priceSale = car.getPriceSale();
         BigDecimal priceSaleMin = car.getPriceSaleMin();
         BigDecimal pricePurchase = carDTO.getPricePurchase();
+
         //Generate Car Name
         String name = generateCarName(carDTO);
         //Basic data
@@ -208,6 +213,7 @@ public class CarServiceImpl implements CarService {
 
         LocalDate datePurchase = carDTO.getDatePurchase();
         LocalDate dateIncome = carDTO.getDateIncome();
+        Long currencyId = carDTO.getCurrencyId();
         //for testing ->
         Long editUserId = 1L;
         //User editUser = userService.getAuthorFromSession(session);
@@ -224,7 +230,7 @@ public class CarServiceImpl implements CarService {
                 elWindows, eurostandard, halogenHeadlights,
                 leatherSalon, metallic, navigation,
                 parktronik, serviceBook, statusAvailable,datePurchase,
-                dateIncome, editUserId, dateEdit,pricePurchase,priceSale,priceSaleMin, id);
+                dateIncome, editUserId, dateEdit,currencyId,pricePurchase,priceSale,priceSaleMin, id);
 
         //Update Pictures table fields car_id
         if (!pictureSetChanged.isEmpty()){

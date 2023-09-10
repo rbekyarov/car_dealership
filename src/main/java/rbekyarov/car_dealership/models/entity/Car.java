@@ -55,6 +55,7 @@ public class Car extends BaseEntity {
     private LocalDate dateCreate;
 
     //Prices:
+    private Currency currency;
     private BigDecimal pricePurchase;
     private BigDecimal priceCosts;
     private BigDecimal priceSaleMin;
@@ -395,6 +396,15 @@ public class Car extends BaseEntity {
 
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
+    }
+    @ManyToOne
+    @JoinColumn(name = "currency_id", referencedColumnName = "id")
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     @Column

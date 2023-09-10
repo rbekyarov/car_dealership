@@ -1,6 +1,7 @@
 package rbekyarov.car_dealership.models.dto;
 
 import rbekyarov.car_dealership.models.entity.Cost;
+import rbekyarov.car_dealership.models.entity.Currency;
 import rbekyarov.car_dealership.models.entity.Model;
 import rbekyarov.car_dealership.models.entity.Picture;
 import rbekyarov.car_dealership.models.entity.Vendor;
@@ -50,7 +51,7 @@ public class CarDTO {
     private LocalDate regDate;
     private LocalDate dateIncome;
     private LocalDate datePurchase;
-
+    private Long currencyId;
     private BigDecimal pricePurchase;
 
     public CarDTO() {
@@ -310,6 +311,14 @@ public class CarDTO {
 
     public void setDatePurchase(LocalDate datePurchase) {
         this.datePurchase = datePurchase;
+    }
+
+    public Long getCurrencyId() {
+        return currencyId;
+    }
+
+    public void setCurrencyId(Long currencyId) {
+        this.currencyId = currencyId;
     }
 
     public BigDecimal getPricePurchase() {
