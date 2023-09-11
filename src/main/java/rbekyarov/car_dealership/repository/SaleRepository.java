@@ -30,5 +30,8 @@ public interface SaleRepository extends JpaRepository<Sale, Long> {
                   @Param("companyId") Long companyId
 
     );
-
+    @Transactional
+    @Modifying
+    @Query("update Sale as s SET s.statusSalesInvoiced='YES' where s.id=:saleId ")
+    void updateStatusInvoiced(@Param("saleId")Long saleId);
 }

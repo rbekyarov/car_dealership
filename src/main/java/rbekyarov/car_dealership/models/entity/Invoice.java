@@ -21,6 +21,7 @@ public class Invoice extends BaseEntity {
 
     private String currencyCode;
     private Long bankAccountId;
+    private Long saleId;
     private Set<CarInvoiced> carInvoiced;
 
     private String clientName;
@@ -34,6 +35,7 @@ public class Invoice extends BaseEntity {
     private BigDecimal totalPrice;
 
     private String authorName;
+    private String cancellationUserName;
     private LocalDate dateCreate;
 
     private CancellationInvoice cancellationInvoice;
@@ -245,5 +247,21 @@ public class Invoice extends BaseEntity {
 
     public void setCancelledDateInvoice(LocalDate cancelledDateInvoice) {
         this.cancelledDateInvoice = cancelledDateInvoice;
+    }
+    @Column
+    public Long getSaleId() {
+        return saleId;
+    }
+
+    public void setSaleId(Long saleId) {
+        this.saleId = saleId;
+    }
+
+    public String getCancellationUserName() {
+        return cancellationUserName;
+    }
+
+    public void setCancellationUserName(String cancellationUserName) {
+        this.cancellationUserName = cancellationUserName;
     }
 }

@@ -144,6 +144,11 @@ public class SaleServiceImpl implements SaleService {
 
     }
 
+    @Override
+    public void updateStatusInvoicedToYes(Long saleId) {
+        saleRepository.updateStatusInvoiced(saleId);
+    }
+
     private static void calculateAndSetTotalPriceAndDiscount(SaleDTO saleDTO, Sale sale, BigDecimal price) {
         BigDecimal discountPercent = new BigDecimal(0);
 

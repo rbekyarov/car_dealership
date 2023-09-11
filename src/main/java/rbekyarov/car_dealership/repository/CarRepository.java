@@ -101,4 +101,16 @@ public interface CarRepository extends JpaRepository<Car,Long> {
     @Modifying
     @Query("update Car as c SET c.priceCommission=:commission where c.id=:id ")
     void updateCommissionForCar(@Param("commission") BigDecimal commission, Long id);
+    @Transactional
+    @Modifying
+    @Query("update Car as c SET c.statusAvailable= 'Sold' where c.id=:id ")
+    void updateStatusAvailableSold(@Param("id")Long id);
+    @Transactional
+    @Modifying
+    @Query("update Car as c SET c.dateSold=:dateSold where c.id=:id ")
+    void updateDateSold(@Param("dateSold") LocalDate dateSold,@Param("id") Long id);
+    @Transactional
+    @Modifying
+    @Query("update Car as c SET c.statusAvailable= 'Available' where c.id=:id ")
+    void updateStatusAvailableAvailable(@Param("id")Long id);
 }

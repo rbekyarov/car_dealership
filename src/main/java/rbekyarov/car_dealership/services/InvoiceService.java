@@ -15,7 +15,7 @@ public interface InvoiceService {
 
     void addInvoice(Long saleId, HttpSession session);
 
-    void cancellationInvoiceById(Long id);
+    void cancellationInvoiceById(Long id, HttpSession session);
 
     Optional<Invoice> findById(Long id);
 

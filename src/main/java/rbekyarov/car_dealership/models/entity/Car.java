@@ -53,7 +53,7 @@ public class Car extends BaseEntity {
     private LocalDate regDate;
     private LocalDate datePurchase;
     private LocalDate dateIncome;
-    private LocalDate dateSale;
+    private LocalDate dateSold;
     private LocalDate dateCreate;
 
     //Prices:
@@ -381,15 +381,17 @@ public class Car extends BaseEntity {
     public void setDateIncome(LocalDate dateIncome) {
         this.dateIncome = dateIncome;
     }
-
     @Column
-    public LocalDate getDateSale() {
-        return dateSale;
+    public LocalDate getDateSold() {
+        return dateSold;
     }
 
-    public void setDateSale(LocalDate dateSale) {
-        this.dateSale = dateSale;
+    public void setDateSold(LocalDate dateSold) {
+        this.dateSold = dateSold;
     }
+
+
+
 
     @Column
     public LocalDate getDateCreate() {

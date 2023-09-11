@@ -17,4 +17,6 @@ public interface SaleService {
     Optional<Sale> findById(Long id);
 
     void editSale(SaleDTO saleDTO, Long id, HttpSession session);
+
+    void updateStatusInvoicedToYes(Long saleId);
 }

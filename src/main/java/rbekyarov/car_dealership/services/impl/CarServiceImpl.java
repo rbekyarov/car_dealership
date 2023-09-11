@@ -172,6 +172,21 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public void updateStatusAvailableSold(Long id) {
+        carRepository.updateStatusAvailableSold(id);
+    }
+
+    @Override
+    public void updateDateSold(LocalDate dateSold, Long id) {
+        carRepository.updateDateSold(dateSold,id);
+    }
+
+    @Override
+    public void updateStatusAvailableAvailable(Long id) {
+        carRepository.updateStatusAvailableAvailable(id);
+    }
+
+    @Override
     public void editCar(CarDTO carDTO, Set<Picture> pictures, Long id, HttpSession session) {
 
         Set<Picture> pictureSetChanged = new HashSet<>();

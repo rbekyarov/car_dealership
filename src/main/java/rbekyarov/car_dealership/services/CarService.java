@@ -6,6 +6,7 @@ import rbekyarov.car_dealership.models.entity.Car;
 import rbekyarov.car_dealership.models.entity.Picture;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -36,4 +37,10 @@ public interface CarService {
     void updateProfitForCar(BigDecimal profit,Long id);
 
     void updateCommissionForCar(BigDecimal multiply, Long id);
+
+    void updateStatusAvailableSold(Long id);
+
+    void updateDateSold(LocalDate dateSold, Long id);
+
+    void updateStatusAvailableAvailable(Long id);
 }

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.entity.*;
 import rbekyarov.car_dealership.models.entity.enums.CancellationInvoice;
 import rbekyarov.car_dealership.repository.InvoiceRepository;
-import rbekyarov.car_dealership.repository.SaleRepository;
 import rbekyarov.car_dealership.services.*;
 
 import java.math.BigDecimal;
@@ -22,10 +21,10 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final PricingPercentDataService pricingPercentDataService;
     private final SellerService sellerService;
     private final CarService carService;
-    private final SaleRepository saleRepository;
+    private final SaleService saleService;
 
     public InvoiceServiceImpl(InvoiceRepository invoiceRepository, ModelMapper modelMapper, UserService userService, BankAccountService bankAccountService
-            , PricingPercentDataService pricingPercentDataService, SellerService sellerService, CarService carService, SaleRepository saleRepository) {
+            , PricingPercentDataService pricingPercentDataService, SellerService sellerService, CarService carService, SaleService saleService) {
         this.invoiceRepository = invoiceRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
@@ -33,7 +32,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         this.pricingPercentDataService = pricingPercentDataService;
         this.sellerService = sellerService;
         this.carService = carService;
-        this.saleRepository = saleRepository;
+        this.saleService = saleService;
     }
 
 
@@ -54,7 +53,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public void addInvoice (Long saleId, HttpSession session) {
-        Sale sale = saleRepository.findById(saleId).orElseThrow();
+        Sale sale = saleService.findById(saleId).orElseThrow();
         Invoice invoice = modelMapper.map(sale,Invoice.class);
         //SET CARS
         Set<Car> cars = sale.getCars();
@@ -95,6 +94,15 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setAuthorName(userService.findById(1L).orElseThrow().getUsername());
 
         invoiceRepository.save(invoice);
+        //SET CAR STATUS AVAILABLE
+        for (Car car : cars) {
+           carService.updateStatusAvailableSold(car.getId());
+        }
+        //SET DATE_SOLD IN CAR TABLE
+        for (Car car : cars) {
+            LocalDate dateSold = LocalDate.now();
+            carService.updateDateSold(dateSold,car.getId());
+        }
 
         //SET BALANCE
         BigDecimal totalPrice = invoice.getTotalPrice();
@@ -131,23 +139,71 @@ public class InvoiceServiceImpl implements InvoiceService {
             totalProfit = totalProfit.add(priceCommission);
             sellerService.addCommission(totalProfit,sellerId);
         }
+
+        //Change Sale Status to Invoiced
+        saleService.updateStatusInvoicedToYes(saleId);
+
+        // set dateCreated
+        invoice.setCancelledDateInvoice(LocalDate.now());
+        //get and set Author
+        //invoice.setAuthorName(userService.getAuthorFromSession(session).getUsername());
+        invoice.setAuthorName(userService.findById(1L).orElseThrow().getUsername());
+
     }
 
 
     @Override
-    public void cancellationInvoiceById(Long id) {
-        //change BankAccount Balance
-        Optional<Invoice> invoiceById = invoiceRepository.findById(id);
-        Invoice invoice = invoiceById.get();
-        BigDecimal currentBalance = bankAccountService.getCurrentBalance(invoice.getBankAccountId());
-        BigDecimal totalPrice = invoice.getTotalPrice();
-        bankAccountService.editBalance(currentBalance.subtract(totalPrice), invoice.getBankAccountId());
-        //change Salle Invoiced Status on "NO"
-        //reservationService.changeInvoicedStatus(invoice.getReservationId(), Invoiced.NO);
-        //invoice.setCancelledDateInvoice(LocalDate.now());
+    public void cancellationInvoiceById(Long id, HttpSession session ) {
 
-        //set Invoice - cancellation
+        Invoice invoice = invoiceRepository.findById(id).get();
+        //SET INVOICE STATUS CANCELLATION
         invoiceRepository.setCanceledOnInvoiced(invoice.getId());
+
+        Sale sale = saleService.findById(invoice.getSaleId()).get();
+        Set<Car> cars = sale.getCars();
+        //SET CAR STATUS AVAILABLE
+        for (Car car : cars) {
+            carService.updateStatusAvailableAvailable(car.getId());
+        }
+        //SET DATE_SOLD IN CAR TABLE
+        for (Car car : cars) {
+            LocalDate dateSold = null;
+            carService.updateDateSold(dateSold,car.getId());
+        }
+
+        //UPDATE BALANCE
+        BigDecimal totalPrice = invoice.getTotalPrice();
+        BankAccount bankAccount = bankAccountService.findById(invoice.getBankAccountId()).get();
+        BigDecimal balance = bankAccount.getBalance();
+        balance = balance.subtract(totalPrice);
+        bankAccountService.updateBalance(balance,bankAccount.getId());
+
+        // reset PROFIT
+        for (Car car : cars) {
+            carService.updateProfitForCar(new BigDecimal(0), car.getId());
+
+        }
+        // reset COMMISSION
+        for (Car car : cars) {
+            carService.updateCommissionForCar(new BigDecimal(0), car.getId());
+
+        }
+
+        // subtraction COMMISSION THE SELLER
+        Long sellerId = sale.getSeller().getId();
+        for (Car car : cars) {
+            BigDecimal priceCommission = car.getPriceCommission();
+            Seller seller = sellerService.findById(sellerId).get();
+            BigDecimal totalProfit = seller.getTotalProfit();
+            totalProfit = totalProfit.subtract(priceCommission);
+            sellerService.addCommission(totalProfit,sellerId);
+        }
+
+        //get and set Cancellation User Name
+        //invoice.setCancellationUserName(userService.getAuthorFromSession(session).getUsername());
+        invoiceRepository.setCancellationUserName(userService.findById(1L).orElseThrow().getUsername(),id);
+        LocalDate canceledDate = LocalDate.now();
+        invoiceRepository.setDateCancelation(canceledDate,id);
     }
 
     @Override

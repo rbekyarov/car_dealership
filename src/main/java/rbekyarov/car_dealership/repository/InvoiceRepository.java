@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import rbekyarov.car_dealership.models.entity.Invoice;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -26,4 +27,12 @@ public interface  InvoiceRepository extends JpaRepository<Invoice, Long> {
     List<Invoice> listInvoiceByEmail(@Param("clientEmail")String clientEmail);
     @Query("select i from Invoice as i where i.id=:invoiceNumber")
     List<Invoice> listInvoiceById( @Param("invoiceNumber")Long invoiceNumber);
+    @Transactional
+    @Modifying
+    @Query("update Invoice as i SET i.cancellationUserName=:username where i.id=:id ")
+    void setCancellationUserName(@Param("username")String username, @Param("id")Long id);
+    @Transactional
+    @Modifying
+    @Query("update Invoice as i SET i.cancelledDateInvoice=:canceledDate where i.id=:id ")
+    void setDateCancelation(@Param("canceledDate")LocalDate canceledDate, Long id);
 }
