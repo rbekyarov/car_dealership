@@ -74,10 +74,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void editUserPassword(UserDTO userDTO, Long id) {
-        String username = userDTO.getUsername();
-        String encode = passwordEncoder.encode(userDTO.getPassword());
-        userRepository.editUserPassword(encode, id , username);
+    public void editUserPassword(String password, Long id) {
+        User user = userRepository.findById(id).get();
+        String encode = passwordEncoder.encode(password);
+        userRepository.editUserPassword(encode, id , user.getUsername());
     }
 
 

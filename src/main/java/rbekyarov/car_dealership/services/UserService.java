@@ -24,7 +24,7 @@ public interface UserService {
 
     void editUser(String email,Role role, Position position, Long id);
 
-    void editUserPassword(UserDTO userDTO, Long id);
+    void editUserPassword(String password, Long id);
 
     void addUser(UserDTO userDTO);
 

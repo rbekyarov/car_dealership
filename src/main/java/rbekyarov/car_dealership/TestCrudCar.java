@@ -32,13 +32,14 @@ public class TestCrudCar implements CommandLineRunner {
     private final CompanyService companyService;
     private final ClientService clientService;
     private final SellerService sellerService;
+    private final UserService userService;
     private final InvoiceService invoiceService;
     private final BankAccountService bankAccountService;
     private final CurrencyService currencyService;
 
 
     public TestCrudCar(PictureService pictureService, CarService carService, HttpSession httpSession, UserRepository userRepository, BrandRepository brandRepository, ModelRepository modelRepository, VendorRepository vendorRepository, PricingPercentDataRepository pricingPercentDataRepository,
-                       CostRepository costRepository, CostService costService, OfferService offerService, SaleService saleService, CompanyService companyService, ClientService clientService, SellerService sellerService, InvoiceService invoiceService, BankAccountService bankAccountService, CurrencyService currencyService) {
+                       CostRepository costRepository, CostService costService, OfferService offerService, SaleService saleService, CompanyService companyService, ClientService clientService, SellerService sellerService, UserService userService, InvoiceService invoiceService, BankAccountService bankAccountService, CurrencyService currencyService) {
         this.pictureService = pictureService;
         this.carService = carService;
         this.httpSession = httpSession;
@@ -54,6 +55,7 @@ public class TestCrudCar implements CommandLineRunner {
         this.companyService = companyService;
         this.clientService = clientService;
         this.sellerService = sellerService;
+        this.userService = userService;
         this.invoiceService = invoiceService;
         this.bankAccountService = bankAccountService;
         this.currencyService = currencyService;
@@ -61,17 +63,21 @@ public class TestCrudCar implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        User user = new User();
-        user.setUsername("rado");
-        user.setRole(Role.ADMIN);
-        user.setPassword("123");
-        user.setEmail("rb@abv.bg");
-        userRepository.save(user);
+        //TEST REGISTER USER
+        userService.registerUser(new UserRegisterDTO("owner","owner","owner","owner@abv.bg", Role.ADMIN,Position.CEO));
+        userService.registerUser(new UserRegisterDTO("employee","employee","employee","employee@abv.bg", Role.USER,Position.Dealer));
 
+        //TEST ADD USER
+        userService.addUser(new UserDTO("mechanic","mechanic","mechanic","mechanic@abv.bg", Role.USER,Position.Mechanic));
 
+        //TEST EDIT USER
+        userService.editUser("mechanic@abv.bg", Role.ADMIN,Position.Accountant,3L);
 
-        PictureDTO pictureDTO = new PictureDTO();
-
+        //TEST Authenticate USER
+        userService.authenticate("owner","owner");
+        //TEST USER Change Password
+        userService.editUserPassword("mechanicPassword",3L);
+        userService.authenticate("mechanic","mechanicPassword");
 
         //създавам бранд
         brandRepository.save(new Brand("AUDI"));
@@ -281,6 +287,5 @@ public class TestCrudCar implements CommandLineRunner {
         saleService.transformOfferToSale(1L,httpSession);
 
         System.out.println("aa");
-
     }
 }

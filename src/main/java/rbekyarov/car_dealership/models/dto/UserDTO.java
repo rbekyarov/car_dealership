@@ -14,6 +14,20 @@ public class UserDTO {
     private Role role;
     private Position position;
 
+    public UserDTO(String username, String password, String confirmPassword, String email, Role role, Position position) {
+        this.username = username;
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+        this.email = email;
+        this.role = role;
+        this.position = position;
+    }
+
+    public UserDTO(String password, String confirmPassword) {
+        this.password = password;
+        this.confirmPassword = confirmPassword;
+    }
+
     public UserDTO() {
     }
 
