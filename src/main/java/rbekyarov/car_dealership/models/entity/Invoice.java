@@ -6,6 +6,7 @@ import rbekyarov.car_dealership.models.entity.enums.Currency;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "invoices")
@@ -19,11 +20,9 @@ public class Invoice extends BaseEntity {
     private String companyBankAccount;
     private String companyManagerName;
 
-    private Currency currency;
+    private String currencyCode;
     private Long bankAccountId;
-    private String carName;
-    private String carVinNumber;
-    private String carRegDate;
+    private Set<CarInvoiced> carInvoiced;
 
     private String clientName;
     private String clientEmail;
@@ -116,49 +115,30 @@ public class Invoice extends BaseEntity {
         this.companyManagerName = companyManagerName;
     }
 
-    @Column
-    public Currency getCurrency() {
-        return currency;
+    public String getCurrencyCode() {
+        return currencyCode;
     }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     @Column
     public Long getBankAccountId() {
         return bankAccountId;
     }
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn( name = "invoice_id", referencedColumnName = "id")
+    public Set<CarInvoiced> getCarInvoiced() {
+        return carInvoiced;
+    }
+
+    public void setCarInvoiced(Set<CarInvoiced> carInvoiced) {
+        this.carInvoiced = carInvoiced;
+    }
 
     public void setBankAccountId(Long bankAccountId) {
         this.bankAccountId = bankAccountId;
-    }
-
-    @Column
-    public String getCarName() {
-        return carName;
-    }
-
-    public void setCarName(String carName) {
-        this.carName = carName;
-    }
-
-    @Column
-    public String getCarVinNumber() {
-        return carVinNumber;
-    }
-
-    public void setCarVinNumber(String carVinNumber) {
-        this.carVinNumber = carVinNumber;
-    }
-
-    @Column
-    public String getCarRegDate() {
-        return carRegDate;
-    }
-
-    public void setCarRegDate(String carRegDate) {
-        this.carRegDate = carRegDate;
     }
 
     @Column

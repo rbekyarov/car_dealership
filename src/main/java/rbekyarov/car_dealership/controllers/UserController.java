@@ -22,9 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin(origins = "*")
-@RestController
-@RequestMapping("/api/users")
+//@CrossOrigin(origins = "*")
+//@RestController
+//@RequestMapping("/api/users")
 public class UserController {
 
     @Autowired

@@ -13,7 +13,7 @@ public interface InvoiceService {
     List<Invoice> findAllRealInvoice();
     List<Invoice> findAllCancelledInvoice();
 
-    void addInvoice(Sale sale, HttpSession session);
+    void addInvoice(Long saleId, HttpSession session);
 
     void cancellationInvoiceById(Long id);
 

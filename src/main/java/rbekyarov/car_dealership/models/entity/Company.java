@@ -102,7 +102,7 @@ public class Company extends BaseEntity {
         this.managerName = managerName;
     }
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id", referencedColumnName = "id")
     public Set<BankAccount> getBankAccounts() {
         return bankAccounts;
