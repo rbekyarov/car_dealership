@@ -4,10 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.InvoiceDTO;
-import rbekyarov.car_dealership.models.entity.Car;
-import rbekyarov.car_dealership.models.entity.CarInvoiced;
-import rbekyarov.car_dealership.models.entity.Invoice;
-import rbekyarov.car_dealership.models.entity.Sale;
+import rbekyarov.car_dealership.models.entity.*;
 import rbekyarov.car_dealership.models.entity.enums.CancellationInvoice;
 import rbekyarov.car_dealership.repository.InvoiceRepository;
 import rbekyarov.car_dealership.repository.SaleRepository;
@@ -17,10 +14,7 @@ import rbekyarov.car_dealership.services.UserService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
@@ -69,18 +63,28 @@ public class InvoiceServiceImpl implements InvoiceService {
             carInvoiced1.setCarRegDate(car.getRegDate());
             carInvoiced.add(carInvoiced1);
         }
-        //SET BANKACCOUNT ID
-        //invoice.setBankAccountId(sale.getCompany().getBankAccounts().);
-        //SET BANKACCOUNT NAME
-        //invoice.setCompanyBankName(sale.getCompany().get
+        //SET BANK-ACCOUNT: ID,NUMBER,NAME;
+        Set<BankAccount> bankAccounts = sale.getCompany().getBankAccounts();
+
+        for (BankAccount bankAccount : bankAccounts) {
+            String name = sale.getCurrency().getName();
+            String name1 = bankAccount.getCurrency().getName();
+
+            if (Objects.equals(sale.getCurrency().getName(), bankAccount.getCurrency().getName())){
+               invoice.setBankAccountId(bankAccount.getId());
+               invoice.setCompanyBankAccount(bankAccount.getAccountNumber());
+               invoice.setCompanyBankName(bankAccount.getBankName());
+
+           }
+        }
+        //SET COMPANY CITY NAME
+        invoice.setCompanyCityName(sale.getCompany().getCity());
         //
         invoice.setCarInvoiced(carInvoiced);
         // SET CURRENCY CODE
         invoice.setCurrencyCode(sale.getCurrency().getCode());
         //SET Cancellation Invoice
         invoice.setCancellationInvoice(CancellationInvoice.NO);
-        //SEt COMPANY CITYNAME
-        invoice.setCompanyCityName(sale.getCompany().getName());
         // set dateCreated
         invoice.setDateCreate(LocalDate.now());
         //get and set Author
@@ -88,6 +92,14 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoice.setAuthorName(userService.findById(1L).orElseThrow().getUsername());
 
         invoiceRepository.save(invoice);
+
+        //SET BALANCE
+        BigDecimal totalPrice = invoice.getTotalPrice();
+        BankAccount bankAccount = bankAccountService.findById(invoice.getBankAccountId()).get();
+        BigDecimal balance = bankAccount.getBalance();
+        balance = balance.add(totalPrice);
+        bankAccountService.updateBalance(balance,bankAccount.getId());
+
     }
 
 

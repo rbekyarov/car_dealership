@@ -1,8 +1,6 @@
 package rbekyarov.car_dealership.models.dto;
 
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import rbekyarov.car_dealership.models.entity.enums.Currency;
 
 import java.math.BigDecimal;
 
@@ -11,11 +9,14 @@ public class BankAccountDTO {
     private String name;
     private String bankName;
     private String accountNumber;
-    private Currency currency;
+    private Long currencyId;
+    private Long companyId;
     private BigDecimal balance;
 
     public BankAccountDTO() {
     }
+
+
 
     public Long getId() {
         return id;
@@ -48,13 +49,21 @@ public class BankAccountDTO {
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
     }
-    @NotNull(message = "Field cannot be empty")
-    public Currency getCurrency() {
-        return currency;
+
+    public Long getCurrencyId() {
+        return currencyId;
     }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
+    public void setCurrencyId(Long currencyId) {
+        this.currencyId = currencyId;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public BigDecimal getBalance() {

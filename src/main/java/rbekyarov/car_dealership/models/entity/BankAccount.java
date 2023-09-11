@@ -1,7 +1,6 @@
 package rbekyarov.car_dealership.models.entity;
 
 import jakarta.persistence.*;
-import rbekyarov.car_dealership.models.entity.enums.Currency;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,8 +9,10 @@ import java.time.LocalDate;
 @Table(name = "bank_accounts")
 public class BankAccount extends BaseEntity{
     private String name;
+    private Company company;
     private String bankName;
     private String accountNumber;
+
     private Currency currency;
     private BigDecimal balance;
     private User author;
@@ -37,6 +38,14 @@ public class BankAccount extends BaseEntity{
     public void setName(String name) {
         this.name = name;
     }
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 
     @Column(name = "bank_name", nullable = false)
     public String getBankName() {
@@ -55,7 +64,8 @@ public class BankAccount extends BaseEntity{
         this.accountNumber = accountNumber;
     }
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "currency_id", referencedColumnName = "id")
     public Currency getCurrency() {
         return currency;
     }

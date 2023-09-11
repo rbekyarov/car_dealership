@@ -2,7 +2,6 @@ package rbekyarov.car_dealership.models.entity;
 
 import jakarta.persistence.*;
 import rbekyarov.car_dealership.models.entity.enums.CancellationInvoice;
-import rbekyarov.car_dealership.models.entity.enums.Currency;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -52,7 +51,6 @@ public class Invoice extends BaseEntity {
         this.companyName = companyName;
     }
 
-    @Column
     public String getCompanyCityName() {
         return companyCityName;
     }

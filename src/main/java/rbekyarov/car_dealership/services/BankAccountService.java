@@ -3,7 +3,7 @@ package rbekyarov.car_dealership.services;
 import jakarta.servlet.http.HttpSession;
 import rbekyarov.car_dealership.models.dto.BankAccountDTO;
 import rbekyarov.car_dealership.models.entity.BankAccount;
-import rbekyarov.car_dealership.models.entity.enums.Currency;
+import rbekyarov.car_dealership.models.entity.Currency;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,7 +21,7 @@ public interface BankAccountService {
     void editBankAccount(String name,
                          String bankName,
                          String accountNumber,
-                         Currency currency,
+                         Long currencyId,
                          BigDecimal balance,
                          Long id,
                          HttpSession session);
@@ -29,4 +29,6 @@ public interface BankAccountService {
     BigDecimal getCurrentBalance(Long bankAccountId);
 
     void editBalance(BigDecimal amount, Long bankAccountId);
+
+    void updateBalance(BigDecimal balance, Long id);
 }
