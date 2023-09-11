@@ -3,14 +3,11 @@ package rbekyarov.car_dealership.services.impl;
 import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
-import rbekyarov.car_dealership.models.dto.InvoiceDTO;
 import rbekyarov.car_dealership.models.entity.*;
 import rbekyarov.car_dealership.models.entity.enums.CancellationInvoice;
 import rbekyarov.car_dealership.repository.InvoiceRepository;
 import rbekyarov.car_dealership.repository.SaleRepository;
-import rbekyarov.car_dealership.services.BankAccountService;
-import rbekyarov.car_dealership.services.InvoiceService;
-import rbekyarov.car_dealership.services.UserService;
+import rbekyarov.car_dealership.services.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -22,14 +19,20 @@ public class InvoiceServiceImpl implements InvoiceService {
     private final ModelMapper modelMapper;
     private final UserService userService;
     private final BankAccountService bankAccountService;
+    private final PricingPercentDataService pricingPercentDataService;
+    private final SellerService sellerService;
+    private final CarService carService;
     private final SaleRepository saleRepository;
 
-    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, ModelMapper modelMapper, UserService userService, BankAccountService bankAccountService,
-                              SaleRepository saleRepository) {
+    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, ModelMapper modelMapper, UserService userService, BankAccountService bankAccountService
+            , PricingPercentDataService pricingPercentDataService, SellerService sellerService, CarService carService, SaleRepository saleRepository) {
         this.invoiceRepository = invoiceRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.bankAccountService = bankAccountService;
+        this.pricingPercentDataService = pricingPercentDataService;
+        this.sellerService = sellerService;
+        this.carService = carService;
         this.saleRepository = saleRepository;
     }
 
@@ -100,6 +103,34 @@ public class InvoiceServiceImpl implements InvoiceService {
         balance = balance.add(totalPrice);
         bankAccountService.updateBalance(balance,bankAccount.getId());
 
+        //CALCULATE AND SET PROFIT
+        for (Car car : cars) {
+            BigDecimal priceSale = car.getPriceSale();
+            BigDecimal pricePurchase = car.getPricePurchase();
+            BigDecimal profit = priceSale.subtract(pricePurchase);
+            carService.updateProfitForCar(profit, car.getId());
+            car.setPriceProfit(profit);
+        }
+
+        //CALCULATE AND SET COMMISSION - % from Profit
+        PricingPercentData pricingPercentData = pricingPercentDataService.findActivePricingPercentData().get();
+        int percentCommission = pricingPercentData.getPercentCommission();
+        for (Car car : cars) {
+            BigDecimal priceProfit = car.getPriceProfit();
+            BigDecimal percentCommission100 = new BigDecimal(percentCommission /100.0) ;
+            BigDecimal commission = priceProfit.multiply(percentCommission100);
+            carService.updateCommissionForCar(commission, car.getId());
+            car.setPriceCommission(commission);
+        }
+        // ADD COMMISSION THE SELLER
+        Long sellerId = sale.getSeller().getId();
+        for (Car car : cars) {
+            BigDecimal priceCommission = car.getPriceCommission();
+            Seller seller = sellerService.findById(sellerId).get();
+            BigDecimal totalProfit = seller.getTotalProfit();
+            totalProfit = totalProfit.add(priceCommission);
+            sellerService.addCommission(totalProfit,sellerId);
+        }
     }
 
 

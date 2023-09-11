@@ -32,4 +32,8 @@ public interface CarService {
     List<Car> findAllCarsOnThisOfferId(Long id);
 
     void clearValueOfferIdsOnThisCars(List<Car> carList);
+
+    void updateProfitForCar(BigDecimal profit,Long id);
+
+    void updateCommissionForCar(BigDecimal multiply, Long id);
 }

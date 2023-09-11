@@ -36,6 +36,7 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public void addSeller(SellerDTO sellerDTO, HttpSession session) {
         Seller seller = modelMapper.map(sellerDTO, Seller.class);
+        seller.setTotalProfit(new BigDecimal(0));
         //get and set Author
        // seller.setAuthor(userService.getAuthorFromSession(session));
         seller.setAuthor(userService.findById(1L).get());
@@ -63,5 +64,10 @@ public class SellerServiceImpl implements SellerService {
         LocalDate dateEdit = LocalDate.now();
 
         sellerRepository.editSeller(firstName,lastName,position,salary, id,editUserId, dateEdit);
+    }
+
+    @Override
+    public void addCommission(BigDecimal totalProfit, Long sellerId) {
+        sellerRepository.addCommission(totalProfit,sellerId);
     }
 }

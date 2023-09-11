@@ -20,4 +20,5 @@ public interface SellerService {
 
     void editSeller(String firstName,String lastName,Position position,BigDecimal salary, Long id, HttpSession session);
 
+    void addCommission(BigDecimal totalProfit, Long sellerId);
 }

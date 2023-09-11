@@ -26,4 +26,8 @@ public interface SellerRepository extends JpaRepository<Seller, Long> {
             @Param("id") Long id,
             @Param("editUserId") Long editUserId,
             @Param("dateEdit") LocalDate dateEdit);
+    @Transactional
+    @Modifying
+    @Query("update Seller as s SET s.totalProfit = :totalProfit  where s.id=:sellerId ")
+    void addCommission( @Param("totalProfit") BigDecimal totalProfit,@Param("sellerId") Long sellerId);
 }

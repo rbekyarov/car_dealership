@@ -162,6 +162,16 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public void updateProfitForCar( BigDecimal profit,Long id) {
+        carRepository.updateProfitForCar(profit, id);
+    }
+
+    @Override
+    public void updateCommissionForCar(BigDecimal commission, Long id) {
+        carRepository.updateCommissionForCar(commission, id);
+    }
+
+    @Override
     public void editCar(CarDTO carDTO, Set<Picture> pictures, Long id, HttpSession session) {
 
         Set<Picture> pictureSetChanged = new HashSet<>();
