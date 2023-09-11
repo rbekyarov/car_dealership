@@ -19,4 +19,5 @@ public interface SaleService {
     void editSale(SaleDTO saleDTO, Long id, HttpSession session);
 
     void updateStatusInvoicedToYes(Long saleId);
+    void transformOfferToSale(Long offerId, HttpSession session );
 }

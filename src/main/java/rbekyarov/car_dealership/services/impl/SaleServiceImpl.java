@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.SaleDTO;
 import rbekyarov.car_dealership.models.entity.Car;
 import rbekyarov.car_dealership.models.entity.Currency;
+import rbekyarov.car_dealership.models.entity.Offer;
 import rbekyarov.car_dealership.models.entity.Sale;
 import rbekyarov.car_dealership.models.entity.enums.StatusSalesInvoiced;
 import rbekyarov.car_dealership.repository.CostRepository;
@@ -26,17 +27,19 @@ public class SaleServiceImpl implements SaleService {
     private final CarService carService;
     private final ClientService clientService;
     private final SellerService sellerService;
+    private final OfferService offerService;
     private final CompanyService companyService;
     private final CurrencyService currencyService;
     private final CostRepository costRepository;
 
-    public SaleServiceImpl(SaleRepository saleRepository, ModelMapper modelMapper, UserService userService, CarService carService, ClientService clientService, SellerService sellerService, CompanyService companyService, CurrencyService currencyService, CostRepository costRepository) {
+    public SaleServiceImpl(SaleRepository saleRepository, ModelMapper modelMapper, UserService userService, CarService carService, ClientService clientService, SellerService sellerService, OfferService offerService, CompanyService companyService, CurrencyService currencyService, CostRepository costRepository) {
         this.saleRepository = saleRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.carService = carService;
         this.clientService = clientService;
         this.sellerService = sellerService;
+        this.offerService = offerService;
         this.companyService = companyService;
         this.currencyService = currencyService;
         this.costRepository = costRepository;
@@ -147,6 +150,18 @@ public class SaleServiceImpl implements SaleService {
     @Override
     public void updateStatusInvoicedToYes(Long saleId) {
         saleRepository.updateStatusInvoiced(saleId);
+    }
+
+    @Override
+    public void transformOfferToSale(Long offerId, HttpSession session) {
+        Offer offer = offerService.findById(offerId).get();
+        Sale sale = modelMapper.map(offer,Sale.class);
+        sale.setStatusSalesInvoiced(StatusSalesInvoiced.NO);
+        //sale.setAuthor(userService.getAuthorFromSession(session));
+        sale.setAuthor(userService.findById(1L).get());
+        sale.setDateCreate(LocalDate.now());
+        sale.setId(null);
+        saleRepository.save(sale);
     }
 
     private static void calculateAndSetTotalPriceAndDiscount(SaleDTO saleDTO, Sale sale, BigDecimal price) {

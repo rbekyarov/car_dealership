@@ -52,6 +52,19 @@ public class SaleController {
         }
 
     }
+    @PostMapping
+    public ResponseEntity<?> transformOfferToSale(@PathVariable Long id, HttpSession session, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
+
+            return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
+        } else {
+            saleService.transformOfferToSale(id, session);
+
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateSale(@PathVariable Long id, @RequestBody @Valid SaleDTO saleDTO, HttpSession session, BindingResult bindingResult) {
