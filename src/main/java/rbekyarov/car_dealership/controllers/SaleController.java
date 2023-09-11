@@ -52,7 +52,7 @@ public class SaleController {
         }
 
     }
-    @PostMapping
+    @PostMapping("/{id}")
     public ResponseEntity<?> transformOfferToSale(@PathVariable Long id, HttpSession session, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);

@@ -38,14 +38,14 @@ public class InvoiceController {
         return new ResponseEntity<>(invoice, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<?> generateInvoice(@PathVariable Long saleId, HttpSession session, BindingResult bindingResult) {
+    @PostMapping("/{id}")
+    public ResponseEntity<?> generateInvoice(@PathVariable Long id, HttpSession session, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            invoiceService.addInvoice(saleId, session);
+            invoiceService.addInvoice(id, session);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
