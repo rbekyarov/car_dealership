@@ -37,13 +37,13 @@ public class VendorController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createVendor(@RequestBody @Valid VendorDTO vendorDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> createVendor(@RequestBody @Valid VendorDTO vendorDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            vendorService.addVendor(vendorDTO, session);
+            vendorService.addVendor(vendorDTO);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -51,7 +51,7 @@ public class VendorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateVendor(@PathVariable Long id, @RequestBody @Valid VendorDTO vendorDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updateVendor(@PathVariable Long id, @RequestBody @Valid VendorDTO vendorDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
@@ -64,7 +64,7 @@ public class VendorController {
             String email = vendorDTO.getEmail();
             String vatNumber = vendorDTO.getVatNumber();
 
-            vendorService.editVendor(name, country, city, address, vatNumber, email, id, session);
+            vendorService.editVendor(name, country, city, address, vatNumber, email, id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

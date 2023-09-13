@@ -38,13 +38,13 @@ public class PricingPercentDataController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPricingPercentData(@RequestBody @Valid PricingPercentDataDTO pricingPercentDataDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> createPricingPercentData(@RequestBody @Valid PricingPercentDataDTO pricingPercentDataDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            pricingPercentDataService.addPricingPercentData(pricingPercentDataDTO, session);
+            pricingPercentDataService.addPricingPercentData(pricingPercentDataDTO);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -52,7 +52,7 @@ public class PricingPercentDataController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePricingPercentData(@PathVariable Long id, @RequestBody @Valid PricingPercentDataDTO pricingPercentDataDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updatePricingPercentData(@PathVariable Long id, @RequestBody @Valid PricingPercentDataDTO pricingPercentDataDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
@@ -65,7 +65,7 @@ public class PricingPercentDataController {
             int percentVAT = pricingPercentDataDTO.getPercentVAT();
 
 
-            pricingPercentDataService.editPricingPercentData(percentSaleCar, percentSaleCarMin, percentCommission, activePricingPercentData, percentVAT, id, session);
+            pricingPercentDataService.editPricingPercentData(percentSaleCar, percentSaleCarMin, percentCommission, activePricingPercentData, percentVAT, id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

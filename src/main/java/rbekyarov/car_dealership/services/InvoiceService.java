@@ -13,9 +13,9 @@ public interface InvoiceService {
     List<Invoice> findAllRealInvoice();
     List<Invoice> findAllCancelledInvoice();
 
-    void addInvoice(Long saleId, HttpSession session);
+    void addInvoice(Long saleId);
 
-    void cancellationInvoiceById(Long id, HttpSession session);
+    void cancellationInvoiceById(Long id);
 
     Optional<Invoice> findById(Long id);
 

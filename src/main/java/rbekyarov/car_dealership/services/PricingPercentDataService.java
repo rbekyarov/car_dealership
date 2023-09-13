@@ -11,12 +11,12 @@ import java.util.Optional;
 
 public interface PricingPercentDataService {
     List<PricingPercentData> findAllPricingPercentDates();
-    void addPricingPercentData(PricingPercentDataDTO pricingPercentDataDTO, HttpSession session);
+    void addPricingPercentData(PricingPercentDataDTO pricingPercentDataDTO);
 
     void removePricingPercentDataById(Long id);
 
     Optional<PricingPercentData> findById(Long id);
     Optional<PricingPercentData> findActivePricingPercentData();
 
-    void editPricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, ActivePricingPercentData activePricingPercentData,int percentVAT, Long id, HttpSession session);
+    void editPricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, ActivePricingPercentData activePricingPercentData,int percentVAT, Long id);
 }

@@ -43,13 +43,13 @@ public class BankAccountController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createBankAccount(@RequestBody @Valid BankAccountDTO bankAccountDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> createBankAccount(@RequestBody @Valid BankAccountDTO bankAccountDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            bankAccountService.addBankAccount(bankAccountDTO, session);
+            bankAccountService.addBankAccount(bankAccountDTO);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -57,7 +57,7 @@ public class BankAccountController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateBankAccount(@PathVariable Long id, @RequestBody @Valid BankAccountDTO bankAccountDTO, Set<Picture> pictures, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updateBankAccount(@PathVariable Long id, @RequestBody @Valid BankAccountDTO bankAccountDTO, Set<Picture> pictures, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
@@ -68,7 +68,7 @@ public class BankAccountController {
             String accountNumber = bankAccountDTO.getAccountNumber();
             Long currencyId = bankAccountDTO.getCurrencyId();
             BigDecimal balance = bankAccountDTO.getBalance();
-            bankAccountService.editBankAccount(name, bankName, accountNumber, currencyId, balance, id, session);
+            bankAccountService.editBankAccount(name, bankName, accountNumber, currencyId, balance, id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

@@ -1,29 +1,30 @@
 package rbekyarov.car_dealership.services.impl;
 
-import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.BrandDTO;
 import rbekyarov.car_dealership.models.entity.Brand;
-import rbekyarov.car_dealership.models.entity.User;
+import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.repository.BrandRepository;
+import rbekyarov.car_dealership.repository.UserRepository;
 import rbekyarov.car_dealership.services.BrandService;
-import rbekyarov.car_dealership.services.UserService;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
+
 @Service
 public class BrandServiceImpl implements BrandService {
     private final BrandRepository brandRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public BrandServiceImpl(BrandRepository brandRepository, ModelMapper modelMapper, UserService userService) {
+    public BrandServiceImpl(BrandRepository brandRepository, ModelMapper modelMapper, UserRepository userRepository) {
         this.brandRepository = brandRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
 
@@ -33,11 +34,12 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public void addBrand(BrandDTO brandDTO, HttpSession session) {
+    public void addBrand(BrandDTO brandDTO) {
         Brand brand = modelMapper.map(brandDTO, Brand.class);
-        //get and set Author
-       // brand.setAuthor(userService.getAuthorFromSession(session));
-        brand.setAuthor(userService.findById(1L).get());
+
+//        UserEntity user = getUserEntity();
+//        brand.setAuthor(user);
+        brand.setAuthor(userRepository.getUsersById(1L));
         // set dateCreated
         brand.setDateCreate(LocalDate.now());
         brandRepository.save(brand);
@@ -54,10 +56,11 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public void editBrand(String name, Long id, HttpSession session) {
-        User editUser = userService.getAuthorFromSession(session);
-        Long editUserId = editUser.getId();
+    public void editBrand(String name, Long id) {
 
+//        UserEntity user = getUserEntity();
+//        Long editUserId = user.getId();
+        Long editUserId = 1L;
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 

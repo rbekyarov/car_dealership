@@ -1,31 +1,34 @@
 package rbekyarov.car_dealership.services.impl;
 
-import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.PricingPercentDataDTO;
 import rbekyarov.car_dealership.models.entity.PricingPercentData;
-import rbekyarov.car_dealership.models.entity.User;
+import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.models.entity.enums.ActivePricingPercentData;
 import rbekyarov.car_dealership.repository.PricingPercentDataRepository;
+import rbekyarov.car_dealership.repository.UserRepository;
 import rbekyarov.car_dealership.services.PricingPercentDataService;
-import rbekyarov.car_dealership.services.UserService;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
+
 @Service
 public class PricingPercentDataServiceImpl implements PricingPercentDataService {
 
     private final PricingPercentDataRepository pricingPercentDataRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public PricingPercentDataServiceImpl(PricingPercentDataRepository pricingPercentDataRepository, ModelMapper modelMapper, UserService userService) {
+    public PricingPercentDataServiceImpl(PricingPercentDataRepository pricingPercentDataRepository, ModelMapper modelMapper, UserRepository userRepository) {
         this.pricingPercentDataRepository = pricingPercentDataRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
+
 
     @Override
     public List<PricingPercentData> findAllPricingPercentDates() {
@@ -33,7 +36,7 @@ public class PricingPercentDataServiceImpl implements PricingPercentDataService 
     }
 
     @Override
-    public void addPricingPercentData(PricingPercentDataDTO pricingPercentDataDTO, HttpSession session) {
+    public void addPricingPercentData(PricingPercentDataDTO pricingPercentDataDTO) {
         PricingPercentData pricingPercentData = modelMapper.map(pricingPercentDataDTO, PricingPercentData.class);
 
         //Set NEW record ActivePricingPercentData.YES
@@ -43,7 +46,10 @@ public class PricingPercentDataServiceImpl implements PricingPercentDataService 
         pricingPercentDataRepository.setAllActivePricingPercentDataToNO();
 
         //get and set Author
-        pricingPercentData.setAuthor(userService.getAuthorFromSession(session));
+//        UserEntity user = getUserEntity();
+//        pricingPercentData.setAuthor(user);
+        pricingPercentData.setAuthor(userRepository.getUsersById(1L));
+
         // set dateCreated
         pricingPercentData.setDateCreate(LocalDate.now());
         pricingPercentDataRepository.save(pricingPercentData);
@@ -67,14 +73,16 @@ public class PricingPercentDataServiceImpl implements PricingPercentDataService 
     }
 
     @Override
-    public void editPricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, ActivePricingPercentData activePricingPercentData,int percentVAT, Long id, HttpSession session) {
+    public void editPricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, ActivePricingPercentData activePricingPercentData,int percentVAT, Long id) {
         if(activePricingPercentData.name().equals("YES")){
             //Set other record ActivePricingPercentData.NO
             pricingPercentDataRepository.setAllActivePricingPercentDataToNO();
         }
 
-        User editUser = userService.getAuthorFromSession(session);
-        Long editUserId = editUser.getId();
+//        UserEntity user = getUserEntity();
+//        Long editUserId = user.getId();
+
+        Long editUserId = 1L;
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();

@@ -8,20 +8,32 @@ import java.util.Set;
 @Entity
 @Table(name = "companies")
 public class Company extends BaseEntity {
+    @Column
     private String name;
-
+    @ManyToOne
     private Picture logoName;
+    @Column
     private String country;
+    @Column
     private String city;
+    @Column
     private String address;
+    @Column
     private String vatNumber;
+    @Column
     private String email;
+    @Column
     private String managerName;
-
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id", referencedColumnName = "id")
     private Set<BankAccount> bankAccounts;
-    private User author;
+    @ManyToOne
+    private UserEntity author;
+    @Column
     private LocalDate dateCreate;
-    private User editUser;
+    @ManyToOne
+    private UserEntity editUser;
+    @Column
     private LocalDate dateEdite;
     public Company() {
     }
@@ -31,7 +43,6 @@ public class Company extends BaseEntity {
         this.vatNumber = vatNumber;
     }
 
-    @Column(nullable = false)
     public String getName() {
         return name;
     }
@@ -39,7 +50,7 @@ public class Company extends BaseEntity {
     public void setName(String name) {
         this.name = name;
     }
-    @ManyToOne
+
     public Picture getLogoName() {
         return logoName;
     }
@@ -48,7 +59,7 @@ public class Company extends BaseEntity {
         this.logoName = logoName;
     }
 
-    @Column
+
     public String getCountry() {
         return country;
     }
@@ -57,7 +68,7 @@ public class Company extends BaseEntity {
         this.country = country;
     }
 
-    @Column
+
     public String getCity() {
         return city;
     }
@@ -66,7 +77,7 @@ public class Company extends BaseEntity {
         this.city = city;
     }
 
-    @Column
+
     public String getAddress() {
         return address;
     }
@@ -75,7 +86,7 @@ public class Company extends BaseEntity {
         this.address = address;
     }
 
-    @Column(nullable = false)
+
     public String getVatNumber() {
         return vatNumber;
     }
@@ -84,7 +95,7 @@ public class Company extends BaseEntity {
         this.vatNumber = vatNumber;
     }
 
-    @Column
+
     public String getEmail() {
         return email;
     }
@@ -93,7 +104,7 @@ public class Company extends BaseEntity {
         this.email = email;
     }
 
-    @Column
+
     public String getManagerName() {
         return managerName;
     }
@@ -102,8 +113,8 @@ public class Company extends BaseEntity {
         this.managerName = managerName;
     }
 
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn(name = "company_id", referencedColumnName = "id")
+
+
     public Set<BankAccount> getBankAccounts() {
         return bankAccounts;
     }
@@ -111,15 +122,7 @@ public class Company extends BaseEntity {
     public void setBankAccounts(Set<BankAccount> bankAccounts) {
         this.bankAccounts = bankAccounts;
     }
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    public User getAuthor() {
-        return author;
-    }
 
-    public void setAuthor(User author) {
-        this.author = author;
-    }
 
     public LocalDate getDateCreate() {
         return dateCreate;
@@ -128,15 +131,7 @@ public class Company extends BaseEntity {
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
     }
-    @ManyToOne
-    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
-    public User getEditUser() {
-        return editUser;
-    }
 
-    public void setEditUser(User editUser) {
-        this.editUser = editUser;
-    }
 
     public LocalDate getDateEdite() {
         return dateEdite;
@@ -144,5 +139,23 @@ public class Company extends BaseEntity {
 
     public void setDateEdite(LocalDate dateEdite) {
         this.dateEdite = dateEdite;
+    }
+
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public Company setAuthor(UserEntity author) {
+        this.author = author;
+        return this;
+    }
+
+    public UserEntity getEditUser() {
+        return editUser;
+    }
+
+    public Company setEditUser(UserEntity editUser) {
+        this.editUser = editUser;
+        return this;
     }
 }

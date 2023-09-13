@@ -39,13 +39,13 @@ public class InvoiceController {
     }
 
     @PostMapping("/{id}")
-    public ResponseEntity<?> generateInvoice(@PathVariable Long id, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> generateInvoice(@PathVariable Long id, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            invoiceService.addInvoice(id, session);
+            invoiceService.addInvoice(id);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -53,14 +53,14 @@ public class InvoiceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> cancellationInvoice(@PathVariable Long id, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> cancellationInvoice(@PathVariable Long id, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
 
-            invoiceService.cancellationInvoiceById(id, session);
+            invoiceService.cancellationInvoiceById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

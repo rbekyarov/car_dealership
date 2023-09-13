@@ -37,13 +37,13 @@ public class BrandController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createBrand(@RequestBody @Valid BrandDTO brandDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> createBrand(@RequestBody @Valid BrandDTO brandDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            brandService.addBrand(brandDTO, session);
+            brandService.addBrand(brandDTO);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -51,13 +51,13 @@ public class BrandController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateBrand(@PathVariable Long id, @RequestBody @Valid BrandDTO brandDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updateBrand(@PathVariable Long id, @RequestBody @Valid BrandDTO brandDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            brandService.editBrand(brandDTO.getName(), id, session);
+            brandService.editBrand(brandDTO.getName(), id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

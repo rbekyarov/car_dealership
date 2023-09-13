@@ -40,13 +40,13 @@ public class SellerController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createSeller(@RequestBody @Valid SellerDTO sellerDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> createSeller(@RequestBody @Valid SellerDTO sellerDTO,  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            sellerService.addSeller(sellerDTO, session);
+            sellerService.addSeller(sellerDTO);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -54,7 +54,7 @@ public class SellerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateSeller(@PathVariable Long id, @RequestBody @Valid SellerDTO sellerDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updateSeller(@PathVariable Long id, @RequestBody @Valid SellerDTO sellerDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
@@ -65,7 +65,7 @@ public class SellerController {
             Position position = sellerDTO.getPosition();
             BigDecimal salary = sellerDTO.getSalary();
 
-            sellerService.editSeller(firstName, lastName, position, salary, id, session);
+            sellerService.editSeller(firstName, lastName, position, salary, id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

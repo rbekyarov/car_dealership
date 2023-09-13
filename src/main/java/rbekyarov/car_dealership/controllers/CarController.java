@@ -43,13 +43,13 @@ public class CarController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCar(@RequestBody @Valid CarDTO carDTO, Set<Picture>pictures, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> createCar(@RequestBody @Valid CarDTO carDTO, Set<Picture>pictures, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            carService.addCar(carDTO,pictures, session);
+            carService.addCar(carDTO,pictures);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -57,14 +57,14 @@ public class CarController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCar(@PathVariable Long id, @RequestBody @Valid CarDTO carDTO, Set<Picture>pictures, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updateCar(@PathVariable Long id, @RequestBody @Valid CarDTO carDTO, Set<Picture>pictures, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
 
-            carService.editCar(carDTO,pictures,id, session);
+            carService.editCar(carDTO,pictures,id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

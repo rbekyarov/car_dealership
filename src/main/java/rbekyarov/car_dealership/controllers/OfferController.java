@@ -42,13 +42,13 @@ public class OfferController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createOffer(@RequestBody @Valid OfferDTO offerDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> createOffer(@RequestBody @Valid OfferDTO offerDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            offerService.addOffer(offerDTO, session);
+            offerService.addOffer(offerDTO);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -56,14 +56,14 @@ public class OfferController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateOffer(@PathVariable Long id, @RequestBody @Valid OfferDTO offerDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updateOffer(@PathVariable Long id, @RequestBody @Valid OfferDTO offerDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
 
-            offerService.editOffer(offerDTO,id, session);
+            offerService.editOffer(offerDTO,id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

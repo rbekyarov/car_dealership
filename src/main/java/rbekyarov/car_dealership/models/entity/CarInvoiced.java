@@ -13,8 +13,11 @@ import java.util.Set;
 @Entity
 @Table(name = "car_invoiced")
 public class CarInvoiced extends BaseEntity {
+    @Column
     private String carName;
+    @Column
     private String carVinNumber;
+    @Column
     private LocalDate carRegDate;
 
     public CarInvoiced() {

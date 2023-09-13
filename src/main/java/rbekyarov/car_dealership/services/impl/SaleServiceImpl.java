@@ -1,29 +1,28 @@
 package rbekyarov.car_dealership.services.impl;
 
-import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import rbekyarov.car_dealership.models.dto.SaleDTO;
-import rbekyarov.car_dealership.models.entity.Car;
+import rbekyarov.car_dealership.models.entity.*;
 import rbekyarov.car_dealership.models.entity.Currency;
-import rbekyarov.car_dealership.models.entity.Offer;
-import rbekyarov.car_dealership.models.entity.Sale;
 import rbekyarov.car_dealership.models.entity.enums.StatusSalesInvoiced;
 import rbekyarov.car_dealership.repository.CostRepository;
 import rbekyarov.car_dealership.repository.SaleRepository;
+import rbekyarov.car_dealership.repository.UserRepository;
 import rbekyarov.car_dealership.services.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
+
 
 @Service
 public class SaleServiceImpl implements SaleService {
     private final SaleRepository saleRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
     private final CarService carService;
     private final ClientService clientService;
     private final SellerService sellerService;
@@ -31,11 +30,12 @@ public class SaleServiceImpl implements SaleService {
     private final CompanyService companyService;
     private final CurrencyService currencyService;
     private final CostRepository costRepository;
+    private final UserRepository userRepository;
 
-    public SaleServiceImpl(SaleRepository saleRepository, ModelMapper modelMapper, UserService userService, CarService carService, ClientService clientService, SellerService sellerService, OfferService offerService, CompanyService companyService, CurrencyService currencyService, CostRepository costRepository) {
+
+    public SaleServiceImpl(SaleRepository saleRepository, ModelMapper modelMapper, CarService carService, ClientService clientService, SellerService sellerService, OfferService offerService, CompanyService companyService, CurrencyService currencyService, CostRepository costRepository, UserRepository userRepository) {
         this.saleRepository = saleRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
         this.carService = carService;
         this.clientService = clientService;
         this.sellerService = sellerService;
@@ -43,7 +43,9 @@ public class SaleServiceImpl implements SaleService {
         this.companyService = companyService;
         this.currencyService = currencyService;
         this.costRepository = costRepository;
+        this.userRepository = userRepository;
     }
+
 
     @Override
     public List<Sale> findAllSales() {
@@ -51,7 +53,7 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public void addSale(SaleDTO saleDTO, HttpSession session) {
+    public void addSale(SaleDTO saleDTO) {
         Sale sale = new Sale();
         Set<Long> carIds = saleDTO.getCarIds();
         //Add Car in SALE
@@ -80,8 +82,9 @@ public class SaleServiceImpl implements SaleService {
         sale.setCompany(companyService.findById(saleDTO.getCompanyId()).orElseThrow());
 
         //get and set Author
-        //sale.setAuthor(userService.getAuthorFromSession(session));
-        sale.setAuthor(userService.findById(1L).get());
+//        UserEntity user = getUserEntity();
+//        sale.setAuthor(user);
+        sale.setAuthor(userRepository.getUsersById(1L));
 
         // set dateCreated
         sale.setDateCreate(LocalDate.now());
@@ -100,7 +103,7 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public void editSale(SaleDTO saleDTO, Long id, HttpSession session) {
+    public void editSale(SaleDTO saleDTO, Long id) {
         Set<Long> carIds = saleDTO.getCarIds();
 
         //CALC PRICE SALE
@@ -128,10 +131,9 @@ public class SaleServiceImpl implements SaleService {
         //get Company
         Long companyId = saleDTO.getCompanyId();
 
-        //User editUser = userService.getAuthorFromSession(session);
-        //Long editUserId = editUser.getId();
+//        UserEntity user = getUserEntity();
+//        Long editUserId = user.getId();
         Long editUserId = 1L;
-
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
@@ -153,12 +155,13 @@ public class SaleServiceImpl implements SaleService {
     }
 
     @Override
-    public void transformOfferToSale(Long offerId, HttpSession session) {
+    public void transformOfferToSale(Long offerId) {
         Offer offer = offerService.findById(offerId).get();
         Sale sale = modelMapper.map(offer,Sale.class);
         sale.setStatusSalesInvoiced(StatusSalesInvoiced.NO);
-        //sale.setAuthor(userService.getAuthorFromSession(session));
-        sale.setAuthor(userService.findById(1L).get());
+//        UserEntity user = getUserEntity();
+//        sale.setAuthor(user);
+        sale.setAuthor(userRepository.getUsersById(1L));
         sale.setDateCreate(LocalDate.now());
         sale.setId(null);
         saleRepository.save(sale);

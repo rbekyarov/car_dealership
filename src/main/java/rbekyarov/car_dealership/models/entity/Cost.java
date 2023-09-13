@@ -8,23 +8,32 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "costs")
 public class Cost extends BaseEntity {
+    @ManyToOne
     private Vendor vendor;
+    @ManyToOne
     private Car car;
+    @Column
     private String description;
+    @Column
     private String invoiceNo;
+    @ManyToOne
     private Currency currency;
-
+    @Column
     private BigDecimal amount;
+    @Column
     private LocalDate dateCost;
-    private User author;
-
+    @ManyToOne
+    private UserEntity author;
+    @Column
     private LocalDate dateCreate;
-    private User editUser;
+    @ManyToOne
+    private UserEntity editUser;
+    @Column
     private LocalDate dateEdite;
     public Cost() {
     }
 
-    public Cost(Vendor vendor, String description, String invoiceNo, BigDecimal amount, LocalDate dateCost, User author, LocalDate dateCreate) {
+    public Cost(Vendor vendor, String description, String invoiceNo, BigDecimal amount, LocalDate dateCost, UserEntity author, LocalDate dateCreate) {
         this.vendor = vendor;
         this.description = description;
         this.invoiceNo = invoiceNo;
@@ -34,7 +43,7 @@ public class Cost extends BaseEntity {
         this.dateCreate = dateCreate;
     }
 
-    @ManyToOne
+
     public Vendor getVendor() {
         return vendor;
     }
@@ -42,7 +51,7 @@ public class Cost extends BaseEntity {
     public void setVendor(Vendor vendor) {
         this.vendor = vendor;
     }
-    @ManyToOne
+
     public Car getCar() {
         return car;
     }
@@ -51,7 +60,7 @@ public class Cost extends BaseEntity {
         this.car = car;
     }
 
-    @Column
+
     public String getDescription() {
         return description;
     }
@@ -60,7 +69,7 @@ public class Cost extends BaseEntity {
         this.description = description;
     }
 
-    @Column
+
     public BigDecimal getAmount() {
         return amount;
     }
@@ -69,17 +78,6 @@ public class Cost extends BaseEntity {
         this.amount = amount;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    @Column
     public LocalDate getDateCreate() {
         return dateCreate;
     }
@@ -88,7 +86,7 @@ public class Cost extends BaseEntity {
         this.dateCreate = dateCreate;
     }
 
-    @Column
+
     public LocalDate getDateCost() {
         return dateCost;
     }
@@ -104,8 +102,7 @@ public class Cost extends BaseEntity {
     public void setInvoiceNo(String invoiceNo) {
         this.invoiceNo = invoiceNo;
     }
-    @ManyToOne
-    @JoinColumn(name = "currency_id", referencedColumnName = "id")
+
     public Currency getCurrency() {
         return currency;
     }
@@ -114,22 +111,30 @@ public class Cost extends BaseEntity {
         this.currency = currency;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    public User getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(User editUser) {
-        this.editUser = editUser;
-    }
-
     public LocalDate getDateEdite() {
         return dateEdite;
     }
 
     public void setDateEdite(LocalDate dateEdite) {
         this.dateEdite = dateEdite;
+    }
+
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public Cost setAuthor(UserEntity author) {
+        this.author = author;
+        return this;
+    }
+
+    public UserEntity getEditUser() {
+        return editUser;
+    }
+
+    public Cost setEditUser(UserEntity editUser) {
+        this.editUser = editUser;
+        return this;
     }
 }
 

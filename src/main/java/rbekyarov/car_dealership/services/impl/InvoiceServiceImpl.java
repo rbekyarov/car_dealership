@@ -1,38 +1,39 @@
 package rbekyarov.car_dealership.services.impl;
 
-import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.entity.*;
 import rbekyarov.car_dealership.models.entity.enums.CancellationInvoice;
 import rbekyarov.car_dealership.repository.InvoiceRepository;
+import rbekyarov.car_dealership.repository.UserRepository;
 import rbekyarov.car_dealership.services.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
+
 @Service
 public class InvoiceServiceImpl implements InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
     private final BankAccountService bankAccountService;
     private final PricingPercentDataService pricingPercentDataService;
     private final SellerService sellerService;
     private final CarService carService;
     private final SaleService saleService;
+    private final UserRepository userRepository;
 
-    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, ModelMapper modelMapper, UserService userService, BankAccountService bankAccountService
-            , PricingPercentDataService pricingPercentDataService, SellerService sellerService, CarService carService, SaleService saleService) {
+    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, ModelMapper modelMapper, BankAccountService bankAccountService, PricingPercentDataService pricingPercentDataService, SellerService sellerService, CarService carService, SaleService saleService, UserRepository userRepository) {
         this.invoiceRepository = invoiceRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
         this.bankAccountService = bankAccountService;
         this.pricingPercentDataService = pricingPercentDataService;
         this.sellerService = sellerService;
         this.carService = carService;
         this.saleService = saleService;
+        this.userRepository = userRepository;
     }
 
 
@@ -52,9 +53,29 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public void addInvoice (Long saleId, HttpSession session) {
+    public void addInvoice (Long saleId) {
         Sale sale = saleService.findById(saleId).orElseThrow();
-        Invoice invoice = modelMapper.map(sale,Invoice.class);
+        //Invoice invoice = modelMapper.map(sale,Invoice.class);
+
+        Invoice invoice = new Invoice();
+        invoice.setPrice(sale.getPrice());
+        invoice.setTotalPrice(sale.getTotalPrice());
+        invoice.setSaleId(sale.getId());
+        invoice.setDiscount(sale.getDiscount().doubleValue());
+
+        invoice.setCompanyCityName(sale.getCompany().getCity());
+        invoice.setCompanyAddress(sale.getCompany().getAddress());
+        invoice.setCompanyVatNumber(sale.getCompany().getVatNumber());
+        invoice.setCompanyManagerName(sale.getCompany().getManagerName());
+        invoice.setCompanyEmail(sale.getCompany().getEmail());
+        invoice.setCompanyName(sale.getCompany().getName());
+
+        invoice.setClientAddress(sale.getClient().getCity());
+        invoice.setClientEmail(sale.getClient().getCity());
+        invoice.setClientCityName(sale.getClient().getCity());
+        invoice.setClientPhone(sale.getClient().getPhone());
+        invoice.setClientName(sale.getClient().getCity());
+
         //SET CARS
         Set<Car> cars = sale.getCars();
         Set <CarInvoiced> carInvoiced = new HashSet<>();
@@ -90,8 +111,10 @@ public class InvoiceServiceImpl implements InvoiceService {
         // set dateCreated
         invoice.setDateCreate(LocalDate.now());
         //get and set Author
-        //invoice.setAuthorName(userService.getAuthorFromSession(session).getUsername());
-        invoice.setAuthorName(userService.findById(1L).orElseThrow().getUsername());
+       // UserEntity user = getUserEntity();
+
+        //invoice.setAuthorName(user.getFirstName()+" " +user.getLastName());
+        invoice.setAuthorName("HARDCODED");
 
         invoiceRepository.save(invoice);
         //SET CAR STATUS AVAILABLE
@@ -105,7 +128,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
 
         //SET BALANCE
-        BigDecimal totalPrice = invoice.getTotalPrice();
+        BigDecimal totalPrice = sale.getTotalPrice();
         BankAccount bankAccount = bankAccountService.findById(invoice.getBankAccountId()).get();
         BigDecimal balance = bankAccount.getBalance();
         balance = balance.add(totalPrice);
@@ -145,15 +168,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         // set dateCreated
         invoice.setCancelledDateInvoice(LocalDate.now());
-        //get and set Author
-        //invoice.setAuthorName(userService.getAuthorFromSession(session).getUsername());
-        invoice.setAuthorName(userService.findById(1L).orElseThrow().getUsername());
+
 
     }
 
 
     @Override
-    public void cancellationInvoiceById(Long id, HttpSession session ) {
+    public void cancellationInvoiceById(Long id) {
 
         Invoice invoice = invoiceRepository.findById(id).get();
         //SET INVOICE STATUS CANCELLATION
@@ -200,8 +221,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
 
         //get and set Cancellation User Name
-        //invoice.setCancellationUserName(userService.getAuthorFromSession(session).getUsername());
-        invoiceRepository.setCancellationUserName(userService.findById(1L).orElseThrow().getUsername(),id);
+//        UserEntity user = getUserEntity();
+//
+//        invoiceRepository.setCancellationUserName(user.getFirstName()+" " +user.getLastName(),id);
+       invoiceRepository.setCancellationUserName("HARDCODED",id);
+
         LocalDate canceledDate = LocalDate.now();
         invoiceRepository.setDateCancelation(canceledDate,id);
     }

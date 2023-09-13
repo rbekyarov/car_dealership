@@ -39,13 +39,13 @@ public class CostController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCost(@RequestBody @Valid CostDTO costDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> createCost(@RequestBody @Valid CostDTO costDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            costService.addCost(costDTO, session);
+            costService.addCost(costDTO);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -53,7 +53,7 @@ public class CostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCost(@PathVariable Long id, @RequestBody @Valid CostDTO costDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updateCost(@PathVariable Long id, @RequestBody @Valid CostDTO costDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
@@ -66,7 +66,7 @@ public class CostController {
             BigDecimal amount = costDTO.getAmount();
             LocalDate dateCost = costDTO.getDateCost();
 
-            costService.editCost(vendorId, carId, description, invoiceNo, amount, dateCost, id, session);
+            costService.editCost(vendorId, carId, description, invoiceNo, amount, dateCost, id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

@@ -1,18 +1,18 @@
 package rbekyarov.car_dealership.services.impl;
 
-import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.CostDTO;
 import rbekyarov.car_dealership.models.entity.Car;
 import rbekyarov.car_dealership.models.entity.Cost;
 import rbekyarov.car_dealership.models.entity.Currency;
+import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.repository.CostRepository;
+import rbekyarov.car_dealership.repository.UserRepository;
 import rbekyarov.car_dealership.repository.VendorRepository;
 import rbekyarov.car_dealership.services.CarService;
 import rbekyarov.car_dealership.services.CostService;
 import rbekyarov.car_dealership.services.CurrencyService;
-import rbekyarov.car_dealership.services.UserService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,25 +20,27 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
+
 @Service
 public class CostServiceImpl implements CostService {
 
     private final CostRepository costRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
     private final CarService carService;
     private final CurrencyService currencyService;
     private final VendorRepository vendorRepository;
+    private final UserRepository userRepository;
 
-    public CostServiceImpl(CostRepository costRepository, ModelMapper modelMapper, UserService userService,
-                           CarService carService, CurrencyService currencyService, VendorRepository vendorRepository) {
+    public CostServiceImpl(CostRepository costRepository, ModelMapper modelMapper, CarService carService, CurrencyService currencyService, VendorRepository vendorRepository, UserRepository userRepository) {
         this.costRepository = costRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
         this.carService = carService;
         this.currencyService = currencyService;
         this.vendorRepository = vendorRepository;
+        this.userRepository = userRepository;
     }
+
 
     @Override
     public List<Cost> findAllCosts() {
@@ -46,7 +48,7 @@ public class CostServiceImpl implements CostService {
     }
 
     @Override
-    public void addCost(CostDTO costDTO, HttpSession session) {
+    public void addCost(CostDTO costDTO) {
         Cost cost = modelMapper.map(costDTO, Cost.class);
         //checking the cost if it is for a car
         Car car = carService.findById(costDTO.getCarId()).get();
@@ -68,8 +70,11 @@ public class CostServiceImpl implements CostService {
         cost.setCurrency(currency);
         //SET VENDOR
         cost.setVendor(vendorRepository.findById(costDTO.getVendorId()).orElseThrow());
-        //cost.setAuthor(userService.getAuthorFromSession(session));
-        cost.setAuthor(userService.findById(1L).get());
+
+
+//        UserEntity user = getUserEntity();
+//        cost.setAuthor(user);
+        cost.setAuthor(userRepository.getUsersById(1L));
         // set dateCreated
         cost.setDateCreate(LocalDate.now());
         cost.setCar(car);
@@ -84,7 +89,7 @@ public class CostServiceImpl implements CostService {
     }
 
     @Override
-    public void editCost(Long vendorId, Long carId, String description, String invoiceNo, BigDecimal amount, LocalDate dateCost, Long id, HttpSession session) {
+    public void editCost(Long vendorId, Long carId, String description, String invoiceNo, BigDecimal amount, LocalDate dateCost, Long id) {
 
         //Checked car is changed
         Cost costForEdit = costRepository.findById(id).get();
@@ -113,8 +118,8 @@ public class CostServiceImpl implements CostService {
         }
 
 
-//        User editUser = userService.getAuthorFromSession(session);
-//        Long editUserId = editUser.getId();
+//        UserEntity user = getUserEntity();
+//        Long editUserId = user.getId();
         Long editUserId = 1L;
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();

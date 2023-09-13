@@ -3,6 +3,11 @@ package rbekyarov.car_dealership;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import rbekyarov.car_dealership.models.dto.*;
 import rbekyarov.car_dealership.models.entity.*;
@@ -12,8 +17,7 @@ import rbekyarov.car_dealership.services.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class TestCrudCar implements CommandLineRunner {
@@ -32,14 +36,12 @@ public class TestCrudCar implements CommandLineRunner {
     private final CompanyService companyService;
     private final ClientService clientService;
     private final SellerService sellerService;
-    private final UserService userService;
     private final InvoiceService invoiceService;
     private final BankAccountService bankAccountService;
     private final CurrencyService currencyService;
+    private final AuthService authService;
 
-
-    public TestCrudCar(PictureService pictureService, CarService carService, HttpSession httpSession, UserRepository userRepository, BrandRepository brandRepository, ModelRepository modelRepository, VendorRepository vendorRepository, PricingPercentDataRepository pricingPercentDataRepository,
-                       CostRepository costRepository, CostService costService, OfferService offerService, SaleService saleService, CompanyService companyService, ClientService clientService, SellerService sellerService, UserService userService, InvoiceService invoiceService, BankAccountService bankAccountService, CurrencyService currencyService) {
+    public TestCrudCar(PictureService pictureService, CarService carService, HttpSession httpSession, UserRepository userRepository, BrandRepository brandRepository, ModelRepository modelRepository, VendorRepository vendorRepository, PricingPercentDataRepository pricingPercentDataRepository, CostRepository costRepository, CostService costService, OfferService offerService, SaleService saleService, CompanyService companyService, ClientService clientService, SellerService sellerService, InvoiceService invoiceService, BankAccountService bankAccountService, CurrencyService currencyService, AuthService authService) {
         this.pictureService = pictureService;
         this.carService = carService;
         this.httpSession = httpSession;
@@ -55,35 +57,46 @@ public class TestCrudCar implements CommandLineRunner {
         this.companyService = companyService;
         this.clientService = clientService;
         this.sellerService = sellerService;
-        this.userService = userService;
         this.invoiceService = invoiceService;
         this.bankAccountService = bankAccountService;
         this.currencyService = currencyService;
+        this.authService = authService;
     }
+
 
     @Override
     public void run(String... args) throws Exception {
         //TEST REGISTER USER
-        userService.registerUser(new UserRegisterDTO("owner","owner","owner","owner@abv.bg", Role.ADMIN,Position.CEO));
-        userService.registerUser(new UserRegisterDTO("employee","employee","employee","employee@abv.bg", Role.USER,Position.Dealer));
 
-        //TEST ADD USER
-        userService.addUser(new UserDTO("mechanic","mechanic","mechanic","mechanic@abv.bg", Role.USER,Position.Mechanic));
+        authService.register(new RegisterUserDTO("owner","Radoslav","Bekyarov","owner","owner","owner@com.bg"));
+        // TEST LOGIN USER
 
-        //TEST EDIT USER
-        userService.editUser("mechanic@abv.bg", Role.ADMIN,Position.Accountant,3L);
+        String username = "owner";
+        String password = "owner";
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        Authentication authentication = new UsernamePasswordAuthenticationToken(username, password, authorities);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        //TEST Authenticate USER
-        userService.authenticate("owner","owner");
-        //TEST USER Change Password
-        userService.editUserPassword("mechanicPassword",3L);
-        userService.authenticate("mechanic","mechanicPassword");
 
-        //създавам бранд
-        brandRepository.save(new Brand("AUDI"));
-        //създавам model
-        modelRepository.save(new Model("Q5", brandRepository.findById(1L).get()));
-        //Създаване на снимка
+
+       //TEST ADD USER
+        authService.addUser(new UserDTO("ivan","Иван","Иванов","ivan","ivan","ivan@com.bg",2L, Position.Dealer));
+//
+//        //TEST EDIT USER
+//        userService.editUser("mechanic@abv.bg", Role.ADMIN,Position.Accountant,3L);
+//
+//        //TEST Authenticate USER
+//        userService.authenticate("owner","owner");
+//        //TEST USER Change Password
+//        userService.editUserPassword("mechanicPassword",3L);
+//        userService.authenticate("mechanic","mechanicPassword");
+//
+//
+brandRepository.save(new Brand("AUDI"));
+//        //създавам model
+    modelRepository.save(new Model("Q5", brandRepository.findById(1L).get()));
+//        //Създаване на снимка
         Set<Picture> pictureSet = new HashSet<>();
         Picture picture = new Picture();
         picture.setName("pic1");
@@ -99,8 +112,8 @@ public class TestCrudCar implements CommandLineRunner {
         picture6.setName("pic6");
         pictureSet.add(picture5);
         pictureSet.add(picture6);
-
-        // създаване на Принцинг
+//
+//        // създаване на Принцинг
         PricingPercentData pricingPercentData = new PricingPercentData(50,30,5, ActivePricingPercentData.YES,20);
         pricingPercentDataRepository.save(pricingPercentData);
         //TEST ADD CURRENCY
@@ -109,14 +122,14 @@ public class TestCrudCar implements CommandLineRunner {
         currencyDTO.setName("EURO");
         currencyDTO.setExchangeRate(0.85);
         currencyDTO.setIsMainCurrency(IsMainCurrency.YES);
-        currencyService.addCurrency(currencyDTO,httpSession);
+        currencyService.addCurrency(currencyDTO);
 
         CurrencyDTO currencyDTO1 = new CurrencyDTO();
         currencyDTO1.setCode("USD");
         currencyDTO1.setName("Dollar");
         currencyDTO1.setExchangeRate(1.18);
         currencyDTO1.setIsMainCurrency(IsMainCurrency.NO);
-        currencyService.addCurrency(currencyDTO1,httpSession);
+        currencyService.addCurrency(currencyDTO1);
 
 
 
@@ -129,7 +142,7 @@ public class TestCrudCar implements CommandLineRunner {
         carDTO.setPricePurchase(new BigDecimal("10000"));
         carDTO.setVendorId(1L);
         carDTO.setAirbags(Airbags.YES);
-        carService.addCar(carDTO,pictureSet,httpSession);
+        carService.addCar(carDTO,pictureSet);
 
 
         CarDTO carDTO1 = new CarDTO();
@@ -141,7 +154,7 @@ public class TestCrudCar implements CommandLineRunner {
         carDTO1.setPricePurchase(new BigDecimal("5000"));
         carDTO1.setVendorId(2L);
         carDTO1.setAirbags(Airbags.YES);
-        carService.addCar(carDTO1,pictureSet2,httpSession);
+        carService.addCar(carDTO1,pictureSet2);
 
         //test edit car
         Set<Picture> pictureSetEdite = new HashSet<>();
@@ -162,7 +175,7 @@ public class TestCrudCar implements CommandLineRunner {
         carEditDTO.setVendorId(2L);
         carEditDTO.setAirbags(Airbags.NO);
         carEditDTO.setCategory(Category.jeep);
-        carService.editCar(carEditDTO,pictureSetEdite,1L,httpSession);
+        carService.editCar(carEditDTO,pictureSetEdite,1L);
 
 
         //carService.removeCarById(1L);
@@ -172,17 +185,17 @@ public class TestCrudCar implements CommandLineRunner {
         costDTO.setVendorId(1L);
         costDTO.setAmount(new BigDecimal(3000));
         costDTO.setDescription("Transport Car");
-        costService.addCost(costDTO,httpSession);
+        costService.addCost(costDTO);
 
         //Test Edit Cost
-        costService.editCost(2L,2l,null,null,new BigDecimal (400), LocalDate.now(), 1L,httpSession);
+        costService.editCost(2L,2l,null,null,new BigDecimal (400), LocalDate.now(), 1L);
 
         CostDTO costDTO2 = new CostDTO();
         costDTO2.setCarId(2L);
         costDTO2.setVendorId(1L);
         costDTO2.setAmount(new BigDecimal(100));
         costDTO2.setDescription("Clean Car");
-        costService.addCost(costDTO2,httpSession);
+        costService.addCost(costDTO2);
 
 
 
@@ -190,7 +203,7 @@ public class TestCrudCar implements CommandLineRunner {
 
         //ADD COMPANY
         CompanyDTO companyDTO = new CompanyDTO("MegaCar","Bulgaria", "Stara Zagora", "Simeon Veliki 1A", "BG534454545", "megacar@gmail.com", "Anton Petrov");
-        companyService.addCompany(companyDTO,httpSession);
+        companyService.addCompany(companyDTO);
 
         //Test ADD OFFER
         OfferDTO offerDTO = new OfferDTO();
@@ -202,12 +215,12 @@ public class TestCrudCar implements CommandLineRunner {
         offerDTO.setDiscount(new BigDecimal(10));
         offerDTO.setCompanyId(1L);
         //add client
-        clientService.addClient(new ClientDTO("Clien1"), httpSession);
+        clientService.addClient(new ClientDTO("Clien1"));
         offerDTO.setClientId(1L);
         //add Seller
-        sellerService.addSeller(new SellerDTO("Spas"), httpSession);
+        sellerService.addSeller(new SellerDTO("Spas"));
         offerDTO.setSellerId(1L);
-        offerService.addOffer(offerDTO,httpSession);
+        offerService.addOffer(offerDTO);
 
 
         //Test Edit OFFER
@@ -217,11 +230,11 @@ public class TestCrudCar implements CommandLineRunner {
         offerEditDTO.setCarIds(carEditIds);
         offerEditDTO.setStatusOffer(StatusOffer.rejected);
         offerEditDTO.setDiscount(new BigDecimal(10));
-        clientService.addClient(new ClientDTO("Clien2"), httpSession);
+        clientService.addClient(new ClientDTO("Clien2"));
         offerEditDTO.setClientId(2L);
-        sellerService.addSeller(new SellerDTO("Angel"), httpSession);
+        sellerService.addSeller(new SellerDTO("Angel"));
         offerEditDTO.setSellerId(2L);
-        offerService.editOffer(offerEditDTO,1L,httpSession);
+        offerService.editOffer(offerEditDTO,1L);
 
 
         //Test ADD SALE
@@ -233,13 +246,13 @@ public class TestCrudCar implements CommandLineRunner {
         saleDTO.setDiscount(new BigDecimal(20));
         saleDTO.setCompanyId(1L);
         //add client
-        clientService.addClient(new ClientDTO("ClientSale"), httpSession);
+        clientService.addClient(new ClientDTO("ClientSale"));
         saleDTO.setClientId(1L);
         saleDTO.setCompanyId(1L);
         //add Seller
-        sellerService.addSeller(new SellerDTO("SpasSale"), httpSession);
+        sellerService.addSeller(new SellerDTO("SpasSale"));
         saleDTO.setSellerId(1L);
-        saleService.addSale(saleDTO,httpSession);
+        saleService.addSale(saleDTO);
 
         //Test Edit SALE
         SaleDTO saleEditDTO = new SaleDTO();
@@ -249,12 +262,12 @@ public class TestCrudCar implements CommandLineRunner {
 
         saleEditDTO.setStatusSalesInvoiced(StatusSalesInvoiced.YES);
         saleEditDTO.setDiscount(new BigDecimal(10));
-        clientService.addClient(new ClientDTO("Clien2"), httpSession);
+        clientService.addClient(new ClientDTO("Clien2"));
         saleEditDTO.setClientId(2L);
         saleEditDTO.setCompanyId(1L);
-        sellerService.addSeller(new SellerDTO("Angel"), httpSession);
+        sellerService.addSeller(new SellerDTO("Angel"));
         saleEditDTO.setSellerId(2L);
-        saleService.editSale(saleEditDTO,1L,httpSession);
+        saleService.editSale(saleEditDTO,1L);
         //TEST ADD BANK-ACCOUNT
 
         BankAccountDTO bankAccountDTO = new BankAccountDTO();
@@ -264,7 +277,7 @@ public class TestCrudCar implements CommandLineRunner {
         bankAccountDTO.setCompanyId(1L);
         bankAccountDTO.setAccountNumber("UCREURO54543EAF543555");
         bankAccountDTO.setBalance(new BigDecimal(0.0));
-        bankAccountService.addBankAccount(bankAccountDTO,httpSession);
+        bankAccountService.addBankAccount(bankAccountDTO);
 
         BankAccountDTO bankAccountDTO1 = new BankAccountDTO();
         bankAccountDTO1.setBankName("Bulbank AD");
@@ -273,19 +286,19 @@ public class TestCrudCar implements CommandLineRunner {
         bankAccountDTO1.setCompanyId(1L);
         bankAccountDTO1.setAccountNumber("UCRUSD54543EAF543555");
         bankAccountDTO1.setBalance(new BigDecimal(0.0));
-        bankAccountService.addBankAccount(bankAccountDTO1,httpSession);
+        bankAccountService.addBankAccount(bankAccountDTO1);
 
         //TEST ADD INVOICE FROM SALE
 
-        invoiceService.addInvoice(1l,httpSession);
+        invoiceService.addInvoice(1l);
 
         //TEST CANCELLED INVOICE
 
-       // invoiceService.cancellationInvoiceById(1l,httpSession);
+        invoiceService.cancellationInvoiceById(1l);
 
         //TEST TRANSFORM OFFER TO SALE
-        saleService.transformOfferToSale(1L,httpSession);
+        saleService.transformOfferToSale(1L);
 
-        System.out.println("aa");
-    }
+     System.out.println("aa");
+   }
 }

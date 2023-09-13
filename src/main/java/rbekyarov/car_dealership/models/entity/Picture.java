@@ -7,18 +7,22 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "pictures")
 public class Picture extends BaseEntity {
+    @Column
     private String name;
-    private User author;
-
+    @ManyToOne
+    private UserEntity author;
+    @Column
     private LocalDate dateCreate;
-    private User editUser;
+    @ManyToOne
+    private UserEntity editUser;
+    @Column
     private LocalDate dateEdite;
+    @ManyToOne
     private Car car;
 
     public Picture() {
     }
 
-    @Column(nullable = false, unique = true)
     public String getName() {
         return name;
     }
@@ -28,32 +32,12 @@ public class Picture extends BaseEntity {
         this.name = name;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
-    @Column
     public LocalDate getDateCreate() {
         return dateCreate;
     }
 
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
-    }
-    @ManyToOne
-    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
-    public User getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(User editUser) {
-        this.editUser = editUser;
     }
 
     public LocalDate getDateEdite() {
@@ -63,13 +47,28 @@ public class Picture extends BaseEntity {
     public void setDateEdite(LocalDate dateEdite) {
         this.dateEdite = dateEdite;
     }
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id")
     public Car getCar() {
         return car;
     }
 
     public void setCar(Car car) {
         this.car = car;
+    }
+
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public Picture setAuthor(UserEntity author) {
+        this.author = author;
+        return this;
+    }
+    public UserEntity getEditUser() {
+        return editUser;
+    }
+
+    public Picture setEditUser(UserEntity editUser) {
+        this.editUser = editUser;
+        return this;
     }
 }

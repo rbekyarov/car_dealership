@@ -11,12 +11,12 @@ import java.util.Optional;
 public interface ClientService {
     List<Client> findAllClients();
 
-    void addClient(ClientDTO clientDTO, HttpSession session);
+    void addClient(ClientDTO clientDTO);
 
     void removeClientById(Long id);
 
     Optional<Client> findById(Long id);
 
-    void editClient(String name,String vatOrId,String email,String phone,String city ,String address,ClientType clientType, Long id, HttpSession session);
+    void editClient(String name,String vatOrId,String email,String phone,String city ,String address,ClientType clientType, Long id);
 
 }

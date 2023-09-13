@@ -1,32 +1,34 @@
 package rbekyarov.car_dealership.services.impl;
 
-import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.SellerDTO;
 import rbekyarov.car_dealership.models.entity.Seller;
-import rbekyarov.car_dealership.models.entity.User;
+import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.models.entity.enums.Position;
 import rbekyarov.car_dealership.repository.SellerRepository;
+import rbekyarov.car_dealership.repository.UserRepository;
 import rbekyarov.car_dealership.services.SellerService;
-import rbekyarov.car_dealership.services.UserService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
+
 @Service
 public class SellerServiceImpl implements SellerService {
     private final SellerRepository sellerRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public SellerServiceImpl(SellerRepository sellerRepository, ModelMapper modelMapper, UserService userService) {
+    public SellerServiceImpl(SellerRepository sellerRepository, ModelMapper modelMapper, UserRepository userRepository) {
         this.sellerRepository = sellerRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
+
 
     @Override
     public List<Seller> findAllSellers() {
@@ -34,12 +36,13 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public void addSeller(SellerDTO sellerDTO, HttpSession session) {
+    public void addSeller(SellerDTO sellerDTO) {
         Seller seller = modelMapper.map(sellerDTO, Seller.class);
         seller.setTotalProfit(new BigDecimal(0));
         //get and set Author
-       // seller.setAuthor(userService.getAuthorFromSession(session));
-        seller.setAuthor(userService.findById(1L).get());
+//        UserEntity user = getUserEntity();
+//        seller.setAuthor(user);
+        seller.setAuthor(userRepository.getUsersById(1L));
         // set dateCreated
         seller.setDateCreate(LocalDate.now());
         sellerRepository.save(seller);
@@ -56,10 +59,10 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public void editSeller(String firstName, String lastName, Position position, BigDecimal salary, Long id, HttpSession session) {
-        User editUser = userService.getAuthorFromSession(session);
-        Long editUserId = editUser.getId();
-
+    public void editSeller(String firstName, String lastName, Position position, BigDecimal salary, Long id) {
+//        UserEntity user = getUserEntity();
+//        Long editUserId = user.getId();
+        Long editUserId = 1L;
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 

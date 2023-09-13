@@ -12,68 +12,115 @@ import java.util.Set;
 @Entity
 @Table(name = "cars")
 public class Car extends BaseEntity {
+    @Column
     private String name;
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+
     private Set<Picture> pictures;
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+
     private Set<Offer> offers;
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Sale> sales;
+    @Column
     private String vinNumber;
+    @ManyToOne
     private Model model;
+    @Enumerated(EnumType.STRING)
     private Transmision transmision;
+    @Enumerated(EnumType.STRING)
     private FuelType fuelType;
+    @Column
     private BigDecimal horsepower;
+    @Column
     private BigDecimal cubature;
+    @Enumerated(EnumType.STRING)
     private ConditionCar conditionCar;
+    @Enumerated(EnumType.STRING)
     private Color color;
+    @Column
     private DoorCount doorCount;
+    @ManyToOne
     private Vendor vendorPurchase;
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Cost> costs;
+    @Enumerated(EnumType.STRING)
     private Eurostandard eurostandard;
+    @Enumerated(EnumType.STRING)
     private Category category;
 
     private String comments;
 
     //Options
+    @Enumerated(EnumType.STRING)
     private AutoStartStop autoStartStop;
+    @Enumerated(EnumType.STRING)
     private Metallic metallic;
+    @Enumerated(EnumType.STRING)
     private ServiceBook serviceBook;
+    @Enumerated(EnumType.STRING)
     private Alarm alarm;
+    @Enumerated(EnumType.STRING)
     private LeatherSalon leatherSalon;
+    @Enumerated(EnumType.STRING)
     private HalogenHeadlights halogenHeadlights;
+    @Enumerated(EnumType.STRING)
     private Parktronik parktronik;
+    @Enumerated(EnumType.STRING)
     private Airbags airbags;
+    @Enumerated(EnumType.STRING)
     private ElMirrors elMirrors;
+    @Enumerated(EnumType.STRING)
     private ElWindows elWindows;
+    @Enumerated(EnumType.STRING)
     private Climatic climatic;
+    @Enumerated(EnumType.STRING)
     private Navigation navigation;
 
     //statusAvailable
+    @Enumerated(EnumType.STRING)
     private StatusAvailable statusAvailable;
 
     //Date:
+    @Column
     private LocalDate regDate;
+    @Column
     private LocalDate datePurchase;
+    @Column
     private LocalDate dateIncome;
+    @Column
     private LocalDate dateSold;
+    @Column
     private LocalDate dateCreate;
 
     //Prices:
+    @ManyToOne
     private Currency currency;
+    @Column
     private BigDecimal pricePurchase;
+    @Column
     private BigDecimal priceCosts;
+    @Column
     private BigDecimal priceSaleMin;
+    @Column
     private BigDecimal priceSale;
+    @Column
     private BigDecimal priceProfit;
+    @Column
     private BigDecimal priceCommission;
 
     //author
-    private User author;
-    private User editUser;
+    @ManyToOne
+    private UserEntity author;
+    @ManyToOne
+    private UserEntity editUser;
+    @Column
     private LocalDate dateEdite;
 
     public Car() {
     }
 
-    @Column
+
     public String getName() {
         return name;
     }
@@ -82,8 +129,8 @@ public class Car extends BaseEntity {
         this.name = name;
     }
 
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn( name = "invoice_id", referencedColumnName = "id")
+
+
     public Set<Picture> getPictures() {
         return pictures;
     }
@@ -91,7 +138,7 @@ public class Car extends BaseEntity {
     public void setPictures(Set<Picture> pictures) {
         this.pictures = pictures;
     }
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+
     public Set<Offer> getOffers() {
         return offers;
     }
@@ -99,7 +146,7 @@ public class Car extends BaseEntity {
     public void setOffers(Set<Offer> offers) {
         this.offers = offers;
     }
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+
     public Set<Sale> getSales() {
         return sales;
     }
@@ -108,7 +155,7 @@ public class Car extends BaseEntity {
         this.sales = sales;
     }
 
-    @Column
+
     public String getVinNumber() {
         return vinNumber;
     }
@@ -117,8 +164,8 @@ public class Car extends BaseEntity {
         this.vinNumber = vinNumber;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "model_id", referencedColumnName = "id")
+
+
     public Model getModel() {
         return model;
     }
@@ -127,7 +174,7 @@ public class Car extends BaseEntity {
         this.model = model;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public Transmision getTransmision() {
         return transmision;
     }
@@ -136,7 +183,7 @@ public class Car extends BaseEntity {
         this.transmision = transmision;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public FuelType getFuelType() {
         return fuelType;
     }
@@ -144,7 +191,7 @@ public class Car extends BaseEntity {
     public void setFuelType(FuelType fuelType) {
         this.fuelType = fuelType;
     }
-    @Column
+
     public BigDecimal getHorsepower() {
         return horsepower;
     }
@@ -153,7 +200,7 @@ public class Car extends BaseEntity {
         this.horsepower = horsepower;
     }
 
-    @Column
+
     public BigDecimal getCubature() {
         return cubature;
     }
@@ -161,7 +208,7 @@ public class Car extends BaseEntity {
     public void setCubature(BigDecimal cubature) {
         this.cubature = cubature;
     }
-    @Enumerated(EnumType.STRING)
+
     public ConditionCar getConditionCar() {
         return conditionCar;
     }
@@ -170,10 +217,6 @@ public class Car extends BaseEntity {
         this.conditionCar = conditionCar;
     }
 
-
-
-
-    @Enumerated(EnumType.STRING)
     public Color getColor() {
         return color;
     }
@@ -182,7 +225,7 @@ public class Car extends BaseEntity {
         this.color = color;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public DoorCount getDoorCount() {
         return doorCount;
     }
@@ -191,8 +234,6 @@ public class Car extends BaseEntity {
         this.doorCount = doorCount;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "vendor_id", referencedColumnName = "id")
     public Vendor getVendorPurchase() {
         return vendorPurchase;
     }
@@ -201,8 +242,6 @@ public class Car extends BaseEntity {
         this.vendorPurchase = vendorPurchase;
     }
 
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn( name = "car_id", referencedColumnName = "id")
     public Set<Cost> getCosts() {
         return costs;
     }
@@ -211,7 +250,7 @@ public class Car extends BaseEntity {
         this.costs = costs;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public Eurostandard getEurostandard() {
         return eurostandard;
     }
@@ -220,7 +259,7 @@ public class Car extends BaseEntity {
         this.eurostandard = eurostandard;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public Category getCategory() {
         return category;
     }
@@ -229,7 +268,7 @@ public class Car extends BaseEntity {
         this.category = category;
     }
 
-    @Column
+
     public String getComments() {
         return comments;
     }
@@ -238,7 +277,7 @@ public class Car extends BaseEntity {
         this.comments = comments;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public AutoStartStop getAutoStartStop() {
         return autoStartStop;
     }
@@ -247,7 +286,7 @@ public class Car extends BaseEntity {
         this.autoStartStop = autoStartStop;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public Metallic getMetallic() {
         return metallic;
     }
@@ -256,7 +295,7 @@ public class Car extends BaseEntity {
         this.metallic = metallic;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public ServiceBook getServiceBook() {
         return serviceBook;
     }
@@ -265,7 +304,7 @@ public class Car extends BaseEntity {
         this.serviceBook = serviceBook;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public Alarm getAlarm() {
         return alarm;
     }
@@ -274,7 +313,7 @@ public class Car extends BaseEntity {
         this.alarm = alarm;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public LeatherSalon getLeatherSalon() {
         return leatherSalon;
     }
@@ -283,7 +322,7 @@ public class Car extends BaseEntity {
         this.leatherSalon = leatherSalon;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public HalogenHeadlights getHalogenHeadlights() {
         return halogenHeadlights;
     }
@@ -292,7 +331,6 @@ public class Car extends BaseEntity {
         this.halogenHeadlights = halogenHeadlights;
     }
 
-    @Enumerated(EnumType.STRING)
     public Parktronik getParktronik() {
         return parktronik;
     }
@@ -301,7 +339,7 @@ public class Car extends BaseEntity {
         this.parktronik = parktronik;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public Airbags getAirbags() {
         return airbags;
     }
@@ -310,7 +348,7 @@ public class Car extends BaseEntity {
         this.airbags = airbags;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public ElMirrors getElMirrors() {
         return elMirrors;
     }
@@ -319,7 +357,7 @@ public class Car extends BaseEntity {
         this.elMirrors = elMirrors;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public ElWindows getElWindows() {
         return elWindows;
     }
@@ -328,7 +366,7 @@ public class Car extends BaseEntity {
         this.elWindows = elWindows;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public Climatic getClimatic() {
         return climatic;
     }
@@ -337,7 +375,7 @@ public class Car extends BaseEntity {
         this.climatic = climatic;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public Navigation getNavigation() {
         return navigation;
     }
@@ -346,7 +384,7 @@ public class Car extends BaseEntity {
         this.navigation = navigation;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public StatusAvailable getStatusAvailable() {
         return statusAvailable;
     }
@@ -355,7 +393,7 @@ public class Car extends BaseEntity {
         this.statusAvailable = statusAvailable;
     }
 
-    @Column
+
     public LocalDate getRegDate() {
         return regDate;
     }
@@ -364,7 +402,7 @@ public class Car extends BaseEntity {
         this.regDate = regDate;
     }
 
-    @Column
+
     public LocalDate getDatePurchase() {
         return datePurchase;
     }
@@ -373,7 +411,7 @@ public class Car extends BaseEntity {
         this.datePurchase = datePurchase;
     }
 
-    @Column
+
     public LocalDate getDateIncome() {
         return dateIncome;
     }
@@ -381,7 +419,7 @@ public class Car extends BaseEntity {
     public void setDateIncome(LocalDate dateIncome) {
         this.dateIncome = dateIncome;
     }
-    @Column
+
     public LocalDate getDateSold() {
         return dateSold;
     }
@@ -390,10 +428,6 @@ public class Car extends BaseEntity {
         this.dateSold = dateSold;
     }
 
-
-
-
-    @Column
     public LocalDate getDateCreate() {
         return dateCreate;
     }
@@ -401,8 +435,8 @@ public class Car extends BaseEntity {
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
     }
-    @ManyToOne
-    @JoinColumn(name = "currency_id", referencedColumnName = "id")
+
+
     public Currency getCurrency() {
         return currency;
     }
@@ -411,7 +445,7 @@ public class Car extends BaseEntity {
         this.currency = currency;
     }
 
-    @Column
+
     public BigDecimal getPricePurchase() {
         return pricePurchase;
     }
@@ -420,7 +454,7 @@ public class Car extends BaseEntity {
         this.pricePurchase = pricePurchase;
     }
 
-    @Column
+
     public BigDecimal getPriceCosts() {
         return priceCosts;
     }
@@ -429,7 +463,7 @@ public class Car extends BaseEntity {
         this.priceCosts = priceCosts;
     }
 
-    @Column
+
     public BigDecimal getPriceSaleMin() {
         return priceSaleMin;
     }
@@ -438,7 +472,7 @@ public class Car extends BaseEntity {
         this.priceSaleMin = priceSaleMin;
     }
 
-    @Column
+
     public BigDecimal getPriceSale() {
         return priceSale;
     }
@@ -447,7 +481,7 @@ public class Car extends BaseEntity {
         this.priceSale = priceSale;
     }
 
-    @Column
+
     public BigDecimal getPriceProfit() {
         return priceProfit;
     }
@@ -456,7 +490,7 @@ public class Car extends BaseEntity {
         this.priceProfit = priceProfit;
     }
 
-    @Column
+
     public BigDecimal getPriceCommission() {
         return priceCommission;
     }
@@ -465,23 +499,22 @@ public class Car extends BaseEntity {
         this.priceCommission = priceCommission;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    public User getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public Car setAuthor(UserEntity author) {
         this.author = author;
+        return this;
     }
-    @ManyToOne
-    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
-    public User getEditUser() {
+
+    public UserEntity getEditUser() {
         return editUser;
     }
 
-    public void setEditUser(User editUser) {
+    public Car setEditUser(UserEntity editUser) {
         this.editUser = editUser;
+        return this;
     }
 
     public LocalDate getDateEdite() {
@@ -491,4 +524,5 @@ public class Car extends BaseEntity {
     public void setDateEdite(LocalDate dateEdite) {
         this.dateEdite = dateEdite;
     }
+
 }

@@ -15,12 +15,12 @@ import java.util.Set;
 public interface OfferService {
     List<Offer> findAllOffers();
 
-    void addOffer(OfferDTO offerDTO, HttpSession session);
+    void addOffer(OfferDTO offerDTO);
 
     void removeOfferById(Long id);
 
     Optional<Offer> findById(Long id);
 
-    void editOffer(OfferDTO offerDTO, Long id, HttpSession session);
+    void editOffer(OfferDTO offerDTO, Long id);
 
 }

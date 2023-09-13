@@ -12,25 +12,37 @@ import java.util.Set;
 @Entity
 @Table(name = "clients")
 public class Client extends BaseEntity{
+    @Column
     private String name;
+    @Column
     private String vatOrId;
+    @Column
     private String email;
+    @Column
     private String phone;
+    @Column
     private String city;
+    @Column
     private String address;
-
+    @Enumerated(EnumType.STRING)
     private ClientType clientType;
-
-
+    @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
+    @JoinColumn( name = "client_id", referencedColumnName = "id")
     private Set<Offer> offers;
+    @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
+    @JoinColumn( name = "client_id", referencedColumnName = "id")
     private Set<Sale> sales;
-    private User author;
+    @ManyToOne
+    private UserEntity author;
+    @Column
     private LocalDate dateCreate;
-    private User editUser;
+    @ManyToOne
+    private UserEntity editUser;
+    @Column
     private LocalDate dateEdite;
     public Client() {
     }
-    @Column(name = "name", nullable = false)
+
     public String getName() {
         return name;
     }
@@ -38,7 +50,7 @@ public class Client extends BaseEntity{
     public void setName(String name) {
         this.name = name;
     }
-    @Column
+
     public String getVatOrId() {
         return vatOrId;
     }
@@ -46,7 +58,7 @@ public class Client extends BaseEntity{
     public void setVatOrId(String vatOrId) {
         this.vatOrId = vatOrId;
     }
-    @Column
+
     public String getEmail() {
         return email;
     }
@@ -54,7 +66,7 @@ public class Client extends BaseEntity{
     public void setEmail(String email) {
         this.email = email;
     }
-    @Column
+
     public String getPhone() {
         return phone;
     }
@@ -62,7 +74,7 @@ public class Client extends BaseEntity{
     public void setPhone(String phone) {
         this.phone = phone;
     }
-    @Column
+
     public String getCity() {
         return city;
     }
@@ -70,7 +82,7 @@ public class Client extends BaseEntity{
     public void setCity(String city) {
         this.city = city;
     }
-    @Column
+
     public String getAddress() {
         return address;
     }
@@ -78,7 +90,7 @@ public class Client extends BaseEntity{
     public void setAddress(String address) {
         this.address = address;
     }
-    @Enumerated(EnumType.STRING)
+
     public ClientType getClientType() {
         return clientType;
     }
@@ -86,9 +98,7 @@ public class Client extends BaseEntity{
     public void setClientType(ClientType clientType) {
         this.clientType = clientType;
     }
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
-    @JoinColumn( name = "client_id", referencedColumnName = "id")
+
     public Set<Offer> getOffers() {
         return offers;
     }
@@ -96,25 +106,13 @@ public class Client extends BaseEntity{
     public void setOffers(Set<Offer> offers) {
         this.offers = offers;
     }
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn( name = "client_id", referencedColumnName = "id")
+
     public Set<Sale> getSales() {
         return sales;
     }
 
     public void setSales(Set<Sale> sales) {
         this.sales = sales;
-    }
-    @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
     }
 
     public LocalDate getDateCreate() {
@@ -124,15 +122,6 @@ public class Client extends BaseEntity{
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
     }
-    @ManyToOne
-    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
-    public User getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(User editUser) {
-        this.editUser = editUser;
-    }
 
     public LocalDate getDateEdite() {
         return dateEdite;
@@ -140,5 +129,23 @@ public class Client extends BaseEntity{
 
     public void setDateEdite(LocalDate dateEdite) {
         this.dateEdite = dateEdite;
+    }
+
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public Client setAuthor(UserEntity author) {
+        this.author = author;
+        return this;
+    }
+
+    public UserEntity getEditUser() {
+        return editUser;
+    }
+
+    public Client setEditUser(UserEntity editUser) {
+        this.editUser = editUser;
+        return this;
     }
 }

@@ -40,26 +40,26 @@ public class SaleController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createSale(@RequestBody @Valid SaleDTO saleDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> createSale(@RequestBody @Valid SaleDTO saleDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            saleService.addSale(saleDTO, session);
+            saleService.addSale(saleDTO);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
 
     }
     @PostMapping("/{id}")
-    public ResponseEntity<?> transformOfferToSale(@PathVariable Long id, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> transformOfferToSale(@PathVariable Long id, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            saleService.transformOfferToSale(id, session);
+            saleService.transformOfferToSale(id);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -67,14 +67,14 @@ public class SaleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateSale(@PathVariable Long id, @RequestBody @Valid SaleDTO saleDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updateSale(@PathVariable Long id, @RequestBody @Valid SaleDTO saleDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
 
-            saleService.editSale(saleDTO,id, session);
+            saleService.editSale(saleDTO,id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

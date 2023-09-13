@@ -43,7 +43,7 @@ public class CurrencyController {
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            currencyService.addCurrency(currencyDTO, session);
+            currencyService.addCurrency(currencyDTO);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -51,13 +51,13 @@ public class CurrencyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCurrency(@PathVariable Long id, @RequestBody @Valid CurrencyDTO currencyDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updateCurrency(@PathVariable Long id, @RequestBody @Valid CurrencyDTO currencyDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            currencyService.editCurrency(currencyDTO, id, session);
+            currencyService.editCurrency(currencyDTO, id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

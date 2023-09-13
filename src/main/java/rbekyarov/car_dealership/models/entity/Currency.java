@@ -10,13 +10,21 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "currencies")
 public class Currency extends BaseEntity {
+    @Column
     private String code;
+    @Column
     private String name;
+    @Column
     private double exchangeRate;
+    @Enumerated(EnumType.STRING)
     private IsMainCurrency isMainCurrency;
-    private User author;
+    @ManyToOne
+    private UserEntity author;
+    @Column
     private LocalDate dateCreate;
-    private User editUser;
+    @ManyToOne
+    private UserEntity editUser;
+    @Column
     private LocalDate dateEdite;
 
     public Currency() {
@@ -27,7 +35,7 @@ public class Currency extends BaseEntity {
         this.name = name;
     }
 
-    @Column(nullable = false)
+
     public String getCode() {
         return code;
     }
@@ -35,7 +43,7 @@ public class Currency extends BaseEntity {
     public void setCode(String code) {
         this.code = code;
     }
-    @Column(nullable = false)
+
     public String getName() {
         return name;
     }
@@ -43,7 +51,7 @@ public class Currency extends BaseEntity {
     public void setName(String name) {
         this.name = name;
     }
-    @Enumerated(EnumType.STRING)
+
     public IsMainCurrency getIsMainCurrency() {
         return isMainCurrency;
     }
@@ -51,23 +59,13 @@ public class Currency extends BaseEntity {
     public void setIsMainCurrency(IsMainCurrency isMainCurrency) {
         this.isMainCurrency = isMainCurrency;
     }
-    @Column
+
     public double getExchangeRate() {
         return exchangeRate;
     }
 
     public void setExchangeRate(double exchangeRate) {
         this.exchangeRate = exchangeRate;
-    }
-    @JsonIgnoreProperties({"email", "role","position","id"})
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
     }
 
     public LocalDate getDateCreate() {
@@ -77,16 +75,6 @@ public class Currency extends BaseEntity {
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
     }
-    @JsonIgnoreProperties({"email", "role","position","id"})
-    @ManyToOne
-    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
-    public User getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(User editUser) {
-        this.editUser = editUser;
-    }
 
     public LocalDate getDateEdite() {
         return dateEdite;
@@ -94,5 +82,22 @@ public class Currency extends BaseEntity {
 
     public void setDateEdite(LocalDate dateEdite) {
         this.dateEdite = dateEdite;
+    }
+
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public Currency setAuthor(UserEntity author) {
+        this.author = author;
+        return this;
+    }
+    public UserEntity getEditUser() {
+        return editUser;
+    }
+
+    public Currency setEditUser(UserEntity editUser) {
+        this.editUser = editUser;
+        return this;
     }
 }

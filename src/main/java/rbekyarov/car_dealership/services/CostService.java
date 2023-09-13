@@ -14,12 +14,12 @@ import java.util.Optional;
 public interface CostService {
     List<Cost> findAllCosts();
 
-    void addCost(CostDTO costDTO, HttpSession session);
+    void addCost(CostDTO costDTO);
 
     void removeCostById(Long id);
 
     Optional<Cost> findById(Long id);
 
-    void editCost(Long vendorId,Long carId,String description,String invoiceNo,BigDecimal amount, LocalDate dateCost, Long id, HttpSession session);
+    void editCost(Long vendorId,Long carId,String description,String invoiceNo,BigDecimal amount, LocalDate dateCost, Long id);
 
 }

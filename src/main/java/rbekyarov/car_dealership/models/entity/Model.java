@@ -7,12 +7,17 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "models")
 public class Model extends BaseEntity{
+    @Column
     private String name;
+    @ManyToOne
     private Brand brand;
-    private User author;
+    @ManyToOne
+    private UserEntity author;
+    @Column
     private LocalDate dateCreate;
-
-    private User editUser;
+    @ManyToOne
+    private UserEntity editUser;
+    @Column
     private LocalDate dateEdite;
 
     public Model() {
@@ -22,7 +27,6 @@ public class Model extends BaseEntity{
         this.brand = brand;
     }
 
-    @Column(nullable = false)
     public String getName() {
         return name;
     }
@@ -30,8 +34,7 @@ public class Model extends BaseEntity{
     public void setName(String name) {
         this.name = name;
     }
-    @ManyToOne
-    @JoinColumn(name = "brand_id", referencedColumnName = "id")
+
     public Brand getBrand() {
         return brand;
     }
@@ -39,15 +42,7 @@ public class Model extends BaseEntity{
     public void setBrand(Brand brand) {
         this.brand = brand;
     }
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    public User getAuthor() {
-        return author;
-    }
 
-    public void setAuthor(User author) {
-        this.author = author;
-    }
 
     public LocalDate getDateCreate() {
         return dateCreate;
@@ -56,15 +51,6 @@ public class Model extends BaseEntity{
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
     }
-    @ManyToOne
-    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
-    public User getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(User editUser) {
-        this.editUser = editUser;
-    }
 
     public LocalDate getDateEdite() {
         return dateEdite;
@@ -72,5 +58,22 @@ public class Model extends BaseEntity{
 
     public void setDateEdite(LocalDate dateEdite) {
         this.dateEdite = dateEdite;
+    }
+
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public Model setAuthor(UserEntity author) {
+        this.author = author;
+        return this;
+    }
+    public UserEntity getEditUser() {
+        return editUser;
+    }
+
+    public Model setEditUser(UserEntity editUser) {
+        this.editUser = editUser;
+        return this;
     }
 }

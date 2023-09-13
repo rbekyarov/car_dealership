@@ -1,6 +1,5 @@
 package rbekyarov.car_dealership.services.impl;
 
-import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.CarDTO;
@@ -9,11 +8,14 @@ import rbekyarov.car_dealership.models.entity.*;
 import rbekyarov.car_dealership.models.entity.Currency;
 import rbekyarov.car_dealership.models.entity.enums.*;
 import rbekyarov.car_dealership.repository.CarRepository;
+import rbekyarov.car_dealership.repository.UserRepository;
 import rbekyarov.car_dealership.services.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
+
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
 
 
 @Service
@@ -21,24 +23,24 @@ public class CarServiceImpl implements CarService {
 
     private final CarRepository carRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
     private final ModelService modelService;
     private final VendorService vendorService;
     private final PictureService pictureService;
     private final CurrencyService currencyService;
     private final PricingPercentDataService pricingPercentDataService;
+    private final UserRepository userRepository;
 
-    public CarServiceImpl(CarRepository carRepository, ModelMapper modelMapper, UserService userService, ModelService modelService, VendorService vendorService,
-                          PictureService pictureService, CurrencyService currencyService, PricingPercentDataService pricingPercentDataService) {
+    public CarServiceImpl(CarRepository carRepository, ModelMapper modelMapper, ModelService modelService, VendorService vendorService, PictureService pictureService, CurrencyService currencyService, PricingPercentDataService pricingPercentDataService, UserRepository userRepository) {
         this.carRepository = carRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
         this.modelService = modelService;
         this.vendorService = vendorService;
         this.pictureService = pictureService;
         this.currencyService = currencyService;
         this.pricingPercentDataService = pricingPercentDataService;
+        this.userRepository = userRepository;
     }
+
 
     @Override
     public List<Car> findAllCars() {
@@ -46,7 +48,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void addCar(CarDTO carDTO, Set<Picture> pictures, HttpSession session) {
+    public void addCar(CarDTO carDTO, Set<Picture> pictures) {
         Car car = modelMapper.map(carDTO, Car.class);
 
         //Check and get Next CarID in car table
@@ -57,7 +59,7 @@ public class CarServiceImpl implements CarService {
         Set<Picture> pictureSetChanged = new HashSet<>();
         addOrEditPicturesForCar(pictures, nextCarId, pictureSetChanged);
         //Add Pictures in database
-        addPictureInCarAndAddPictureInRepo(pictures, session);
+        addPictureInCarAndAddPictureInRepo(pictures);
         //Generate Car Name
         String name = generateCarName(carDTO);
         car.setName(name);
@@ -76,9 +78,9 @@ public class CarServiceImpl implements CarService {
 
 
         //get and set Author
-        //car.setAuthor(userService.getAuthorFromSession(session));
-        //for testing ->
-        car.setAuthor(userService.findById(1L).get());
+//        UserEntity user = getUserEntity();
+//        car.setAuthor(user);
+        car.setAuthor(userRepository.getUsersById(1L));
         // set dateCreated
         car.setDateCreate(LocalDate.now());
         //Add car in database
@@ -187,13 +189,13 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void editCar(CarDTO carDTO, Set<Picture> pictures, Long id, HttpSession session) {
+    public void editCar(CarDTO carDTO, Set<Picture> pictures, Long id) {
 
         Set<Picture> pictureSetChanged = new HashSet<>();
         //EDIT pictures
         addOrEditPicturesForCar(pictures, id, pictureSetChanged);
         //Add Pictures in database
-        addPictureInCarAndAddPictureInRepo(pictures, session);
+        addPictureInCarAndAddPictureInRepo(pictures);
         //Calculate Prices
         Car car = carRepository.findById(id).get();
 
@@ -239,9 +241,11 @@ public class CarServiceImpl implements CarService {
         LocalDate datePurchase = carDTO.getDatePurchase();
         LocalDate dateIncome = carDTO.getDateIncome();
         //for testing ->
+
+//        UserEntity user = getUserEntity();
+//        Long editUserId = user.getId();
+
         Long editUserId = 1L;
-        //User editUser = userService.getAuthorFromSession(session);
-        //Long editUserId = editUser.getId();
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
         carRepository.editCar(name,
@@ -294,13 +298,13 @@ public class CarServiceImpl implements CarService {
         return brandName + " " + modelName + " " + vinNumber;
     }
 
-    private void addPictureInCarAndAddPictureInRepo(Set<Picture> pictures, HttpSession session) {
+    private void addPictureInCarAndAddPictureInRepo(Set<Picture> pictures) {
         if (!pictures.isEmpty()) {
             for (Picture picture : pictures) {
 
                 PictureDTO pictureDTO = new PictureDTO();
                 pictureDTO.setName(picture.getName());
-                pictureService.addPicture(pictureDTO, session);
+                pictureService.addPicture(pictureDTO);
             }
         }
     }

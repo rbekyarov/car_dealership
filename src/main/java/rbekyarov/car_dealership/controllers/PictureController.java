@@ -37,13 +37,13 @@ public class PictureController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPicture(@RequestBody @Valid PictureDTO pictureDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> createPicture(@RequestBody @Valid PictureDTO pictureDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            pictureService.addPicture(pictureDTO, session);
+            pictureService.addPicture(pictureDTO);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -51,13 +51,13 @@ public class PictureController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePicture(@PathVariable Long id, @RequestBody @Valid PictureDTO pictureDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updatePicture(@PathVariable Long id, @RequestBody @Valid PictureDTO pictureDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            pictureService.editPicture(pictureDTO.getName(), id, session);
+            pictureService.editPicture(pictureDTO.getName(), id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

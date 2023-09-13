@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface BankAccountService {
     List<BankAccount> findAllBankAccounts();
 
-    void addBankAccount(BankAccountDTO bankAccountDTO, HttpSession session);
+    void addBankAccount(BankAccountDTO bankAccountDTO);
 
     void removeBankAccountById(Long id);
 
@@ -23,8 +23,7 @@ public interface BankAccountService {
                          String accountNumber,
                          Long currencyId,
                          BigDecimal balance,
-                         Long id,
-                         HttpSession session);
+                         Long id);
 
     BigDecimal getCurrentBalance(Long bankAccountId);
 

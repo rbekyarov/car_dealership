@@ -13,24 +13,38 @@ import java.util.Set;
 @Entity
 @Table(name = "offers")
 public class Offer extends BaseEntity{
+
+    @OneToMany(cascade = CascadeType.MERGE,  fetch = FetchType.EAGER)
+    @JoinColumn( name = "offer_id", referencedColumnName = "id")
     private Set<Car> cars;
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     private Seller seller;
+    @ManyToOne
     private Client client;
+    @ManyToOne
     private Company company;
+    @Enumerated(EnumType.STRING)
     private StatusOffer statusOffer;
+    @ManyToOne
     private Currency currency;
+    @Column
     private BigDecimal price;
+    @Column
     private BigDecimal discount;
+    @Column
     private BigDecimal totalPrice;
+    @Column
     private LocalDate dateCreate;
-    private User author;
-    private User editUser;
+    @ManyToOne
+    private UserEntity author;
+    @ManyToOne
+    private UserEntity editUser;
+    @Column
     private LocalDate dateEdite;
     public Offer() {
     }
-    @OneToMany(cascade = CascadeType.MERGE,  fetch = FetchType.EAGER)
-    @JoinColumn( name = "offer_id", referencedColumnName = "id")
-    //@OneToMany(mappedBy = "offers", cascade = CascadeType.ALL)
+
     public Set<Car> getCars() {
         return cars;
     }
@@ -38,9 +52,7 @@ public class Offer extends BaseEntity{
     public void setCars(Set<Car> cars) {
         this.cars = cars;
     }
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "seller_id", referencedColumnName = "id")
+
     public Seller getSeller() {
         return seller;
     }
@@ -48,13 +60,11 @@ public class Offer extends BaseEntity{
     public void setSeller(Seller seller) {
         this.seller = seller;
     }
-    @ManyToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+
     public Client getClient() {
         return client;
     }
-    @ManyToOne
-    @JoinColumn(name = "company_id", referencedColumnName = "id")
+
     public Company getCompany() {
         return company;
     }
@@ -65,7 +75,7 @@ public class Offer extends BaseEntity{
     public void setClient(Client client) {
         this.client = client;
     }
-    @Enumerated(EnumType.STRING)
+
     public StatusOffer getStatusOffer() {
         return statusOffer;
     }
@@ -73,8 +83,7 @@ public class Offer extends BaseEntity{
     public void setStatusOffer(StatusOffer statusOffer) {
         this.statusOffer = statusOffer;
     }
-    @ManyToOne
-    @JoinColumn(name = "currency_id", referencedColumnName = "id")
+
     public Currency getCurrency() {
         return currency;
     }
@@ -83,7 +92,6 @@ public class Offer extends BaseEntity{
         this.currency = currency;
     }
 
-    @Column
     public BigDecimal getPrice() {
         return price;
     }
@@ -91,7 +99,7 @@ public class Offer extends BaseEntity{
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
-    @Column
+
     public BigDecimal getDiscount() {
         return discount;
     }
@@ -99,7 +107,7 @@ public class Offer extends BaseEntity{
     public void setDiscount(BigDecimal discount) {
         this.discount = discount;
     }
-    @Column
+
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
@@ -107,7 +115,7 @@ public class Offer extends BaseEntity{
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
-    @Column
+
     public LocalDate getDateCreate() {
         return dateCreate;
     }
@@ -115,23 +123,23 @@ public class Offer extends BaseEntity{
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
     }
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    public User getAuthor() {
+
+    public UserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public Offer setAuthor(UserEntity author) {
         this.author = author;
+        return this;
     }
-    @ManyToOne
-    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
-    public User getEditUser() {
+
+    public UserEntity getEditUser() {
         return editUser;
     }
 
-    public void setEditUser(User editUser) {
+    public Offer setEditUser(UserEntity editUser) {
         this.editUser = editUser;
+        return this;
     }
 
     public LocalDate getDateEdite() {

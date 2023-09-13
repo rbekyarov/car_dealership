@@ -2,10 +2,6 @@ package rbekyarov.car_dealership.models.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import rbekyarov.car_dealership.models.entity.Brand;
-import rbekyarov.car_dealership.models.entity.User;
-
-import java.time.LocalDate;
 
 public class ModelDTO {
     private Long id;

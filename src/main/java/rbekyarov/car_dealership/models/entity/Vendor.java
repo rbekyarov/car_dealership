@@ -7,16 +7,27 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "vendors")
 public class Vendor extends BaseEntity {
+    @Column
     private String name;
+    @Column
     private String country;
+    @Column
     private String city;
+    @Column
     private String address;
+    @Column
     private String vatNumber;
+    @Column
     private String email;
-    private User author;
+    @ManyToOne
+    private UserEntity author;
+    @Column
     private LocalDate dateCreate;
-    private User editUser;
+    @ManyToOne
+    private UserEntity editUser;
+    @Column
     private LocalDate dateEdite;
+
     public Vendor() {
     }
 
@@ -25,7 +36,7 @@ public class Vendor extends BaseEntity {
         this.vatNumber = vatNumber;
     }
 
-    public Vendor(String name, String country, String city, String address, String vatNumber, String email, User author, LocalDate dateCreate) {
+    public Vendor(String name, String country, String city, String address, String vatNumber, String email, UserEntity author, LocalDate dateCreate) {
         this.name = name;
         this.country = country;
         this.city = city;
@@ -35,14 +46,15 @@ public class Vendor extends BaseEntity {
         this.author = author;
         this.dateCreate = dateCreate;
     }
-    @Column
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
-    @Column
+
     public String getCountry() {
         return country;
     }
@@ -50,7 +62,7 @@ public class Vendor extends BaseEntity {
     public void setCountry(String country) {
         this.country = country;
     }
-    @Column
+
     public String getCity() {
         return city;
     }
@@ -59,7 +71,7 @@ public class Vendor extends BaseEntity {
         this.city = city;
     }
 
-    @Column
+
     public String getAddress() {
         return address;
     }
@@ -67,7 +79,7 @@ public class Vendor extends BaseEntity {
     public void setAddress(String address) {
         this.address = address;
     }
-    @Column
+
     public String getVatNumber() {
         return vatNumber;
     }
@@ -75,7 +87,7 @@ public class Vendor extends BaseEntity {
     public void setVatNumber(String vatNumber) {
         this.vatNumber = vatNumber;
     }
-    @Column
+
     public String getEmail() {
         return email;
     }
@@ -83,31 +95,13 @@ public class Vendor extends BaseEntity {
     public void setEmail(String email) {
         this.email = email;
     }
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    public User getAuthor() {
-        return author;
-    }
-    @Column
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-    @Column
+
     public LocalDate getDateCreate() {
         return dateCreate;
     }
-    @Column
+
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
-    }
-    @ManyToOne
-    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
-    public User getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(User editUser) {
-        this.editUser = editUser;
     }
 
     public LocalDate getDateEdite() {
@@ -116,6 +110,24 @@ public class Vendor extends BaseEntity {
 
     public void setDateEdite(LocalDate dateEdite) {
         this.dateEdite = dateEdite;
+    }
+
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public Vendor setAuthor(UserEntity author) {
+        this.author = author;
+        return this;
+    }
+
+    public UserEntity getEditUser() {
+        return editUser;
+    }
+
+    public Vendor setEditUser(UserEntity editUser) {
+        this.editUser = editUser;
+        return this;
     }
 }
 

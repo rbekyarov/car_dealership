@@ -12,23 +12,35 @@ import java.util.Set;
 @Entity
 @Table(name = "sellers")
 public class Seller extends BaseEntity {
+    @Column
     private String firstName;
+    @Column
     private String lastName;
+    @Enumerated(EnumType.STRING)
     private Position position;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn( name = "seller_id", referencedColumnName = "id")
     private Set<Offer> offers;
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn( name = "seller_id", referencedColumnName = "id")
     private Set<Sale> sales;
+    @Column
     private BigDecimal salary;
+    @Column
     private BigDecimal monthlyProfit;
+    @Column
     private BigDecimal totalProfit;
-    private User author;
-
+    @ManyToOne
+    private UserEntity author;
+    @Column
     private LocalDate dateCreate;
-    private User editUser;
+    @ManyToOne
+    private UserEntity editUser;
+    @Column
     private LocalDate dateEdite;
     public Seller() {
     }
 
-    @Column
     public String getFirstName() {
         return firstName;
     }
@@ -37,7 +49,6 @@ public class Seller extends BaseEntity {
         this.firstName = firstName;
     }
 
-    @Column
     public String getLastName() {
         return lastName;
     }
@@ -46,9 +57,6 @@ public class Seller extends BaseEntity {
         this.lastName = lastName;
     }
 
-    @Column
-    //@NotNull
-    @Enumerated(EnumType.STRING)
     public Position getPosition() {
         return position;
     }
@@ -56,8 +64,7 @@ public class Seller extends BaseEntity {
     public void setPosition(Position position) {
         this.position = position;
     }
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn( name = "seller_id", referencedColumnName = "id")
+
     public Set<Offer> getOffers() {
         return offers;
     }
@@ -66,8 +73,6 @@ public class Seller extends BaseEntity {
         this.offers = offers;
     }
 
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn( name = "seller_id", referencedColumnName = "id")
     public Set<Sale> getSales() {
         return sales;
     }
@@ -76,7 +81,6 @@ public class Seller extends BaseEntity {
         this.sales = sales;
     }
 
-    @Column
     public BigDecimal getSalary() {
         return salary;
     }
@@ -85,7 +89,6 @@ public class Seller extends BaseEntity {
         this.salary = salary;
     }
 
-    @Column
     public BigDecimal getMonthlyProfit() {
         return monthlyProfit;
     }
@@ -94,7 +97,6 @@ public class Seller extends BaseEntity {
         this.monthlyProfit = monthlyProfit;
     }
 
-    @Column
     public BigDecimal getTotalProfit() {
         return totalProfit;
     }
@@ -103,32 +105,30 @@ public class Seller extends BaseEntity {
         this.totalProfit = totalProfit;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    public User getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public Seller setAuthor(UserEntity author) {
         this.author = author;
+        return this;
     }
 
-    @Column
+    public UserEntity getEditUser() {
+        return editUser;
+    }
+
+    public Seller setEditUser(UserEntity editUser) {
+        this.editUser = editUser;
+        return this;
+    }
+
     public LocalDate getDateCreate() {
         return dateCreate;
     }
 
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
-    }
-    @ManyToOne
-    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
-    public User getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(User editUser) {
-        this.editUser = editUser;
     }
 
     public LocalDate getDateEdite() {

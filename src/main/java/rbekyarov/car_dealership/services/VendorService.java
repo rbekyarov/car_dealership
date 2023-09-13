@@ -12,11 +12,11 @@ import java.util.Optional;
 public interface VendorService {
     List<Vendor> findAllVendors();
 
-    void addVendor(VendorDTO vendorDTO, HttpSession session);
+    void addVendor(VendorDTO vendorDTO);
 
     void removeVendorById(Long id);
 
     Optional<Vendor> findById(Long id);
 
-    void editVendor(String name,String country,String city,String address,String vatNumber,String email, Long id, HttpSession session);
+    void editVendor(String name,String country,String city,String address,String vatNumber,String email, Long id);
 }

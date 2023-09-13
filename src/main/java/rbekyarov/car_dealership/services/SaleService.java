@@ -10,14 +10,14 @@ import java.util.Optional;
 public interface SaleService {
     List<Sale> findAllSales();
 
-    void addSale(SaleDTO saleDTO, HttpSession session);
+    void addSale(SaleDTO saleDTO);
 
     void removeSaleById(Long id);
 
     Optional<Sale> findById(Long id);
 
-    void editSale(SaleDTO saleDTO, Long id, HttpSession session);
+    void editSale(SaleDTO saleDTO, Long id);
 
     void updateStatusInvoicedToYes(Long saleId);
-    void transformOfferToSale(Long offerId, HttpSession session );
+    void transformOfferToSale(Long offerId );
 }

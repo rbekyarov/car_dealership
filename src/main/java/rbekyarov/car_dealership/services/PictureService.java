@@ -10,13 +10,13 @@ import java.util.Set;
 
 public interface PictureService {
     List<Picture> findAllPictures();
-    void addPicture(PictureDTO pictureDTO, HttpSession session);
+    void addPicture(PictureDTO pictureDTO);
 
     void removePictureById(Long id);
 
     Optional<Picture> findById(Long id);
 
-    void editPicture(String name, Long id, HttpSession session);
+    void editPicture(String name, Long id);
 
     void updatePicturesTableFieldsCarId(Set<Picture> pictures, Long carId);
 

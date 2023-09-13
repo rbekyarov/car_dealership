@@ -10,41 +10,62 @@ import java.util.Set;
 @Entity
 @Table(name = "invoices")
 public class Invoice extends BaseEntity {
+    @Column
     private String companyName;
+    @Column
     private String companyCityName;
+    @Column
     private String companyAddress;
+    @Column
     private String companyVatNumber;
+    @Column
     private String companyEmail;
+    @Column
     private String companyBankName;
+    @Column
     private String companyBankAccount;
+    @Column
     private String companyManagerName;
-
+    @Column
     private String currencyCode;
+    @Column
     private Long bankAccountId;
+    @Column
     private Long saleId;
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JoinColumn( name = "invoice_id", referencedColumnName = "id")
     private Set<CarInvoiced> carInvoiced;
-
+    @Column
     private String clientName;
+    @Column
     private String clientEmail;
+    @Column
     private String clientAddress;
+    @Column
     private String clientCityName;
+    @Column
     private String clientPhone;
-
+    @Column
     private BigDecimal price;
+    @Column
     private Double discount;
+    @Column
     private BigDecimal totalPrice;
-
+    @Column
     private String authorName;
+    @Column
     private String cancellationUserName;
+    @Column
     private LocalDate dateCreate;
-
+    @Enumerated(EnumType.STRING)
     private CancellationInvoice cancellationInvoice;
+    @Column
     private LocalDate cancelledDateInvoice;
 
     public Invoice() {
     }
 
-    @Column
+
     public String getCompanyName() {
         return companyName;
     }
@@ -61,7 +82,6 @@ public class Invoice extends BaseEntity {
         this.companyCityName = companyCityName;
     }
 
-    @Column
     public String getCompanyAddress() {
         return companyAddress;
     }
@@ -70,7 +90,7 @@ public class Invoice extends BaseEntity {
         this.companyAddress = companyAddress;
     }
 
-    @Column
+
     public String getCompanyVatNumber() {
         return companyVatNumber;
     }
@@ -79,7 +99,7 @@ public class Invoice extends BaseEntity {
         this.companyVatNumber = companyVatNumber;
     }
 
-    @Column
+
     public String getCompanyEmail() {
         return companyEmail;
     }
@@ -88,7 +108,7 @@ public class Invoice extends BaseEntity {
         this.companyEmail = companyEmail;
     }
 
-    @Column
+
     public String getCompanyBankName() {
         return companyBankName;
     }
@@ -97,7 +117,6 @@ public class Invoice extends BaseEntity {
         this.companyBankName = companyBankName;
     }
 
-    @Column
     public String getCompanyBankAccount() {
         return companyBankAccount;
     }
@@ -106,7 +125,6 @@ public class Invoice extends BaseEntity {
         this.companyBankAccount = companyBankAccount;
     }
 
-    @Column
     public String getCompanyManagerName() {
         return companyManagerName;
     }
@@ -123,12 +141,11 @@ public class Invoice extends BaseEntity {
         this.currencyCode = currencyCode;
     }
 
-    @Column
     public Long getBankAccountId() {
         return bankAccountId;
     }
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    @JoinColumn( name = "invoice_id", referencedColumnName = "id")
+
+
     public Set<CarInvoiced> getCarInvoiced() {
         return carInvoiced;
     }
@@ -141,7 +158,6 @@ public class Invoice extends BaseEntity {
         this.bankAccountId = bankAccountId;
     }
 
-    @Column
     public String getClientName() {
         return clientName;
     }
@@ -150,7 +166,6 @@ public class Invoice extends BaseEntity {
         this.clientName = clientName;
     }
 
-    @Column
     public String getClientEmail() {
         return clientEmail;
     }
@@ -159,7 +174,7 @@ public class Invoice extends BaseEntity {
         this.clientEmail = clientEmail;
     }
 
-    @Column
+
     public String getClientAddress() {
         return clientAddress;
     }
@@ -168,7 +183,6 @@ public class Invoice extends BaseEntity {
         this.clientAddress = clientAddress;
     }
 
-    @Column
     public String getClientCityName() {
         return clientCityName;
     }
@@ -177,7 +191,6 @@ public class Invoice extends BaseEntity {
         this.clientCityName = clientCityName;
     }
 
-    @Column
     public String getClientPhone() {
         return clientPhone;
     }
@@ -186,7 +199,7 @@ public class Invoice extends BaseEntity {
         this.clientPhone = clientPhone;
     }
 
-    @Column
+
     public BigDecimal getPrice() {
         return price;
     }
@@ -195,7 +208,7 @@ public class Invoice extends BaseEntity {
         this.price = price;
     }
 
-    @Column
+
     public Double getDiscount() {
         return discount;
     }
@@ -204,7 +217,7 @@ public class Invoice extends BaseEntity {
         this.discount = discount;
     }
 
-    @Column
+
     public BigDecimal getTotalPrice() {
         return totalPrice;
     }
@@ -213,7 +226,7 @@ public class Invoice extends BaseEntity {
         this.totalPrice = totalPrice;
     }
 
-    @Column
+
     public String getAuthorName() {
         return authorName;
     }
@@ -222,7 +235,7 @@ public class Invoice extends BaseEntity {
         this.authorName = authorName;
     }
 
-    @Column
+
     public LocalDate getDateCreate() {
         return dateCreate;
     }
@@ -231,7 +244,7 @@ public class Invoice extends BaseEntity {
         this.dateCreate = dateCreate;
     }
 
-    @Enumerated(EnumType.STRING)
+
     public CancellationInvoice getCancellationInvoice() {
         return cancellationInvoice;
     }
@@ -240,7 +253,6 @@ public class Invoice extends BaseEntity {
         this.cancellationInvoice = cancellationInvoice;
     }
 
-    @Column
     public LocalDate getCancelledDateInvoice() {
         return cancelledDateInvoice;
     }
@@ -248,7 +260,7 @@ public class Invoice extends BaseEntity {
     public void setCancelledDateInvoice(LocalDate cancelledDateInvoice) {
         this.cancelledDateInvoice = cancelledDateInvoice;
     }
-    @Column
+
     public Long getSaleId() {
         return saleId;
     }

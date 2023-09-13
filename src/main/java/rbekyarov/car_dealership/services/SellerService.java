@@ -12,13 +12,13 @@ import java.util.Optional;
 public interface SellerService {
     List<Seller> findAllSellers();
 
-    void addSeller(SellerDTO sellerDTO, HttpSession session);
+    void addSeller(SellerDTO sellerDTO);
 
     void removeSellerById(Long id);
 
     Optional<Seller> findById(Long id);
 
-    void editSeller(String firstName,String lastName,Position position,BigDecimal salary, Long id, HttpSession session);
+    void editSeller(String firstName,String lastName,Position position,BigDecimal salary, Long id);
 
     void addCommission(BigDecimal totalProfit, Long sellerId);
 }

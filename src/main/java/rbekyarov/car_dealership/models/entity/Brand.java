@@ -7,10 +7,15 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "brands")
 public class Brand extends BaseEntity {
+    @Column(unique = true, nullable = false)
     private String name;
-    private User author;
+    @ManyToOne
+    private UserEntity author;
+    @Column
     private LocalDate dateCreate;
-    private User editUser;
+    @ManyToOne
+    private UserEntity editUser;
+    @Column
     private LocalDate dateEdite;
     public Brand() {
     }
@@ -19,22 +24,13 @@ public class Brand extends BaseEntity {
         this.name = name;
     }
 
-    @Column(unique = true, nullable = false)
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
     }
 
     public LocalDate getDateCreate() {
@@ -44,15 +40,6 @@ public class Brand extends BaseEntity {
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
     }
-    @ManyToOne
-    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
-    public User getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(User editUser) {
-        this.editUser = editUser;
-    }
 
     public LocalDate getDateEdite() {
         return dateEdite;
@@ -60,5 +47,23 @@ public class Brand extends BaseEntity {
 
     public void setDateEdite(LocalDate dateEdite) {
         this.dateEdite = dateEdite;
+    }
+
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public Brand setAuthor(UserEntity author) {
+        this.author = author;
+        return this;
+    }
+
+    public UserEntity getEditUser() {
+        return editUser;
+    }
+
+    public Brand setEditUser(UserEntity editUser) {
+        this.editUser = editUser;
+        return this;
     }
 }

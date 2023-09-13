@@ -10,13 +10,13 @@ import java.util.Optional;
 public interface CurrencyService {
     List<Currency> findAllCurrencies();
 
-    void addCurrency(CurrencyDTO currencyDTO, HttpSession session);
+    void addCurrency(CurrencyDTO currencyDTO);
 
     void removeCurrencyById(Long id);
 
     Optional<Currency> findById(Long id);
 
-    void editCurrency(CurrencyDTO currencyDTO, Long id, HttpSession session);
+    void editCurrency(CurrencyDTO currencyDTO, Long id);
 
 
     Currency  findMainCurrency();

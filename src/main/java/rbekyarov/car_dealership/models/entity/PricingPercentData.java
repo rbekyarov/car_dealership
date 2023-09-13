@@ -8,14 +8,23 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "percents")
 public class PricingPercentData extends BaseEntity {
+    @Column
     private int percentSaleCar;
+    @Column
     private int percentSaleCarMin;
+    @Column
     private int percentCommission;
+    @Enumerated(EnumType.STRING)
     private ActivePricingPercentData activePricingPercentData;
+    @Column
     private int percentVAT;
-    private User author;
+    @ManyToOne
+    private UserEntity author;
+    @Column
     private LocalDate dateCreate;
-    private User editUser;
+    @ManyToOne
+    private UserEntity editUser;
+    @Column
     private LocalDate dateEdite;
 
     public PricingPercentData(int percentSaleCar, int percentSaleCarMin, int percentCommission, ActivePricingPercentData activePricingPercentData, int percentVAT) {
@@ -28,7 +37,7 @@ public class PricingPercentData extends BaseEntity {
 
     public PricingPercentData() {
     }
-@Column
+
     public int getPercentSaleCar() {
         return percentSaleCar;
     }
@@ -36,7 +45,7 @@ public class PricingPercentData extends BaseEntity {
     public void setPercentSaleCar(int percentSaleCar) {
         this.percentSaleCar = percentSaleCar;
     }
-    @Column
+
     public int getPercentSaleCarMin() {
         return percentSaleCarMin;
     }
@@ -44,7 +53,7 @@ public class PricingPercentData extends BaseEntity {
     public void setPercentSaleCarMin(int percentSaleCarMin) {
         this.percentSaleCarMin = percentSaleCarMin;
     }
-    @Column
+
     public int getPercentCommission() {
         return percentCommission;
     }
@@ -52,7 +61,7 @@ public class PricingPercentData extends BaseEntity {
     public void setPercentCommission(int percentCommission) {
         this.percentCommission = percentCommission;
     }
-    @Enumerated(EnumType.STRING)
+
     public ActivePricingPercentData getActivePricingPercentData() {
         return activePricingPercentData;
     }
@@ -60,7 +69,7 @@ public class PricingPercentData extends BaseEntity {
     public void setActivePricingPercentData(ActivePricingPercentData activePricingPercentData) {
         this.activePricingPercentData = activePricingPercentData;
     }
-    @Column
+
     public int getPercentVAT() {
         return percentVAT;
     }
@@ -69,31 +78,12 @@ public class PricingPercentData extends BaseEntity {
         this.percentVAT = percentVAT;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "author_id", referencedColumnName = "id")
-    public User getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
     public LocalDate getDateCreate() {
         return dateCreate;
     }
 
     public void setDateCreate(LocalDate dateCreate) {
         this.dateCreate = dateCreate;
-    }
-    @ManyToOne
-    @JoinColumn(name = "edit_user_id", referencedColumnName = "id")
-    public User getEditUser() {
-        return editUser;
-    }
-
-    public void setEditUser(User editUser) {
-        this.editUser = editUser;
     }
 
     public LocalDate getDateEdite() {
@@ -104,4 +94,21 @@ public class PricingPercentData extends BaseEntity {
         this.dateEdite = dateEdite;
     }
 
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public PricingPercentData setAuthor(UserEntity author) {
+        this.author = author;
+        return this;
+    }
+
+    public UserEntity getEditUser() {
+        return editUser;
+    }
+
+    public PricingPercentData setEditUser(UserEntity editUser) {
+        this.editUser = editUser;
+        return this;
+    }
 }

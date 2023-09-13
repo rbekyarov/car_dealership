@@ -38,13 +38,13 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createClient(@RequestBody @Valid ClientDTO clientDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> createClient(@RequestBody @Valid ClientDTO clientDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            clientService.addClient(clientDTO, session);
+            clientService.addClient(clientDTO);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -52,7 +52,7 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateClient(@PathVariable Long id, @RequestBody @Valid ClientDTO clientDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updateClient(@PathVariable Long id, @RequestBody @Valid ClientDTO clientDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
@@ -66,7 +66,7 @@ public class ClientController {
             String address = clientDTO.getAddress();
             ClientType clientType = clientDTO.getClientType();
 
-            clientService.editClient(name, email, vatOrId, phone, city, address, clientType, id, session);
+            clientService.editClient(name, email, vatOrId, phone, city, address, clientType, id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

@@ -1,34 +1,36 @@
 package rbekyarov.car_dealership.services.impl;
 
-import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.CompanyDTO;
 import rbekyarov.car_dealership.models.entity.Company;
-import rbekyarov.car_dealership.models.entity.User;
+import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.repository.CompanyRepository;
 import rbekyarov.car_dealership.repository.PictureRepository;
+import rbekyarov.car_dealership.repository.UserRepository;
 import rbekyarov.car_dealership.services.CompanyService;
-import rbekyarov.car_dealership.services.UserService;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
+    private final UserRepository userRepository;
+
     private final PictureRepository pictureRepository;
 
-    public CompanyServiceImpl(CompanyRepository companyRepository, ModelMapper modelMapper, UserService userService, PictureRepository pictureRepository) {
+    public CompanyServiceImpl(CompanyRepository companyRepository, ModelMapper modelMapper, UserRepository userRepository, PictureRepository pictureRepository) {
         this.companyRepository = companyRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
+        this.userRepository = userRepository;
         this.pictureRepository = pictureRepository;
     }
+
 
     @Override
     public List<Company> findAllCompanies() {
@@ -36,13 +38,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void addCompany(CompanyDTO companyDTO, HttpSession session) {
+    public void addCompany(CompanyDTO companyDTO) {
         Company company = modelMapper.map(companyDTO, Company.class);
         //company.setLogoName(pictureRepository.findById(companyDTO.getPictureId()).orElseThrow());
         //get and set Author
 
-        //company.setAuthor(userService.getAuthorFromSession(session));
-        company.setAuthor(userService.findById(1L).get());
+//        UserEntity user = getUserEntity();
+//        company.setAuthor(user);
+        company.setAuthor(userRepository.getUsersById(1L));
 
         // set dateCreated
         company.setDateCreate(LocalDate.now());
@@ -60,9 +63,10 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void editCompany(String name, Long pictureId, String country, String city, String address, String vatNumber, String email, String managerName, Long id, HttpSession session) {
-        User editUser = userService.getAuthorFromSession(session);
-        Long editUserId = editUser.getId();
+    public void editCompany(String name, Long pictureId, String country, String city, String address, String vatNumber, String email, String managerName, Long id) {
+//        UserEntity user = getUserEntity();
+//        Long editUserId = user.getId();
+        Long editUserId = 1L;
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();

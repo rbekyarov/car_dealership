@@ -14,13 +14,13 @@ import java.util.Set;
 public interface CarService {
     List<Car> findAllCars();
 
-    void addCar(CarDTO carDTO, Set<Picture>pictures, HttpSession session);
+    void addCar(CarDTO carDTO, Set<Picture>pictures);
 
     void removeCarById(Long id);
 
     Optional<Car> findById(Long id);
 
-    void editCar(CarDTO carDTO,Set<Picture>pictures, Long id, HttpSession session);
+    void editCar(CarDTO carDTO,Set<Picture>pictures, Long id);
 
     BigDecimal calculatePriceOnCars(Set<Long> carsIds);
 

@@ -1,46 +1,50 @@
 package rbekyarov.car_dealership.services.impl;
 
-import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.OfferDTO;
 import rbekyarov.car_dealership.models.entity.Car;
 import rbekyarov.car_dealership.models.entity.Currency;
 import rbekyarov.car_dealership.models.entity.Offer;
+import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.models.entity.enums.StatusOffer;
 import rbekyarov.car_dealership.repository.CostRepository;
 import rbekyarov.car_dealership.repository.OfferRepository;
+import rbekyarov.car_dealership.repository.UserRepository;
 import rbekyarov.car_dealership.services.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
+
 
 @Service
 public class OfferServiceImpl implements OfferService {
     private final OfferRepository offerRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
     private final CarService carService;
     private final ClientService clientService;
     private final SellerService sellerService;
     private final CompanyService companyService;
     private final CurrencyService currencyService;
     private final CostRepository costRepository;
+    private final UserRepository userRepository;
 
-    public OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper, UserService userService, CarService carService, ClientService clientService, SellerService sellerService,
-                            CompanyService companyService, CurrencyService currencyService, CostRepository costRepository) {
+
+    public OfferServiceImpl(OfferRepository offerRepository, ModelMapper modelMapper, CarService carService, ClientService clientService, SellerService sellerService, CompanyService companyService, CurrencyService currencyService, CostRepository costRepository, UserRepository userRepository) {
         this.offerRepository = offerRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
         this.carService = carService;
         this.clientService = clientService;
         this.sellerService = sellerService;
         this.companyService = companyService;
         this.currencyService = currencyService;
         this.costRepository = costRepository;
+        this.userRepository = userRepository;
     }
+
 
     @Override
     public List<Offer> findAllOffers() {
@@ -48,7 +52,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public void addOffer(OfferDTO offerDTO, HttpSession session) {
+    public void addOffer(OfferDTO offerDTO) {
         Offer offer = new Offer();
         Set<Long> carIds = offerDTO.getCarIds();
 
@@ -79,8 +83,9 @@ public class OfferServiceImpl implements OfferService {
         offer.setCompany(companyService.findById(offerDTO.getCompanyId()).orElseThrow());
 
         //get and set Author
-        //offer.setAuthor(userService.getAuthorFromSession(session));
-        offer.setAuthor(userService.findById(1L).get());
+//        UserEntity user = getUserEntity();
+//        offer.setAuthor(user);
+        offer.setAuthor(userRepository.getUsersById(1L));
 
         // set dateCreated
         offer.setDateCreate(LocalDate.now());
@@ -102,7 +107,7 @@ public class OfferServiceImpl implements OfferService {
     }
 
     @Override
-    public void editOffer(OfferDTO offerDTO, Long id, HttpSession session) {
+    public void editOffer(OfferDTO offerDTO, Long id) {
 
         Set<Long> carIds = offerDTO.getCarIds();
 
@@ -133,9 +138,9 @@ public class OfferServiceImpl implements OfferService {
         Long companyId = offerDTO.getCompanyId();
 
 
-         //User editUser = userService.getAuthorFromSession(session);
-         //Long editUserId = editUser.getId();
-         Long editUserId = 1L;
+//        UserEntity user = getUserEntity();
+//        Long editUserId = user.getId();
+        Long editUserId = 1L;
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();

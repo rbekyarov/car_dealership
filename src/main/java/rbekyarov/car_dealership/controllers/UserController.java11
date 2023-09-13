@@ -8,15 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import rbekyarov.car_dealership.exception.ResourceNotFoundException;
-import rbekyarov.car_dealership.models.dto.BrandDTO;
 import rbekyarov.car_dealership.models.dto.UserDTO;
 import rbekyarov.car_dealership.models.dto.UserRegisterDTO;
-import rbekyarov.car_dealership.models.entity.Brand;
-import rbekyarov.car_dealership.models.entity.User;
 import rbekyarov.car_dealership.models.entity.enums.Position;
 import rbekyarov.car_dealership.models.entity.enums.Role;
-import rbekyarov.car_dealership.services.BrandService;
-import rbekyarov.car_dealership.services.UserService;
 
 import java.util.HashMap;
 import java.util.List;

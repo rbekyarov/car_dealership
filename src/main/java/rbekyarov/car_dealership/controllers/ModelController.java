@@ -37,13 +37,13 @@ public class ModelController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createModel(@RequestBody @Valid ModelDTO modelDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> createModel(@RequestBody @Valid ModelDTO modelDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            modelService.addModel(modelDTO, session);
+            modelService.addModel(modelDTO);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -51,7 +51,7 @@ public class ModelController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateModel(@PathVariable Long id, @RequestBody @Valid ModelDTO modelDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updateModel(@PathVariable Long id, @RequestBody @Valid ModelDTO modelDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
@@ -59,7 +59,7 @@ public class ModelController {
         } else {
             String name = modelDTO.getName();
             Long brandId = modelDTO.getBrandId();
-            modelService.editModel(name, brandId, id, session);
+            modelService.editModel(name, brandId, id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

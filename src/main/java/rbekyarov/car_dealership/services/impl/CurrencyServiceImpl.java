@@ -5,28 +5,32 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.CurrencyDTO;
 import rbekyarov.car_dealership.models.entity.Currency;
-import rbekyarov.car_dealership.models.entity.User;
+import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.models.entity.enums.IsMainCurrency;
 import rbekyarov.car_dealership.repository.CurrencyRepository;
+import rbekyarov.car_dealership.repository.UserRepository;
 import rbekyarov.car_dealership.services.CurrencyService;
-import rbekyarov.car_dealership.services.UserService;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
 
 @Service
 public class CurrencyServiceImpl implements CurrencyService {
 
     private final CurrencyRepository currencyRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public CurrencyServiceImpl(CurrencyRepository currencyRepository, ModelMapper modelMapper, UserService userService) {
+    public CurrencyServiceImpl(CurrencyRepository currencyRepository, ModelMapper modelMapper,
+                               UserRepository userRepository) {
         this.currencyRepository = currencyRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
+        this.userRepository = userRepository;
     }
+
 
     @Override
     public List<Currency> findAllCurrencies() {
@@ -34,11 +38,12 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public void addCurrency(CurrencyDTO currencyDTO, HttpSession session) {
+    public void addCurrency(CurrencyDTO currencyDTO) {
         Currency currency = modelMapper.map(currencyDTO, Currency.class);
         //get and set Author
-        // currency.setAuthor(userService.getAuthorFromSession(session));
-        currency.setAuthor(userService.findById(1L).get());
+//        UserEntity user = getUserEntity();
+//        currency.setAuthor(user);
+        currency.setAuthor(userRepository.getUsersById(1L));
         // set dateCreated
         currency.setDateCreate(LocalDate.now());
 
@@ -65,15 +70,15 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public void editCurrency(CurrencyDTO currencyDTO, Long id, HttpSession session) {
+    public void editCurrency(CurrencyDTO currencyDTO, Long id) {
         String code = currencyDTO.getCode();
         String name = currencyDTO.getName();
         double exchangeRate = currencyDTO.getExchangeRate();
         IsMainCurrency isMainCurrency = currencyDTO.getIsMainCurrency();
 
-        User editUser = userService.getAuthorFromSession(session);
-        Long editUserId = editUser.getId();
-
+//        UserEntity user = getUserEntity();
+//        Long editUserId = user.getId();
+        Long editUserId = 1L;
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 

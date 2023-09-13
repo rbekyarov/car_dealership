@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import rbekyarov.car_dealership.models.entity.User;
+import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.models.entity.enums.Position;
 import rbekyarov.car_dealership.models.entity.enums.Role;
 
@@ -14,25 +14,40 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
-    Optional<User> findByUsername(String username);
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
-    @Query("select u from User as u order by u.id asc ")
-    List<User> findAllUserById();
+    Optional<UserEntity> findByEmail(String email);
 
-    Optional<User> findById(Long id);
+
+    @Query("SELECT u FROM UserEntity u WHERE u.email = :email")
+    UserEntity getUserByEmail(@Param("email") String email);
+    @Query("SELECT u FROM UserEntity u WHERE u.username = :username")
+    Optional<UserEntity> findByUsername(@Param("username")String username);
+
+    UserEntity getUserEntityByUsername(String username);
+
+    UserEntity getUsersById(Long id);
+
+    Optional<UserEntity> findByUsernameAndPassword(String username, String password);
+
+
+    Optional<UserEntity> findUserEntityByEmail(String email);
 
     @Transactional
     @Modifying
-    @Query("update User as u SET u.email=:email,u.role=:role, u.position=:position where u.id=:id ")
-    void editUser(@Param("email") String email,
-                  @Param("role") Role role,
-                  @Param("position") Position position,
-                  @Param("id") Long id);
+    @Query("update UserEntity as u SET  u.username=:username where u.id=:id ")
+    void editUsername(@Param("id") Long id,
+                      @Param("username") String username);
+
     @Transactional
     @Modifying
-    @Query("update User as u SET u.password=:password, u.username=:username where u.id=:id ")
-    void editUserPassword(@Param("password") String password,
-                          @Param("id") Long id,
-                          @Param("username") String username);
+    @Query("update UserEntity as u SET  u.password=:password where u.id=:id ")
+    void editUserPassword(@Param("id") Long id,
+                          @Param("password") String password);
+
+    @Query("select u from UserEntity as u order by u.id asc ")
+    List<UserEntity> findAllUserById();
+
+    Object findByEmailOrUsername(String email, String username);
+
 }

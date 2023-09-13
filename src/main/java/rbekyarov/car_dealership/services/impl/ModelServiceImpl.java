@@ -1,35 +1,35 @@
 package rbekyarov.car_dealership.services.impl;
 
-import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.ModelDTO;
-import rbekyarov.car_dealership.models.entity.Brand;
 import rbekyarov.car_dealership.models.entity.Model;
-import rbekyarov.car_dealership.models.entity.User;
+import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.repository.BrandRepository;
 import rbekyarov.car_dealership.repository.ModelRepository;
+import rbekyarov.car_dealership.repository.UserRepository;
 import rbekyarov.car_dealership.services.ModelService;
-import rbekyarov.car_dealership.services.UserService;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
+
 @Service
 public class ModelServiceImpl implements ModelService {
     private final ModelRepository modelRepository;
     private final ModelMapper modelMapper;
-    private final UserService userService;
     private final BrandRepository brandRepository;
+    private final UserRepository userRepository;
 
-    public ModelServiceImpl(ModelRepository modelRepository, ModelMapper modelMapper, UserService userService,
-                            BrandRepository brandRepository) {
+    public ModelServiceImpl(ModelRepository modelRepository, ModelMapper modelMapper, BrandRepository brandRepository, UserRepository userRepository) {
         this.modelRepository = modelRepository;
         this.modelMapper = modelMapper;
-        this.userService = userService;
         this.brandRepository = brandRepository;
+        this.userRepository = userRepository;
     }
+
 
     @Override
     public List<Model> findAllModels() {
@@ -37,10 +37,12 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public void addModel(ModelDTO modelDTO, HttpSession session) {
+    public void addModel(ModelDTO modelDTO) {
         Model model = modelMapper.map(modelDTO, Model.class);
         model.setBrand(brandRepository.findById(modelDTO.getBrandId()).orElseThrow());
-        model.setAuthor(userService.getAuthorFromSession(session));
+//        UserEntity user = getUserEntity();
+//        model.setAuthor(user);
+        model.setAuthor(userRepository.getUsersById(1L));
         // set dateCreated
         model.setDateCreate(LocalDate.now());
         modelRepository.save(model);
@@ -57,9 +59,10 @@ public class ModelServiceImpl implements ModelService {
     }
 
     @Override
-    public void editModel(String name, Long brandId, Long id, HttpSession session) {
-        User editUser = userService.getAuthorFromSession(session);
-        Long editUserId = editUser.getId();
+    public void editModel(String name, Long brandId, Long id) {
+//        UserEntity user = getUserEntity();
+//        Long editUserId = user.getId();
+        Long editUserId = 1L;
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();

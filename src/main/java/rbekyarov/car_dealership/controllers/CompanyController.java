@@ -37,13 +37,13 @@ public class CompanyController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createCompany(@RequestBody @Valid CompanyDTO companyDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> createCompany(@RequestBody @Valid CompanyDTO companyDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
             return new ResponseEntity<>(errorsMap, HttpStatus.BAD_REQUEST);
         } else {
-            companyService.addCompany(companyDTO, session);
+            companyService.addCompany(companyDTO);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
@@ -51,7 +51,7 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody @Valid CompanyDTO companyDTO, HttpSession session, BindingResult bindingResult) {
+    public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody @Valid CompanyDTO companyDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
@@ -66,7 +66,7 @@ public class CompanyController {
             String email = companyDTO.getEmail();
             String managerName = companyDTO.getManagerName();
 
-            companyService.editCompany(name, pictureId, country, city, address, vatNumber, email, managerName, id, session);
+            companyService.editCompany(name, pictureId, country, city, address, vatNumber, email, managerName, id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }

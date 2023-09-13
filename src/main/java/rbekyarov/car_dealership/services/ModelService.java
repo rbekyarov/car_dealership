@@ -13,11 +13,11 @@ public interface ModelService {
 
     List<Model> findAllModels();
 
-    void addModel(ModelDTO modelDTO, HttpSession session);
+    void addModel(ModelDTO modelDTO);
 
     void removeModelById(Long id);
 
     Optional<Model> findById(Long id);
 
-    void editModel(String name,Long brandId, Long id, HttpSession session);
+    void editModel(String name,Long brandId, Long id);
 }

@@ -1,14 +1,13 @@
 package rbekyarov.car_dealership.services.impl;
 
-import jakarta.servlet.http.HttpSession;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.dto.PictureDTO;
 import rbekyarov.car_dealership.models.entity.Picture;
-import rbekyarov.car_dealership.models.entity.User;
+import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.repository.PictureRepository;
+import rbekyarov.car_dealership.repository.UserRepository;
 import rbekyarov.car_dealership.services.PictureService;
-import rbekyarov.car_dealership.services.UserService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -18,20 +17,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
+
 @Service
 public class PictureServiceImpl implements PictureService {
 
     private final ModelMapper modelMapper;
-    private final UserService userService;
     private final PictureRepository pictureRepository;
+    private final UserRepository userRepository;
 
-    public PictureServiceImpl( ModelMapper modelMapper, UserService userService,
-                              PictureRepository pictureRepository) {
 
+    public PictureServiceImpl(ModelMapper modelMapper, PictureRepository pictureRepository, UserRepository userRepository) {
         this.modelMapper = modelMapper;
-        this.userService = userService;
         this.pictureRepository = pictureRepository;
+        this.userRepository = userRepository;
     }
+
 
     @Override
     public List<Picture> findAllPictures() {
@@ -39,14 +40,16 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public void addPicture(PictureDTO pictureDTO, HttpSession session) {
+    public void addPicture(PictureDTO pictureDTO) {
         Picture picture = modelMapper.map(pictureDTO, Picture.class);
         //Change picture name
         String name = changePictureName(pictureDTO.getName());
-        picture.setName(name);
+      picture.setName(name);
+
         //get and set Author
-        //picture.setAuthor(userService.getAuthorFromSession(session));
-        picture.setAuthor(userService.findById(1L).get());
+//        UserEntity user = getUserEntity();
+//        picture.setAuthor(user);
+        picture.setAuthor(userRepository.getUsersById(1L));
         // set dateCreated
         picture.setDateCreate(LocalDate.now());
         pictureRepository.saveAndFlush(picture);
@@ -65,9 +68,11 @@ public class PictureServiceImpl implements PictureService {
     }
 
     @Override
-    public void editPicture(String name, Long id, HttpSession session) {
-        User editUser = userService.getAuthorFromSession(session);
-        Long editUserId = editUser.getId();
+    public void editPicture(String name, Long id) {
+//        UserEntity user = getUserEntity();
+//        Long editUserId = user.getId();
+
+        Long editUserId = 1L;
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();

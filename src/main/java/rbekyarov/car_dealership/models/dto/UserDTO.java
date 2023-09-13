@@ -1,43 +1,43 @@
 package rbekyarov.car_dealership.models.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import rbekyarov.car_dealership.models.entity.Role;
 import rbekyarov.car_dealership.models.entity.enums.Position;
-import rbekyarov.car_dealership.models.entity.enums.Role;
 
 public class UserDTO {
-    private Long id;
+    @Size(min = 3, max = 20, message = "Username length must be between 3 and 20 characters!")
+    @NotNull
     private String username;
+    private String firstName;
+    private String lastName;
+    @NotNull
+    @Size(min = 3, max = 20, message = "Password length must be between 3 and 20 characters!")
     private String password;
-    private String confirmPassword;
+    @NotNull()
+    private String repeatPassword;
+    @Email
+    @NotEmpty(message = "Email Cannot be empty")
     private String email;
-    private Role role;
+    private Long roleId;
     private Position position;
-
-    public UserDTO(String username, String password, String confirmPassword, String email, Role role, Position position) {
-        this.username = username;
-        this.password = password;
-        this.confirmPassword = confirmPassword;
-        this.email = email;
-        this.role = role;
-        this.position = position;
-    }
-
-    public UserDTO(String password, String confirmPassword) {
-        this.password = password;
-        this.confirmPassword = confirmPassword;
-    }
 
     public UserDTO() {
     }
 
-    public Long getId() {
-        return id;
+    public UserDTO(String username, String firstName, String lastName, String password, String repeatPassword, String email, Long roleId, Position position) {
+        this.username = username;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.repeatPassword = repeatPassword;
+        this.email = email;
+        this.roleId = roleId;
+        this.position = position;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
     @Size(min = 3, max = 20, message = "Username length must be between 3 and 20 characters!")
     @NotNull
     public String getUsername() {
@@ -57,14 +57,6 @@ public class UserDTO {
         this.password = password;
     }
 
-    public String getConfirmPassword() {
-        return confirmPassword;
-    }
-
-    public void setConfirmPassword(String confirmPassword) {
-        this.confirmPassword = confirmPassword;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -73,12 +65,40 @@ public class UserDTO {
         this.email = email;
     }
 
-    public Role getRole() {
-        return role;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public UserDTO setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public UserDTO setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public String getRepeatPassword() {
+        return repeatPassword;
+    }
+
+    public UserDTO setRepeatPassword(String repeatPassword) {
+        this.repeatPassword = repeatPassword;
+        return this;
+    }
+
+    public Long getRoleId() {
+        return roleId;
+    }
+
+    public UserDTO setRoleId(Long roleId) {
+        this.roleId = roleId;
+        return this;
     }
 
     public Position getPosition() {
