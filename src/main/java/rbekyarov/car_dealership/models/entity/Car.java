@@ -1,6 +1,8 @@
 package rbekyarov.car_dealership.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import rbekyarov.car_dealership.models.entity.enums.*;
@@ -14,17 +16,20 @@ import java.util.Set;
 public class Car extends BaseEntity {
     @Column
     private String name;
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-
+    @OneToMany(mappedBy = "car", cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = {"author", "dateCreate","editUser", "dateEdite","car"})
     private Set<Picture> pictures;
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-
+    @ManyToMany(mappedBy = "cars",cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<Offer> offers;
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+
+    @ManyToMany(mappedBy = "cars",cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Sale> sales;
     @Column
     private String vinNumber;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"author", "dateCreate","editUser", "dateEdite"})
+//value = {"propertyNameOfNestedObject.propertyNameToIgnore"
     private Model model;
     @Enumerated(EnumType.STRING)
     private Transmision transmision;
@@ -41,8 +46,11 @@ public class Car extends BaseEntity {
     @Column
     private DoorCount doorCount;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"country", "city", "address","vatNumber", "email", "author","dateCreate", "editUser", "dateEdite"})
     private Vendor vendorPurchase;
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "car",cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = {"vendor", "car", "dateCost","invoiceNo", "currency", "amount","author", "dateCreate", "editUser","dateEdite"})
+
     private Set<Cost> costs;
     @Enumerated(EnumType.STRING)
     private Eurostandard eurostandard;
@@ -94,6 +102,7 @@ public class Car extends BaseEntity {
     private LocalDate dateCreate;
 
     //Prices:
+    @JsonIgnoreProperties(value = {"exchangeRate","isMainCurrency","author","dateCreate","editUser","dateEdite"})
     @ManyToOne
     private Currency currency;
     @Column
@@ -111,8 +120,10 @@ public class Car extends BaseEntity {
 
     //author
     @ManyToOne
+    @JsonIgnoreProperties(value = {"firstName", "lastName", "email","roles", "position"})
     private UserEntity author;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"firstName", "lastName", "email","roles", "position"})
     private UserEntity editUser;
     @Column
     private LocalDate dateEdite;

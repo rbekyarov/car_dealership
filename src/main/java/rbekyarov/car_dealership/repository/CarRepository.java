@@ -1,6 +1,5 @@
 package rbekyarov.car_dealership.repository;
 
-import jakarta.persistence.Column;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,7 +12,6 @@ import rbekyarov.car_dealership.models.entity.enums.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public interface CarRepository extends JpaRepository<Car,Long> {
@@ -84,15 +82,19 @@ public interface CarRepository extends JpaRepository<Car,Long> {
             value = "update cars as c set c.offer_id = :i where c.id = :id")
     void updateCarOfferIdField(@Param("id") Long id, @Param("i") int i);
     @Query(nativeQuery = true,
-            value = "SELECT * FROM cars WHERE offer_id = :id")
+            value = "SELECT * FROM cars JOIN offer_car ON car_id =:id")
+
     List<Car> findAllCarsOnThisOfferId(@Param("id") Long id);
     @Transactional
     @Modifying
     @Query(nativeQuery = true,
-            value = "UPDATE cars SET offer_id = null WHERE id = :id")
-    void clearValueOfferIdOnThisCar(@Param("id") Long id);
-
-
+            value = "DELETE FROM offer_car WHERE car_id= :carId and offer_id= :offerId")
+    void deleteCarIdAndOfferId(@Param("carId") Long carId, @Param("offerId") Long offerId);
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "DELETE FROM sale_car WHERE car_id= :carId and sale_id= :saleId")
+    void deleteCarIdAndSaleId(Long carId, Long saleId);
     @Transactional
     @Modifying
     @Query("update Car as c SET c.priceProfit=:profit where c.id=:id ")
@@ -113,4 +115,6 @@ public interface CarRepository extends JpaRepository<Car,Long> {
     @Modifying
     @Query("update Car as c SET c.statusAvailable= 'Available' where c.id=:id ")
     void updateStatusAvailableAvailable(@Param("id")Long id);
+
+
 }

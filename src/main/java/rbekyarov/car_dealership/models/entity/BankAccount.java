@@ -1,30 +1,38 @@
 package rbekyarov.car_dealership.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Entity
 @Table(name = "bank_accounts")
 public class BankAccount extends BaseEntity{
     @Column
     private String name;
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = {"name","logoName","country","city","address","vatNumber","email","managerName","bankAccounts","author","dateCreate","editUser","dateEdite"})
     private Company company;
     @Column
     private String bankName;
     @Column
     private String accountNumber;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"exchangeRate","isMainCurrency","author","dateCreate","editUser","dateEdite"})
+
     private Currency currency;
     @Column
     private BigDecimal balance;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"firstName", "lastName", "email","roles", "position"})
     private UserEntity author;
     @Column
     private LocalDate dateCreate;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"firstName", "lastName", "email","roles", "position"})
     private UserEntity editUser;
     @Column
     private LocalDate dateEdite;

@@ -16,8 +16,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
-import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
-
 
 @Service
 public class SaleServiceImpl implements SaleService {
@@ -137,15 +135,16 @@ public class SaleServiceImpl implements SaleService {
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        //Clear
-        List<Car> carList = carService.findAllCarsOnThisOfferId(id);
-        carService.clearValueOfferIdsOnThisCars(carList);
+        //Delete
+        for (Long carId : carIds) {
+            carService.deleteCarIdAndSaleId(carId, id);
+        }
 
         saleRepository.editSale(price, totalPrice, discount, saleDTOStatusSalesInvoiced, clientId, sellerId, id, editUserId, dateEdit,companyId);
 
-        //Change
-        Set<Car> cars = carService.addCarInOfferAndSale(carIds);
-        carService.updateCarOfferIdFields(cars, id);
+//        //Change
+//        Set<Car> cars = carService.addCarInOfferAndSale(carIds);
+//        carService.updateCarOfferIdFields(cars, id);
 
     }
 

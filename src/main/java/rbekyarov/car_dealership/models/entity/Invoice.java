@@ -1,12 +1,14 @@
 package rbekyarov.car_dealership.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import rbekyarov.car_dealership.models.entity.enums.CancellationInvoice;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Set;
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Entity
 @Table(name = "invoices")
 public class Invoice extends BaseEntity {

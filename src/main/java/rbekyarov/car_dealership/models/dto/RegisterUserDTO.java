@@ -28,7 +28,7 @@ public class RegisterUserDTO {
     @NotEmpty(message = "Email Cannot be empty")
     private String email;
 
-    private String name;
+
 
 
     public RegisterUserDTO() {
@@ -91,11 +91,4 @@ public class RegisterUserDTO {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

@@ -1,6 +1,7 @@
 package rbekyarov.car_dealership.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 import rbekyarov.car_dealership.models.entity.enums.Position;
@@ -18,11 +19,15 @@ public class Seller extends BaseEntity {
     private String lastName;
     @Enumerated(EnumType.STRING)
     private Position position;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn( name = "seller_id", referencedColumnName = "id")
+    @JsonIgnoreProperties(value = {"cars", "offers", "client","company", "statusOffer", "currency","price","discount","totalPrice","dateCreate","author","editUser","dateEdite"})
+
     private Set<Offer> offers;
     @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn( name = "seller_id", referencedColumnName = "id")
+    @JsonIgnoreProperties(value = {"seller", "statusSalesInvoiced","cars", "offers", "client","company", "statusOffer", "currency","price","discount","totalPrice","dateCreate","author","editUser","dateEdite"})
+
     private Set<Sale> sales;
     @Column
     private BigDecimal salary;
@@ -31,10 +36,12 @@ public class Seller extends BaseEntity {
     @Column
     private BigDecimal totalProfit;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"firstName", "lastName", "email","roles", "position"})
     private UserEntity author;
     @Column
     private LocalDate dateCreate;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"firstName", "lastName", "email","roles", "position"})
     private UserEntity editUser;
     @Column
     private LocalDate dateEdite;

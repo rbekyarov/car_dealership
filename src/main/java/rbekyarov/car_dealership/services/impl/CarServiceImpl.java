@@ -15,8 +15,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
-import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
-
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -156,11 +154,13 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public void clearValueOfferIdsOnThisCars(List<Car> carList) {
-        for (Car car : carList) {
-            carRepository.clearValueOfferIdOnThisCar(car.getId());
-        }
+    public void deleteCarIdAndOfferId(Long carId, Long offerId) {
+        carRepository.deleteCarIdAndOfferId(carId,offerId);
+    }
 
+    @Override
+    public void deleteCarIdAndSaleId(Long carId, Long saleId) {
+        carRepository.deleteCarIdAndSaleId(carId,saleId);
     }
 
     @Override
@@ -196,6 +196,7 @@ public class CarServiceImpl implements CarService {
         addOrEditPicturesForCar(pictures, id, pictureSetChanged);
         //Add Pictures in database
         addPictureInCarAndAddPictureInRepo(pictures);
+
         //Calculate Prices
         Car car = carRepository.findById(id).get();
 

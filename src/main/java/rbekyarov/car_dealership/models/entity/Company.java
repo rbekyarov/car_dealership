@@ -1,10 +1,13 @@
 package rbekyarov.car_dealership.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Set;
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Entity
 @Table(name = "companies")
 public class Company extends BaseEntity {
@@ -26,12 +29,15 @@ public class Company extends BaseEntity {
     private String managerName;
     @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id", referencedColumnName = "id")
+    @JsonIgnoreProperties(value = {"name", "company", "bankName","accountNumber", "currency","balance","author","dateCreate","editUser","dateEdite"})
     private Set<BankAccount> bankAccounts;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"firstName", "lastName", "email","roles", "position"})
     private UserEntity author;
     @Column
     private LocalDate dateCreate;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"firstName", "lastName", "email","roles", "position"})
     private UserEntity editUser;
     @Column
     private LocalDate dateEdite;

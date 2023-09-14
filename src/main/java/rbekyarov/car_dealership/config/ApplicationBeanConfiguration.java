@@ -6,17 +6,24 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.client.RestTemplate;
 import rbekyarov.car_dealership.interceptor.RequestProcessingTimeInterceptor;
 import rbekyarov.car_dealership.models.entity.RoleEnum;
 import rbekyarov.car_dealership.repository.UserRepository;
 import rbekyarov.car_dealership.services.ApplicationUserDetailsService;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
+@EnableWebSecurity
 @Configuration
 public class ApplicationBeanConfiguration {
     private final UserRepository userRepository;
@@ -27,41 +34,18 @@ public class ApplicationBeanConfiguration {
 
 //    @Bean
 //    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.
-//                authorizeHttpRequests()
-//                .requestMatchers("/error", "/login-error", "/login", "/show/comments", "/all-comments").permitAll()
-//                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-//                .requestMatchers("/", "/home", "/register", "/medical-procedures", "/spa-procedures",
-//                        "/sapropel/details/**",
-//                        "/laser/details/**", "/spa-rituals/details/**", "/spa-services/details/**",
-//                        "/SapropelProcedures/**", "/SPARituals/spa-rituals", "/SPACenter/spa-center",
-//                        "/LaserProcedures/laser-procedures", "/LaserProcedures/laser/details/**").permitAll()
-//                .requestMatchers("/logout", "/cart", "/sapropel/buy/**", "/sapropel/delete/**", "/comment/add/**",
-//                        "/spa-services/**", "/spa-rituals/**", "/laser/buy/**", "/laser/delete/**", "/change/username").authenticated()
-//                .requestMatchers("/").hasRole(RoleEnum.USER.name())
-//                .requestMatchers("/medical/add/**", "/laser/add/**", "/spa/add/**")
-//                .hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.MODERATOR.name())
-//                .requestMatchers("/change/role", "comment/delete/**", "/delete/procedureFromDB/**").hasRole(RoleEnum.ADMIN.name())
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/login")
-//                .usernameParameter("username")
-//                .passwordParameter("password")
-//                .defaultSuccessUrl("/home?login", true)
-//                .failureForwardUrl("/login-error")
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout")
-//                .logoutSuccessUrl("/home?logout")
-//                .deleteCookies("JSESSIONID")
-//                .clearAuthentication(true)
-//                .and()
-//                .rememberMe()
-//                .key("someUniqueKey")
-//                .tokenValiditySeconds(300)
-//                .userDetailsService(userDetailsService(userRepository));
+//        RequestMatcher antMatcher = new AntPathRequestMatcher("/api/**");
 //
+//        http
+//                .authorizeRequests(authorizeRequests ->
+//                        authorizeRequests
+//                                .requestMatchers(antMatcher).permitAll() // Прилагайте филтър само за тези заявки и разрешете всички
+//                                .antMatchers("/api/public").permitAll() // Разрешете публичен достъп
+//                                .anyRequest().authenticated() // Изискайте аутентикация за останалите заявки
+//                )
+//                .csrf().disable(); // Отключване на CSRF, ако не е необходим
+//
+//        // Други конфигурации, ако са необходими...
 //
 //        return http.build();
 //    }

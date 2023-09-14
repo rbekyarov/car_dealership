@@ -1,32 +1,42 @@
 package rbekyarov.car_dealership.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Entity
 @Table(name = "costs")
 public class Cost extends BaseEntity {
     @ManyToOne
+    @JsonIgnoreProperties(value = {"name", "country", "city","address", "vatNumber","email","author","dateCreate","editUser","dateEdite"})
+
     private Vendor vendor;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"name", "pictures", "offers","sales", "vinNumber","model","transmision","fuelType","horsepower","cubature","conditionCar", "color","doorCount","vendorPurchase","costs","eurostandard","category","comments", "autoStartStop","metallic","serviceBook","alarm","leatherSalon","halogenHeadlights","parktronik","airbags","elMirrors","elWindows","climatic", "navigation","statusAvailable","regDate","datePurchase","dateIncome","dateSold","dateCreate","currency","pricePurchase", "priceCosts","priceSaleMin","priceSale","priceProfit","priceCommission","author","editUser","dateEdite"})
+    @JoinColumn(name = "cost_id")
     private Car car;
     @Column
     private String description;
     @Column
     private String invoiceNo;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"exchangeRate","isMainCurrency","author","dateCreate","editUser","dateEdite"})
     private Currency currency;
     @Column
     private BigDecimal amount;
     @Column
     private LocalDate dateCost;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"firstName", "lastName", "email","roles", "position"})
     private UserEntity author;
     @Column
     private LocalDate dateCreate;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"firstName", "lastName", "email","roles", "position"})
     private UserEntity editUser;
     @Column
     private LocalDate dateEdite;

@@ -1,6 +1,5 @@
 package rbekyarov.car_dealership.services;
 
-import jakarta.servlet.http.HttpSession;
 import rbekyarov.car_dealership.models.dto.CarDTO;
 import rbekyarov.car_dealership.models.entity.Car;
 import rbekyarov.car_dealership.models.entity.Picture;
@@ -32,7 +31,8 @@ public interface CarService {
 
     List<Car> findAllCarsOnThisOfferId(Long id);
 
-    void clearValueOfferIdsOnThisCars(List<Car> carList);
+    void deleteCarIdAndOfferId(Long carId, Long offerId);
+    void deleteCarIdAndSaleId(Long carId, Long saleId);
 
     void updateProfitForCar(BigDecimal profit,Long id);
 
@@ -43,4 +43,6 @@ public interface CarService {
     void updateDateSold(LocalDate dateSold, Long id);
 
     void updateStatusAvailableAvailable(Long id);
+
+
 }

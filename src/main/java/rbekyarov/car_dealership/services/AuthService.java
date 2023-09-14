@@ -18,6 +18,7 @@ import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.repository.RoleRepository;
 import rbekyarov.car_dealership.repository.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,7 +38,15 @@ public class AuthService {
         this.roleRepository = roleRepository;
     }
 
-    public boolean login(Authentication authenticationFromFrontEnd){
+    public List<UserEntity> findAllUserById() {
+        return userRepository.findAll();
+    }
+
+    public Optional<UserEntity> findById(Long id) {
+        return userRepository.findById(id);
+    }
+
+    public boolean login(Authentication authenticationFromFrontEnd) {
 
         SecurityContextHolder.setContext(new SecurityContext() {
             @Override
@@ -83,7 +92,8 @@ public class AuthService {
 
         return true;
     }
-
+    public void removeUserById(Long id) {
+    }
 
     public void addUser(UserDTO userDTO) {
         if (userDTO.getPassword().equals(userDTO.getRepeatPassword())) {
@@ -127,5 +137,7 @@ public class AuthService {
                 userDetails.getAuthorities()
         );
     }
+
+
 
 }

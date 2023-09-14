@@ -6,7 +6,6 @@ import rbekyarov.car_dealership.models.dto.OfferDTO;
 import rbekyarov.car_dealership.models.entity.Car;
 import rbekyarov.car_dealership.models.entity.Currency;
 import rbekyarov.car_dealership.models.entity.Offer;
-import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.models.entity.enums.StatusOffer;
 import rbekyarov.car_dealership.repository.CostRepository;
 import rbekyarov.car_dealership.repository.OfferRepository;
@@ -16,8 +15,6 @@ import rbekyarov.car_dealership.services.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
-
-import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
 
 
 @Service
@@ -115,6 +112,7 @@ public class OfferServiceImpl implements OfferService {
         BigDecimal price = carService.calculatePriceOnCars(carIds);
 
 
+
         //CALCULATE AND GET TOTAL PRICE AND DISCOUNT OFFER
         Map<BigDecimal, BigDecimal> priceAndDiscount = new LinkedHashMap<>();
         priceAndDiscount = calculateAndGetTotalPriceAndDiscount(offerDTO, price);
@@ -145,15 +143,18 @@ public class OfferServiceImpl implements OfferService {
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 
-        //Clear
-        List<Car> carList = carService.findAllCarsOnThisOfferId(id);
-        carService.clearValueOfferIdsOnThisCars(carList);
+        //Delete
+        for (Long carId : carIds) {
+            carService.deleteCarIdAndOfferId(carId, id);
+        }
+
+
 
         offerRepository.editOffer(price, totalPrice, discount, statusOffer, clientId, sellerId, id, editUserId, dateEdit,companyId);
 
-        //Change
-        Set<Car> cars = carService.addCarInOfferAndSale(carIds);
-        carService.updateCarOfferIdFields(cars, id);
+//        //Change
+//        Set<Car> cars = carService.addCarInOfferAndSale(carIds);
+//        carService.updateCarOfferIdFields(cars, id);
 
 
     }

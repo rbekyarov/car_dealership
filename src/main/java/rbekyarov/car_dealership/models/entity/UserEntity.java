@@ -1,5 +1,8 @@
 package rbekyarov.car_dealership.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import rbekyarov.car_dealership.models.entity.enums.Position;
@@ -7,7 +10,7 @@ import rbekyarov.car_dealership.models.entity.enums.Position;
 import java.util.HashSet;
 import java.util.Set;
 
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property="id")
 @Entity
 @Table(name = "users")
 public class UserEntity extends BaseEntity{
@@ -20,7 +23,7 @@ public class UserEntity extends BaseEntity{
 
     @Column(name = "last_name")
     private String lastName;
-
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
 

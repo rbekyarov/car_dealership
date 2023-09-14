@@ -2,6 +2,7 @@ package rbekyarov.car_dealership.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import rbekyarov.car_dealership.models.entity.enums.StatusOffer;
@@ -14,19 +15,31 @@ import java.util.Set;
 @Table(name = "offers")
 public class Offer extends BaseEntity{
 
-    @OneToMany(cascade = CascadeType.MERGE,  fetch = FetchType.EAGER)
     @JoinColumn( name = "offer_id", referencedColumnName = "id")
+    @JsonIgnoreProperties(value = { "pictures", "offers","sales", "vinNumber","model","transmision","fuelType","horsepower","cubature","conditionCar", "color","doorCount","vendorPurchase","costs","eurostandard","category","comments", "autoStartStop","metallic","serviceBook","alarm","leatherSalon","halogenHeadlights","parktronik","airbags","elMirrors","elWindows","climatic", "navigation","statusAvailable","regDate","datePurchase","dateIncome","dateSold","dateCreate","currency","pricePurchase", "priceCosts","priceSaleMin","priceSale","priceProfit","priceCommission","author","editUser","dateEdite"})
+    @ManyToMany(cascade = CascadeType.MERGE,  fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "offer_car",
+            joinColumns = @JoinColumn(name = "offer_id"),
+            inverseJoinColumns = @JoinColumn(name = "car_id")
+    )
     private Set<Car> cars;
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = {"position", "offers", "sales","salary", "monthlyProfit", "totalProfit","author","dateCreate","editUser","dateEdite"})
+
     private Seller seller;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"vatOrId", "email", "email","phone", "city", "address","clientType","offers","sales","author","dateCreate","editUser","dateEdite"})
     private Client client;
+    @JsonIgnoreProperties(value = {"name","logoName","country","city","address","vatNumber","email","managerName","bankAccounts","author","dateCreate","editUser","dateEdite"})
     @ManyToOne
     private Company company;
     @Enumerated(EnumType.STRING)
     private StatusOffer statusOffer;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"exchangeRate","isMainCurrency","author","dateCreate","editUser","dateEdite"})
+
     private Currency currency;
     @Column
     private BigDecimal price;
@@ -37,8 +50,10 @@ public class Offer extends BaseEntity{
     @Column
     private LocalDate dateCreate;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"firstName", "lastName", "email","roles", "position"})
     private UserEntity author;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"firstName", "lastName", "email","roles", "position"})
     private UserEntity editUser;
     @Column
     private LocalDate dateEdite;

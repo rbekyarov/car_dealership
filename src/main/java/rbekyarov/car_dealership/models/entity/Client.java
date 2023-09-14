@@ -2,6 +2,7 @@ package rbekyarov.car_dealership.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import rbekyarov.car_dealership.models.entity.enums.ClientType;
@@ -26,17 +27,23 @@ public class Client extends BaseEntity{
     private String address;
     @Enumerated(EnumType.STRING)
     private ClientType clientType;
+
     @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
     @JoinColumn( name = "client_id", referencedColumnName = "id")
+    @JsonIgnoreProperties(value = {"cars","client","company","statusOffer","currency","price","discount","totalPrice","dateCreate","author","editUser","dateEdite"})
     private Set<Offer> offers;
     @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
     @JoinColumn( name = "client_id", referencedColumnName = "id")
+    @JsonIgnoreProperties(value = {"cars","client","company","statusOffer","currency","price","discount","totalPrice","dateCreate","author","editUser","dateEdite","seller","statusSalesInvoiced"})
+
     private Set<Sale> sales;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"firstName", "lastName", "email","roles", "position"})
     private UserEntity author;
     @Column
     private LocalDate dateCreate;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"firstName", "lastName", "email","roles", "position"})
     private UserEntity editUser;
     @Column
     private LocalDate dateEdite;
