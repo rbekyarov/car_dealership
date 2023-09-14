@@ -1,10 +1,10 @@
 
 
-# Car Dealership App
+# Car Dealership App - mini ERP software
 
 My project - this app manages a Car Dealership business processes
 
-Technology used in software development: backend - Spring Boot, frontend - React and MySql for database
+Technology used in software development: backend - Java, Spring Boot, Spring Security, frontend - React JS and MySql for database
 
 Finally the project will be deployed through three containers
 
