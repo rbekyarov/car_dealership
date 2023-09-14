@@ -12,4 +12,4 @@ Now backend is currently being implemented.....
 
 DATA MODEL
 
-![cars (DDL)  car_dealership@localhost](https://github.com/rbekyarov/car_dealership/assets/29566751/2d43b6b2-7ad1-4643-8bdb-dd40aaf1b703)
+![diagram](https://github.com/rbekyarov/car_dealership/assets/29566751/ec443e28-8036-4dff-9a07-4e06b998f552)
