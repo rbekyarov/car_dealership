@@ -1,28 +1,39 @@
 package rbekyarov.car_dealership.controllers;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import rbekyarov.car_dealership.config.jwt.JwtTokenProvider;
 import rbekyarov.car_dealership.exception.ResourceNotFoundException;
+import rbekyarov.car_dealership.models.dto.LoginDTO;
 import rbekyarov.car_dealership.models.dto.RegisterUserDTO;
 import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.services.AuthService;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import static org.springframework.http.ResponseEntity.ok;
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
+
 @CrossOrigin(origins = "*")
 @RestController
-
+@RequiredArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
+    AuthenticationManager customAuthenticationManager;
     private AuthService authService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private AuthenticationManager authenticationManager;
 
 
 
@@ -38,22 +49,54 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody LoginDTO loginDTO) {
+
+        try {
+            String username = loginDTO.getUsername();
+            var authentication = customAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, loginDTO.getPassword()));
+            String token = jwtTokenProvider.createToken(authentication);
+            Map<Object, Object> model = new HashMap<>();
+            model.put("username", username);
+            model.put("token", token);
+//            UserEntity user = getUserEntity();
+//           System.out.println(user.getId());
+            return ok(model);
+
+        } catch (AuthenticationException e) {
+            throw new BadCredentialsException("Invalid username/password supplied");
+        }
+    }
 
 
 
 //        @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) throws Exception {
-//            Authentication authentication;
-//            try{
-//                authentication = authenticationManager.authenticate(
-//                        new UsernamePasswordAuthenticationToken(userDTO.getEmail(),userDTO.getPassword()));
-//                SecurityContextHolder.getContext().setAuthentication(authentication);
-//            }catch (BadCredentialsException ex){
-//                throw new Exception("Invalid credentials");
+//        public ResponseEntity<?> login(@RequestBody @Valid LoginDTO loginDTO, BindingResult bindingResult) throws Exception {
+//            if (bindingResult.hasErrors()) {
+//                // Обработка грешки валидация
+//                return new ResponseEntity<>("Validation failed", HttpStatus.BAD_REQUEST);
 //            }
 //
-//            return new ResponseEntity<>(userDTO,HttpStatus.OK);
+//            try {
 //
+//                Authentication authentication = customAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getEmail(),loginDTO.getPassword()));
+//                SecurityContextHolder.getContext().setAuthentication(authentication);
+//
+//
+//
+//
+//            } catch (BadCredentialsException ex) {
+//
+//                throw new Exception("Invalid credentials");
+//            } catch (AuthenticationException ex) {
+//                // Други грешки при аутентикация
+//                throw new Exception("Authentication failed");
+//            }
+//
+//            // Успешен вход
+//            UserEntity user = getUserEntity();
+//            System.out.println(user.getId());
+//            return new ResponseEntity<>(user.getId(), HttpStatus.OK);
 //        }
 
 

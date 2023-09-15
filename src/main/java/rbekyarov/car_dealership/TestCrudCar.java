@@ -82,6 +82,7 @@ public class TestCrudCar implements CommandLineRunner {
 
        //TEST ADD USER
         authService.addUser(new UserDTO("ivan","Иван","Иванов","ivan","ivan","ivan@com.bg",2L, Position.Dealer));
+        authService.addUser(new UserDTO("admin","admin","admin","admin","admin","admin@com.bg",1L, Position.Dealer));
 //
 //        //TEST EDIT USER
 //        userService.editUser("mechanic@abv.bg", Role.ADMIN,Position.Accountant,3L);

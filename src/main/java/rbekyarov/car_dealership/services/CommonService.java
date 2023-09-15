@@ -1,9 +1,13 @@
 package rbekyarov.car_dealership.services;
 
 
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.AppUserDetails;
 import rbekyarov.car_dealership.models.entity.UserEntity;
@@ -15,7 +19,7 @@ import java.util.Optional;
 
 @Service
 public class CommonService {
-
+    private  static UserDetailsService customUserDetailsService;
   private static UserRepository userRepository;
     public static boolean inCart = false;
 
@@ -29,6 +33,7 @@ public class CommonService {
     }
 
     public static Long getUserId() {
+
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AppUserDetails userDetails = (AppUserDetails) authentication.getPrincipal();
