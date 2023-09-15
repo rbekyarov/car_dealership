@@ -7,6 +7,7 @@ import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,23 +33,21 @@ public class ApplicationBeanConfiguration {
         this.userRepository = userRepository;
     }
 
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        RequestMatcher antMatcher = new AntPathRequestMatcher("/api/**");
-//
-//        http
-//                .authorizeRequests(authorizeRequests ->
-//                        authorizeRequests
-//                                .requestMatchers(antMatcher).permitAll() // Прилагайте филтър само за тези заявки и разрешете всички
-//                                .antMatchers("/api/public").permitAll() // Разрешете публичен достъп
-//                                .anyRequest().authenticated() // Изискайте аутентикация за останалите заявки
-//                )
-//                .csrf().disable(); // Отключване на CSRF, ако не е необходим
-//
-//        // Други конфигурации, ако са необходими...
-//
-//        return http.build();
-//    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers(new AntPathRequestMatcher("/api/**","HttpMethod.POST")).permitAll() // Публични ресурси
+                                .requestMatchers(new AntPathRequestMatcher("/api/**","HttpMethod.GET")).permitAll() // Публични ресурси
+                                .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).authenticated() // Защитени ресурси, изискващи аутентикация
+
+                )
+                .httpBasic(Customizer.withDefaults()); // Използваме базова HTTP аутентикация
+
+        return http.build();
+    }
 
 
     @Bean

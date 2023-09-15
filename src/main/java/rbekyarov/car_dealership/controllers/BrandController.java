@@ -37,7 +37,7 @@ public class BrandController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createBrand(@RequestBody @Valid BrandDTO brandDTO, BindingResult bindingResult) {
+    public ResponseEntity<?> createBrand(@RequestBody  BrandDTO brandDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             Map<String, String> errorsMap = ControllerUtils.getErrors(bindingResult);
 
