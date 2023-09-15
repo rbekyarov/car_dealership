@@ -9,6 +9,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import rbekyarov.car_dealership.config.jwt.JwtTokenProvider;
@@ -20,6 +23,7 @@ import rbekyarov.car_dealership.services.AuthService;
 
 import java.util.*;
 
+import static java.util.stream.Collectors.toList;
 import static org.springframework.http.ResponseEntity.ok;
 import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
 
@@ -59,15 +63,24 @@ public class UserController {
             Map<Object, Object> model = new HashMap<>();
             model.put("username", username);
             model.put("token", token);
-//            UserEntity user = getUserEntity();
-//           System.out.println(user.getId());
             return ok(model);
 
         } catch (AuthenticationException e) {
             throw new BadCredentialsException("Invalid username/password supplied");
         }
     }
-
+    @SuppressWarnings("rawtypes")
+    @GetMapping("/my-info")
+    public ResponseEntity currentUser(@AuthenticationPrincipal UserDetails userDetails){
+        Map<Object, Object> model = new HashMap<>();
+        model.put("username", userDetails.getUsername());
+        model.put("roles", userDetails.getAuthorities()
+                .stream()
+                .map(a -> ((GrantedAuthority) a).getAuthority())
+                .collect(toList())
+        );
+        return ok(model);
+    }
 
 
 //        @PostMapping("/login")

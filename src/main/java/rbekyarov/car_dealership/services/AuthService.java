@@ -2,15 +2,16 @@ package rbekyarov.car_dealership.services;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import rbekyarov.car_dealership.config.jwt.JwtTokenProvider;
 import rbekyarov.car_dealership.models.dto.RegisterUserDTO;
 import rbekyarov.car_dealership.models.dto.UserDTO;
 import rbekyarov.car_dealership.models.entity.Role;
@@ -28,14 +29,18 @@ public class AuthService {
     private final UserDetailsService detailsService;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    AuthenticationManager customAuthenticationManager;
 
 
     @Autowired
-    public AuthService(UserRepository userRepository, UserDetailsService detailsService, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+    public AuthService(UserRepository userRepository, UserDetailsService detailsService, PasswordEncoder passwordEncoder, RoleRepository roleRepository, JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
         this.detailsService = detailsService;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     public List<UserEntity> findAllUserById() {
@@ -46,27 +51,7 @@ public class AuthService {
         return userRepository.findById(id);
     }
 
-    public boolean login(Authentication authenticationFromFrontEnd) {
 
-        SecurityContextHolder.setContext(new SecurityContext() {
-            @Override
-            public Authentication getAuthentication() {
-                return authenticationFromFrontEnd;
-            }
-
-            @Override
-            public void setAuthentication(Authentication authentication) {
-                authentication = authenticationFromFrontEnd;
-
-            }
-        });
-        //authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authenticationFromFrontEnd == null || authenticationFromFrontEnd instanceof AnonymousAuthenticationToken) {
-
-        }
-
-        return false;
-    }
 
     public boolean register(RegisterUserDTO registerUserDTO) {
         if (!registerUserDTO.getPassword().equals(registerUserDTO.getRepeatPassword())) {

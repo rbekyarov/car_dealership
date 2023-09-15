@@ -3,12 +3,15 @@ package rbekyarov.car_dealership;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+
 import org.springframework.stereotype.Component;
+import rbekyarov.car_dealership.controllers.UserController;
 import rbekyarov.car_dealership.models.dto.*;
 import rbekyarov.car_dealership.models.entity.*;
 import rbekyarov.car_dealership.models.entity.enums.*;
@@ -40,8 +43,11 @@ public class TestCrudCar implements CommandLineRunner {
     private final BankAccountService bankAccountService;
     private final CurrencyService currencyService;
     private final AuthService authService;
+    private final UserController userController;
 
-    public TestCrudCar(PictureService pictureService, CarService carService, HttpSession httpSession, UserRepository userRepository, BrandRepository brandRepository, ModelRepository modelRepository, VendorRepository vendorRepository, PricingPercentDataRepository pricingPercentDataRepository, CostRepository costRepository, CostService costService, OfferService offerService, SaleService saleService, CompanyService companyService, ClientService clientService, SellerService sellerService, InvoiceService invoiceService, BankAccountService bankAccountService, CurrencyService currencyService, AuthService authService) {
+
+
+    public TestCrudCar(PictureService pictureService, CarService carService, HttpSession httpSession, UserRepository userRepository, BrandRepository brandRepository, ModelRepository modelRepository, VendorRepository vendorRepository, PricingPercentDataRepository pricingPercentDataRepository, CostRepository costRepository, CostService costService, OfferService offerService, SaleService saleService, CompanyService companyService, ClientService clientService, SellerService sellerService, InvoiceService invoiceService, BankAccountService bankAccountService, CurrencyService currencyService, AuthService authService, UserController userController) {
         this.pictureService = pictureService;
         this.carService = carService;
         this.httpSession = httpSession;
@@ -61,6 +67,7 @@ public class TestCrudCar implements CommandLineRunner {
         this.bankAccountService = bankAccountService;
         this.currencyService = currencyService;
         this.authService = authService;
+        this.userController = userController;
     }
 
 
@@ -83,7 +90,15 @@ public class TestCrudCar implements CommandLineRunner {
        //TEST ADD USER
         authService.addUser(new UserDTO("ivan","Иван","Иванов","ivan","ivan","ivan@com.bg",2L, Position.Dealer));
         authService.addUser(new UserDTO("admin","admin","admin","admin","admin","admin@com.bg",1L, Position.Dealer));
-//
+       // TEST LOGIN
+        LoginDTO loginDTO = new LoginDTO("admin","admin");
+        ResponseEntity login = userController.login(loginDTO);
+
+
+
+
+
+        //
 //        //TEST EDIT USER
 //        userService.editUser("mechanic@abv.bg", Role.ADMIN,Position.Accountant,3L);
 //
