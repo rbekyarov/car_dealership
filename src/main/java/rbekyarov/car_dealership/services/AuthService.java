@@ -2,7 +2,6 @@ package rbekyarov.car_dealership.services;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,17 +29,18 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final JwtTokenProvider jwtTokenProvider;
-    @Autowired
-    AuthenticationManager customAuthenticationManager;
+
+    private final  AuthenticationManager customAuthenticationManager;
 
 
     @Autowired
-    public AuthService(UserRepository userRepository, UserDetailsService detailsService, PasswordEncoder passwordEncoder, RoleRepository roleRepository, JwtTokenProvider jwtTokenProvider) {
+    public AuthService(UserRepository userRepository, UserDetailsService detailsService, PasswordEncoder passwordEncoder, RoleRepository roleRepository, JwtTokenProvider jwtTokenProvider, AuthenticationManager customAuthenticationManager) {
         this.userRepository = userRepository;
         this.detailsService = detailsService;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
         this.jwtTokenProvider = jwtTokenProvider;
+        this.customAuthenticationManager = customAuthenticationManager;
     }
 
     public List<UserEntity> findAllUserById() {
