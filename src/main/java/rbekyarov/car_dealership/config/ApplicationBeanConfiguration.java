@@ -25,6 +25,7 @@ import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.client.RestTemplate;
 import rbekyarov.car_dealership.interceptor.RequestProcessingTimeInterceptor;
+import rbekyarov.car_dealership.models.CurrentUserEntity;
 import rbekyarov.car_dealership.repository.UserRepository;
 import rbekyarov.car_dealership.services.ApplicationUserDetailsService;
 
@@ -68,6 +69,7 @@ public class ApplicationBeanConfiguration  {
 
         return new ModelMapper();
     }
+
 
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {

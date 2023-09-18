@@ -1,7 +1,13 @@
 package rbekyarov.car_dealership.services.impl;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import rbekyarov.car_dealership.models.AppUserDetails;
 import rbekyarov.car_dealership.models.dto.BrandDTO;
 import rbekyarov.car_dealership.models.entity.Brand;
 import rbekyarov.car_dealership.models.entity.UserEntity;
@@ -19,6 +25,7 @@ import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
 public class BrandServiceImpl implements BrandService {
     private final BrandRepository brandRepository;
     private final ModelMapper modelMapper;
+
     private final UserRepository userRepository;
 
     public BrandServiceImpl(BrandRepository brandRepository, ModelMapper modelMapper, UserRepository userRepository) {
@@ -37,8 +44,21 @@ public class BrandServiceImpl implements BrandService {
     public void addBrand(BrandDTO brandDTO) {
         Brand brand = modelMapper.map(brandDTO, Brand.class);
 
-        UserEntity user = getUserEntity();
-        brand.setAuthor(user);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        AppUserDetails userDetails = (AppUserDetails) authentication.getPrincipal();
+        UserEntity userId = userRepository.getUsersById(userDetails.getId());
+        brand.setAuthor(userId);
+
+
+
+
+
+
+        //UserEntity user = getUserEntity();
+
+
+
+
         //brand.setAuthor(userRepository.getUsersById(1L));
         // set dateCreated
         brand.setDateCreate(LocalDate.now());

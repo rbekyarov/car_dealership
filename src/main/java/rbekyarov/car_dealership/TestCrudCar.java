@@ -1,5 +1,6 @@
 package rbekyarov.car_dealership;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import org.springframework.boot.CommandLineRunner;
@@ -24,6 +25,8 @@ import java.util.*;
 
 @Component
 public class TestCrudCar implements CommandLineRunner {
+    public static final String SPRING_SECURITY_FORM_USERNAME_KEY = "username";
+
    private final PictureService pictureService;
    private final CarService carService;
    private final HttpSession httpSession;
@@ -78,12 +81,12 @@ public class TestCrudCar implements CommandLineRunner {
         authService.register(new RegisterUserDTO("owner","Radoslav","Bekyarov","owner","owner","owner@com.bg"));
         // TEST LOGIN USER
 
-        String username = "owner";
-        String password = "owner";
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        Authentication authentication = new UsernamePasswordAuthenticationToken(username, password, authorities);
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        String username = "owner";
+//        String password = "owner";
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+//        Authentication authentication = new UsernamePasswordAuthenticationToken(username, password, authorities);
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
 
@@ -91,8 +94,8 @@ public class TestCrudCar implements CommandLineRunner {
         authService.addUser(new UserDTO("ivan","Иван","Иванов","ivan","ivan","ivan@com.bg",2L, Position.Dealer));
         authService.addUser(new UserDTO("admin","admin","admin","admin","admin","admin@com.bg",1L, Position.Dealer));
        // TEST LOGIN
-        LoginDTO loginDTO = new LoginDTO("admin","admin");
-        ResponseEntity login = userController.login(loginDTO);
+//        LoginDTO loginDTO = new LoginDTO("admin","admin");
+//        ResponseEntity login = userController.login(loginDTO);
 
 
 

@@ -9,6 +9,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -18,6 +19,7 @@ import rbekyarov.car_dealership.repository.UserRepository;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Configuration
 public class AuthorizationServerConfig  {
@@ -35,7 +37,9 @@ UserDetailsService customUserDetailsService(UserRepository userRepository) {
             UserDetails userDetails = new UserDetails() {
                 @Override
                 public Collection<? extends GrantedAuthority> getAuthorities() {
-                    return null;
+                    return userEntity.getRoles().stream().map(role -> new SimpleGrantedAuthority(role.getName()))
+                            .collect(Collectors.toSet());
+
                 }
 
                 @Override
@@ -83,17 +87,18 @@ UserDetailsService customUserDetailsService(UserRepository userRepository) {
             String username = authentication.getPrincipal() + "";
             String password = authentication.getCredentials() + "";
 
-            UserDetails user = userDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-            if (!encoder.matches(password, user.getPassword())) {
+            if (!encoder.matches(password, userDetails.getPassword())) {
                 throw new BadCredentialsException("Bad credentials");
             }
 
-            if (!user.isEnabled()) {
+            if (!userDetails.isEnabled()) {
                 throw new DisabledException("User account is not active");
             }
+            Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
 
-            return new UsernamePasswordAuthenticationToken(username, null, user.getAuthorities());
+            return new UsernamePasswordAuthenticationToken(username, null,authorities );
         };
     }
 }
