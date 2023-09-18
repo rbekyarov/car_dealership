@@ -30,11 +30,12 @@ import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
 @CrossOrigin(origins = "*")
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 public class UserController {
 
     @Autowired
     AuthenticationManager customAuthenticationManager;
+    @Autowired
     private AuthService authService;
     private final JwtTokenProvider jwtTokenProvider;
     private AuthenticationManager authenticationManager;
