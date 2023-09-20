@@ -14,10 +14,8 @@ import rbekyarov.car_dealership.security.services.UserDetailsServiceImpl;
 
 @Service
 public class CommonService {
-
   private static UserRepository userRepository;
 
-    public static boolean inCart = false;
 
     public CommonService(UserRepository userRepository) {
         CommonService.userRepository = userRepository;
@@ -30,7 +28,6 @@ public class CommonService {
     }
 
     public static Long getUserId() {
-
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();

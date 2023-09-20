@@ -3,16 +3,11 @@ package rbekyarov.car_dealership.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import rbekyarov.car_dealership.models.dto.RegisterUserDTO;
 import rbekyarov.car_dealership.models.dto.UserDTO;
-import rbekyarov.car_dealership.models.entity.Role;
 import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.repository.RoleRepository;
 import rbekyarov.car_dealership.repository.UserRepository;
@@ -50,32 +45,6 @@ public class AuthService {
         return userRepository.findById(id);
     }
 
-
-
-//    public boolean register(RegisterUserDTO registerUserDTO) {
-//        if (!registerUserDTO.getPassword().equals(registerUserDTO.getRepeatPassword())) {
-//            return false;
-//        }
-//
-//        Optional<UserEntity> email = this.userRepository.findByEmail(registerUserDTO.getEmail());
-//        Optional<UserEntity> username = this.userRepository.findByUsername(registerUserDTO.getUsername());
-//        Role userRole = this.roleRepository.findByName("USER");
-//        if (email.isPresent() || username.isPresent()) {
-//            return false;
-//        }
-//
-//        UserEntity user = new UserEntity();
-//
-//        user.setUsername(registerUserDTO.getUsername());
-//        user.setPassword(passwordEncoder.encode(registerUserDTO.getPassword()));
-//        user.setFirstName(registerUserDTO.getFirstName());
-//        user.setLastName(registerUserDTO.getLastName());
-//        user.setEmail(registerUserDTO.getEmail());
-//        user.addRole(userRole);
-//        this.userRepository.save(user);
-//
-//        return true;
-//    }
     public void removeUserById(Long id) {
     }
 

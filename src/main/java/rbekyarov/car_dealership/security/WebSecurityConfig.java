@@ -111,7 +111,6 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
     return new RequestProcessingTimeInterceptor();
   }
 
-
   @Bean
   public CacheManager cacheManager() {
     return new ConcurrentMapCacheManager("deletion");
