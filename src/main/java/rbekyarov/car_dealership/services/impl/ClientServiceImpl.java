@@ -39,9 +39,9 @@ public class ClientServiceImpl implements ClientService {
     public void addClient(ClientDTO clientDTO) {
         Client client = modelMapper.map(clientDTO, Client.class);
         //get and set Author
-//        UserEntity user = getUserEntity();
-//        client.setAuthor(user);
-        client.setAuthor(userRepository.getUsersById(1L));
+       UserEntity user = getUserEntity();
+        client.setAuthor(user);
+
         // set dateCreated
         client.setDateCreate(LocalDate.now());
         clientRepository.save(client);
@@ -59,9 +59,9 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public void editClient(String name, String vatOrId, String email, String phone, String city, String address, ClientType clientType, Long id) {
-//        UserEntity user = getUserEntity();
-//        Long editUserId = user.getId();
-        Long editUserId = 1L;
+        UserEntity user = getUserEntity();
+        Long editUserId = user.getId();
+
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 

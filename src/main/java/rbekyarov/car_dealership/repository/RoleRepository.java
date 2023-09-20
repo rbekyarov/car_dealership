@@ -3,6 +3,7 @@ package rbekyarov.car_dealership.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import rbekyarov.car_dealership.models.ERole;
 import rbekyarov.car_dealership.models.entity.Role;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
     Optional<Role> findRoleByName(String name);
 
 
-
+    Optional<Role> findByName(ERole name);
 
 
 }

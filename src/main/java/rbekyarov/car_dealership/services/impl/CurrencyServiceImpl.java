@@ -41,9 +41,9 @@ public class CurrencyServiceImpl implements CurrencyService {
     public void addCurrency(CurrencyDTO currencyDTO) {
         Currency currency = modelMapper.map(currencyDTO, Currency.class);
         //get and set Author
-//        UserEntity user = getUserEntity();
-//        currency.setAuthor(user);
-        currency.setAuthor(userRepository.getUsersById(1L));
+        UserEntity user = getUserEntity();
+        currency.setAuthor(user);
+
         // set dateCreated
         currency.setDateCreate(LocalDate.now());
 
@@ -76,9 +76,9 @@ public class CurrencyServiceImpl implements CurrencyService {
         double exchangeRate = currencyDTO.getExchangeRate();
         IsMainCurrency isMainCurrency = currencyDTO.getIsMainCurrency();
 
-//        UserEntity user = getUserEntity();
-//        Long editUserId = user.getId();
-        Long editUserId = 1L;
+        UserEntity user = getUserEntity();
+       Long editUserId = user.getId();
+
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 

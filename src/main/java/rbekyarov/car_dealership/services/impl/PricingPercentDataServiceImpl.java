@@ -46,9 +46,8 @@ public class PricingPercentDataServiceImpl implements PricingPercentDataService 
         pricingPercentDataRepository.setAllActivePricingPercentDataToNO();
 
         //get and set Author
-//        UserEntity user = getUserEntity();
-//        pricingPercentData.setAuthor(user);
-        pricingPercentData.setAuthor(userRepository.getUsersById(1L));
+       UserEntity user = getUserEntity();
+        pricingPercentData.setAuthor(user);
 
         // set dateCreated
         pricingPercentData.setDateCreate(LocalDate.now());
@@ -79,10 +78,9 @@ public class PricingPercentDataServiceImpl implements PricingPercentDataService 
             pricingPercentDataRepository.setAllActivePricingPercentDataToNO();
         }
 
-//        UserEntity user = getUserEntity();
-//        Long editUserId = user.getId();
+        UserEntity user = getUserEntity();
+       Long editUserId = user.getId();
 
-        Long editUserId = 1L;
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();

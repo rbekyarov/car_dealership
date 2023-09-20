@@ -40,9 +40,9 @@ public class SellerServiceImpl implements SellerService {
         Seller seller = modelMapper.map(sellerDTO, Seller.class);
         seller.setTotalProfit(new BigDecimal(0));
         //get and set Author
-//        UserEntity user = getUserEntity();
-//        seller.setAuthor(user);
-        seller.setAuthor(userRepository.getUsersById(1L));
+        UserEntity user = getUserEntity();
+       seller.setAuthor(user);
+
         // set dateCreated
         seller.setDateCreate(LocalDate.now());
         sellerRepository.save(seller);
@@ -60,9 +60,9 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public void editSeller(String firstName, String lastName, Position position, BigDecimal salary, Long id) {
-//        UserEntity user = getUserEntity();
-//        Long editUserId = user.getId();
-        Long editUserId = 1L;
+       UserEntity user = getUserEntity();
+        Long editUserId = user.getId();
+
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 

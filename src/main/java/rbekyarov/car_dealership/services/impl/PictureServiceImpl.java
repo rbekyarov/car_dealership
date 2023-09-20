@@ -47,9 +47,9 @@ public class PictureServiceImpl implements PictureService {
       picture.setName(name);
 
         //get and set Author
-//        UserEntity user = getUserEntity();
-//        picture.setAuthor(user);
-        picture.setAuthor(userRepository.getUsersById(1L));
+        UserEntity user = getUserEntity();
+        picture.setAuthor(user);
+
         // set dateCreated
         picture.setDateCreate(LocalDate.now());
         pictureRepository.saveAndFlush(picture);
@@ -69,10 +69,10 @@ public class PictureServiceImpl implements PictureService {
 
     @Override
     public void editPicture(String name, Long id) {
-//        UserEntity user = getUserEntity();
-//        Long editUserId = user.getId();
+        UserEntity user = getUserEntity();
+       Long editUserId = user.getId();
 
-        Long editUserId = 1L;
+
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();

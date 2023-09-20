@@ -72,9 +72,9 @@ public class CostServiceImpl implements CostService {
         cost.setVendor(vendorRepository.findById(costDTO.getVendorId()).orElseThrow());
 
 
-//        UserEntity user = getUserEntity();
-//        cost.setAuthor(user);
-        cost.setAuthor(userRepository.getUsersById(1L));
+        UserEntity user = getUserEntity();
+        cost.setAuthor(user);
+
         // set dateCreated
         cost.setDateCreate(LocalDate.now());
         cost.setCar(car);
@@ -118,9 +118,9 @@ public class CostServiceImpl implements CostService {
         }
 
 
-//        UserEntity user = getUserEntity();
-//        Long editUserId = user.getId();
-        Long editUserId = 1L;
+        UserEntity user = getUserEntity();
+        Long editUserId = user.getId();
+
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 

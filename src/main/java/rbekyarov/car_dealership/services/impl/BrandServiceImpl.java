@@ -1,13 +1,9 @@
 package rbekyarov.car_dealership.services.impl;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import rbekyarov.car_dealership.models.AppUserDetails;
 import rbekyarov.car_dealership.models.dto.BrandDTO;
 import rbekyarov.car_dealership.models.entity.Brand;
 import rbekyarov.car_dealership.models.entity.UserEntity;
@@ -26,12 +22,15 @@ public class BrandServiceImpl implements BrandService {
     private final BrandRepository brandRepository;
     private final ModelMapper modelMapper;
 
+
     private final UserRepository userRepository;
+
 
     public BrandServiceImpl(BrandRepository brandRepository, ModelMapper modelMapper, UserRepository userRepository) {
         this.brandRepository = brandRepository;
         this.modelMapper = modelMapper;
         this.userRepository = userRepository;
+
     }
 
 
@@ -44,22 +43,10 @@ public class BrandServiceImpl implements BrandService {
     public void addBrand(BrandDTO brandDTO) {
         Brand brand = modelMapper.map(brandDTO, Brand.class);
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AppUserDetails userDetails = (AppUserDetails) authentication.getPrincipal();
-        UserEntity userId = userRepository.getUsersById(userDetails.getId());
-        brand.setAuthor(userId);
+        UserEntity user = getUserEntity();
+        brand.setAuthor(user);
 
-
-
-
-
-
-        //UserEntity user = getUserEntity();
-
-
-
-
-        //brand.setAuthor(userRepository.getUsersById(1L));
+        brand.setAuthor(userRepository.getUsersById(1L));
         // set dateCreated
         brand.setDateCreate(LocalDate.now());
         brandRepository.save(brand);
@@ -78,9 +65,9 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public void editBrand(String name, Long id) {
 
-//        UserEntity user = getUserEntity();
-//        Long editUserId = user.getId();
-        Long editUserId = 1L;
+      UserEntity user = getUserEntity();
+      Long editUserId = user.getId();
+
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 

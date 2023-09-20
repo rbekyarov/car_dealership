@@ -111,10 +111,10 @@ public class InvoiceServiceImpl implements InvoiceService {
         // set dateCreated
         invoice.setDateCreate(LocalDate.now());
         //get and set Author
-       // UserEntity user = getUserEntity();
+        UserEntity user = getUserEntity();
 
-        //invoice.setAuthorName(user.getFirstName()+" " +user.getLastName());
-        invoice.setAuthorName("HARDCODED");
+        invoice.setAuthorName(user.getFirstName()+" " +user.getLastName());
+
 
         invoiceRepository.save(invoice);
         //SET CAR STATUS AVAILABLE
@@ -221,10 +221,9 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
 
         //get and set Cancellation User Name
-//        UserEntity user = getUserEntity();
-//
-//        invoiceRepository.setCancellationUserName(user.getFirstName()+" " +user.getLastName(),id);
-       invoiceRepository.setCancellationUserName("HARDCODED",id);
+       UserEntity user = getUserEntity();
+       invoiceRepository.setCancellationUserName(user.getFirstName()+" " +user.getLastName(),id);
+
 
         LocalDate canceledDate = LocalDate.now();
         invoiceRepository.setDateCancelation(canceledDate,id);

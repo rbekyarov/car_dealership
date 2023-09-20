@@ -6,21 +6,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import rbekyarov.car_dealership.models.AppUserDetails;
-import rbekyarov.car_dealership.models.CurrentUserEntity;
 import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.repository.UserRepository;
-
-import java.security.Principal;
+import rbekyarov.car_dealership.security.services.UserDetailsImpl;
+import rbekyarov.car_dealership.security.services.UserDetailsServiceImpl;
 
 
 @Service
 public class CommonService {
-    private  static UserDetailsService customUserDetailsService;
+
   private static UserRepository userRepository;
 
     public static boolean inCart = false;
 
-
+    public CommonService(UserRepository userRepository) {
+        CommonService.userRepository = userRepository;
+    }
 
     public static UserEntity getUserEntity() {
         Long userId = getUserId();
@@ -32,7 +33,7 @@ public class CommonService {
 
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AppUserDetails userDetails = (AppUserDetails) authentication.getPrincipal();
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
         return  userDetails.getId();
     }

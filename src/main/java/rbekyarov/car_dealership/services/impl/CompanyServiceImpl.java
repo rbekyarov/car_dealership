@@ -42,10 +42,9 @@ public class CompanyServiceImpl implements CompanyService {
         Company company = modelMapper.map(companyDTO, Company.class);
         //company.setLogoName(pictureRepository.findById(companyDTO.getPictureId()).orElseThrow());
         //get and set Author
+        UserEntity user = getUserEntity();
+       company.setAuthor(user);
 
-//        UserEntity user = getUserEntity();
-//        company.setAuthor(user);
-        company.setAuthor(userRepository.getUsersById(1L));
 
         // set dateCreated
         company.setDateCreate(LocalDate.now());
@@ -64,9 +63,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void editCompany(String name, Long pictureId, String country, String city, String address, String vatNumber, String email, String managerName, Long id) {
-//        UserEntity user = getUserEntity();
-//        Long editUserId = user.getId();
-        Long editUserId = 1L;
+        UserEntity user = getUserEntity();
+        Long editUserId = user.getId();
+
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();

@@ -4,6 +4,7 @@ package rbekyarov.car_dealership.services;
 import jakarta.annotation.PostConstruct;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import rbekyarov.car_dealership.models.ERole;
 import rbekyarov.car_dealership.models.entity.Role;
 import rbekyarov.car_dealership.models.entity.RoleEnum;
 import rbekyarov.car_dealership.models.entity.UserEntity;
@@ -40,9 +41,9 @@ public class UserInitService {
 
     private void initRoles() {
         if (this.roleRepository.count() == 0) {
-            Arrays.stream(RoleEnum.values())
-                    .forEach(roleEnum -> {
-                        this.roleRepository.save(new Role(roleEnum.name()));
+            Arrays.stream(ERole.values())
+                    .forEach(value -> {
+                        this.roleRepository.save(new Role(value));
                     });
         }
     }

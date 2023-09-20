@@ -38,9 +38,9 @@ public class VendorServiceImpl implements VendorService {
     public void addVendor(VendorDTO vendorDTO) {
         Vendor vendor = modelMapper.map(vendorDTO, Vendor.class);
         //get and set Author
-//        UserEntity user = getUserEntity();
-//        vendor.setAuthor(user);
-        vendor.setAuthor(userRepository.getUsersById(1L));
+       UserEntity user = getUserEntity();
+        vendor.setAuthor(user);
+
         // set dateCreated
         vendor.setDateCreate(LocalDate.now());
         vendorRepository.save(vendor);
@@ -58,9 +58,9 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public void editVendor(String name, String country, String city, String address, String vatNumber, String email, Long id) {
-//        UserEntity user = getUserEntity();
-//        Long editUserId = user.getId();
-        Long editUserId = 1L;
+        UserEntity user = getUserEntity();
+       Long editUserId = user.getId();
+
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
 

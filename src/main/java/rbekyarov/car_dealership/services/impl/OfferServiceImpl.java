@@ -6,6 +6,7 @@ import rbekyarov.car_dealership.models.dto.OfferDTO;
 import rbekyarov.car_dealership.models.entity.Car;
 import rbekyarov.car_dealership.models.entity.Currency;
 import rbekyarov.car_dealership.models.entity.Offer;
+import rbekyarov.car_dealership.models.entity.UserEntity;
 import rbekyarov.car_dealership.models.entity.enums.StatusOffer;
 import rbekyarov.car_dealership.repository.CostRepository;
 import rbekyarov.car_dealership.repository.OfferRepository;
@@ -15,6 +16,8 @@ import rbekyarov.car_dealership.services.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
+
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
 
 
 @Service
@@ -80,9 +83,9 @@ public class OfferServiceImpl implements OfferService {
         offer.setCompany(companyService.findById(offerDTO.getCompanyId()).orElseThrow());
 
         //get and set Author
-//        UserEntity user = getUserEntity();
-//        offer.setAuthor(user);
-        offer.setAuthor(userRepository.getUsersById(1L));
+        UserEntity user = getUserEntity();
+       offer.setAuthor(user);
+
 
         // set dateCreated
         offer.setDateCreate(LocalDate.now());
@@ -136,9 +139,9 @@ public class OfferServiceImpl implements OfferService {
         Long companyId = offerDTO.getCompanyId();
 
 
-//        UserEntity user = getUserEntity();
-//        Long editUserId = user.getId();
-        Long editUserId = 1L;
+        UserEntity user = getUserEntity();
+        Long editUserId = user.getId();
+
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();

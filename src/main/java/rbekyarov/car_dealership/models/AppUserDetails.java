@@ -13,8 +13,14 @@ public class AppUserDetails extends User {
         super(username, password, authorities);
         this.id = id;
     }
+
+
+
     public Long getId() {
         return id;
     }
+
+
+
 
 }

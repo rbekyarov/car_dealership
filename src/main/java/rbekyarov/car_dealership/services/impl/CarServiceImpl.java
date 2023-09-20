@@ -15,6 +15,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
+import static rbekyarov.car_dealership.services.CommonService.getUserEntity;
+
 
 @Service
 public class CarServiceImpl implements CarService {
@@ -76,9 +78,9 @@ public class CarServiceImpl implements CarService {
 
 
         //get and set Author
-//        UserEntity user = getUserEntity();
-//        car.setAuthor(user);
-        car.setAuthor(userRepository.getUsersById(1L));
+     UserEntity user = getUserEntity();
+       car.setAuthor(user);
+
         // set dateCreated
         car.setDateCreate(LocalDate.now());
         //Add car in database
@@ -243,10 +245,10 @@ public class CarServiceImpl implements CarService {
         LocalDate dateIncome = carDTO.getDateIncome();
         //for testing ->
 
-//        UserEntity user = getUserEntity();
-//        Long editUserId = user.getId();
+        UserEntity user = getUserEntity();
+        Long editUserId = user.getId();
 
-        Long editUserId = 1L;
+
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
         carRepository.editCar(name,

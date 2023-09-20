@@ -40,9 +40,9 @@ public class ModelServiceImpl implements ModelService {
     public void addModel(ModelDTO modelDTO) {
         Model model = modelMapper.map(modelDTO, Model.class);
         model.setBrand(brandRepository.findById(modelDTO.getBrandId()).orElseThrow());
-//        UserEntity user = getUserEntity();
-//        model.setAuthor(user);
-        model.setAuthor(userRepository.getUsersById(1L));
+        UserEntity user = getUserEntity();
+        model.setAuthor(user);
+
         // set dateCreated
         model.setDateCreate(LocalDate.now());
         modelRepository.save(model);
@@ -60,9 +60,9 @@ public class ModelServiceImpl implements ModelService {
 
     @Override
     public void editModel(String name, Long brandId, Long id) {
-//        UserEntity user = getUserEntity();
-//        Long editUserId = user.getId();
-        Long editUserId = 1L;
+        UserEntity user = getUserEntity();
+        Long editUserId = user.getId();
+
 
         //set dateEdit
         LocalDate dateEdit = LocalDate.now();
