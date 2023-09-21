@@ -8,7 +8,7 @@ Technology used in software development: backend - Java, Spring Boot, Spring Sec
 
 Finally the project will be deployed through three containers
 
-Now backend is currently being implemented.....
+FrontEnd in Progres...
 
 DATA MODEL
 
