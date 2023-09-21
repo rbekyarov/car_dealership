@@ -1,117 +1,117 @@
-//package rbekyarov.car_dealership;
+package rbekyarov.car_dealership;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+
+import org.springframework.stereotype.Component;
+
+import rbekyarov.car_dealership.models.dto.*;
+import rbekyarov.car_dealership.models.entity.*;
+import rbekyarov.car_dealership.models.entity.enums.*;
+import rbekyarov.car_dealership.repository.*;
+import rbekyarov.car_dealership.services.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.*;
+
+@Component
+public class TestCrudCar implements CommandLineRunner {
+    public static final String SPRING_SECURITY_FORM_USERNAME_KEY = "username";
+
+   private final PictureService pictureService;
+   private final CarService carService;
+   private final HttpSession httpSession;
+   private final UserRepository userRepository;
+   private final BrandRepository brandRepository;
+   private final ModelRepository modelRepository;
+   private final VendorRepository vendorRepository;
+   private final PricingPercentDataRepository pricingPercentDataRepository;
+    private final CostRepository costRepository;
+    private final CostService costService;
+    private final OfferService offerService;
+    private final SaleService saleService;
+    private final CompanyService companyService;
+    private final ClientService clientService;
+    private final SellerService sellerService;
+    private final InvoiceService invoiceService;
+    private final BankAccountService bankAccountService;
+    private final CurrencyService currencyService;
+    private final AuthService authService;
+
+
+
+
+    public TestCrudCar(PictureService pictureService, CarService carService, HttpSession httpSession, UserRepository userRepository, BrandRepository brandRepository, ModelRepository modelRepository, VendorRepository vendorRepository, PricingPercentDataRepository pricingPercentDataRepository, CostRepository costRepository, CostService costService, OfferService offerService, SaleService saleService, CompanyService companyService, ClientService clientService, SellerService sellerService, InvoiceService invoiceService, BankAccountService bankAccountService, CurrencyService currencyService, AuthService authService) {
+        this.pictureService = pictureService;
+        this.carService = carService;
+        this.httpSession = httpSession;
+        this.userRepository = userRepository;
+        this.brandRepository = brandRepository;
+        this.modelRepository = modelRepository;
+        this.vendorRepository = vendorRepository;
+        this.pricingPercentDataRepository = pricingPercentDataRepository;
+        this.costRepository = costRepository;
+        this.costService = costService;
+        this.offerService = offerService;
+        this.saleService = saleService;
+        this.companyService = companyService;
+        this.clientService = clientService;
+        this.sellerService = sellerService;
+        this.invoiceService = invoiceService;
+        this.bankAccountService = bankAccountService;
+        this.currencyService = currencyService;
+        this.authService = authService;
+
+    }
+
+
+    @Override
+    public void run(String... args) throws Exception {
+        //TEST REGISTER USER
+
+        //authService.register(new RegisterUserDTO("owner","Radoslav","Bekyarov","owner","owner","owner@com.bg"));
+        // TEST LOGIN USER
+
+//        String username = "owner";
+//        String password = "owner";
+//        List<GrantedAuthority> authorities = new ArrayList<>();
+//        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+//        Authentication authentication = new UsernamePasswordAuthenticationToken(username, password, authorities);
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
+
+       //TEST ADD USER
+      authService.addUser(new UserDTO("ivan","Иван","Иванов","ivan","ivan","ivan@com.bg",2L, Position.Dealer));
+      authService.addUser(new UserDTO("admin","admin","admin","admin","admin","admin@com.bg",1L, Position.Dealer));
+       // TEST LOGIN
+//        LoginDTO loginDTO = new LoginDTO("admin","admin");
+//        ResponseEntity login = userController.login(loginDTO);
+
+
+
+
+
+        //
+//        //TEST EDIT USER
+//        userService.editUser("mechanic@abv.bg", Role.ADMIN,Position.Accountant,3L);
 //
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpSession;
-//
-//import org.springframework.boot.CommandLineRunner;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.authority.SimpleGrantedAuthority;
-//import org.springframework.security.core.context.SecurityContextHolder;
-//
-//import org.springframework.stereotype.Component;
-//
-//import rbekyarov.car_dealership.models.dto.*;
-//import rbekyarov.car_dealership.models.entity.*;
-//import rbekyarov.car_dealership.models.entity.enums.*;
-//import rbekyarov.car_dealership.repository.*;
-//import rbekyarov.car_dealership.services.*;
-//
-//import java.math.BigDecimal;
-//import java.time.LocalDate;
-//import java.util.*;
-//
-//@Component
-//public class TestCrudCar implements CommandLineRunner {
-//    public static final String SPRING_SECURITY_FORM_USERNAME_KEY = "username";
-//
-//   private final PictureService pictureService;
-//   private final CarService carService;
-//   private final HttpSession httpSession;
-//   private final UserRepository userRepository;
-//   private final BrandRepository brandRepository;
-//   private final ModelRepository modelRepository;
-//   private final VendorRepository vendorRepository;
-//   private final PricingPercentDataRepository pricingPercentDataRepository;
-//    private final CostRepository costRepository;
-//    private final CostService costService;
-//    private final OfferService offerService;
-//    private final SaleService saleService;
-//    private final CompanyService companyService;
-//    private final ClientService clientService;
-//    private final SellerService sellerService;
-//    private final InvoiceService invoiceService;
-//    private final BankAccountService bankAccountService;
-//    private final CurrencyService currencyService;
-//    private final AuthService authService;
+//        //TEST Authenticate USER
+//        userService.authenticate("owner","owner");
+//        //TEST USER Change Password
+//        userService.editUserPassword("mechanicPassword",3L);
+//        userService.authenticate("mechanic","mechanicPassword");
 //
 //
-//
-//
-//    public TestCrudCar(PictureService pictureService, CarService carService, HttpSession httpSession, UserRepository userRepository, BrandRepository brandRepository, ModelRepository modelRepository, VendorRepository vendorRepository, PricingPercentDataRepository pricingPercentDataRepository, CostRepository costRepository, CostService costService, OfferService offerService, SaleService saleService, CompanyService companyService, ClientService clientService, SellerService sellerService, InvoiceService invoiceService, BankAccountService bankAccountService, CurrencyService currencyService, AuthService authService) {
-//        this.pictureService = pictureService;
-//        this.carService = carService;
-//        this.httpSession = httpSession;
-//        this.userRepository = userRepository;
-//        this.brandRepository = brandRepository;
-//        this.modelRepository = modelRepository;
-//        this.vendorRepository = vendorRepository;
-//        this.pricingPercentDataRepository = pricingPercentDataRepository;
-//        this.costRepository = costRepository;
-//        this.costService = costService;
-//        this.offerService = offerService;
-//        this.saleService = saleService;
-//        this.companyService = companyService;
-//        this.clientService = clientService;
-//        this.sellerService = sellerService;
-//        this.invoiceService = invoiceService;
-//        this.bankAccountService = bankAccountService;
-//        this.currencyService = currencyService;
-//        this.authService = authService;
-//
-//    }
-//
-//
-//    @Override
-//    public void run(String... args) throws Exception {
-//        //TEST REGISTER USER
-//
-//        //authService.register(new RegisterUserDTO("owner","Radoslav","Bekyarov","owner","owner","owner@com.bg"));
-//        // TEST LOGIN USER
-//
-////        String username = "owner";
-////        String password = "owner";
-////        List<GrantedAuthority> authorities = new ArrayList<>();
-////        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-////        Authentication authentication = new UsernamePasswordAuthenticationToken(username, password, authorities);
-////        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//
-//
-//       //TEST ADD USER
-//      authService.addUser(new UserDTO("ivan","Иван","Иванов","ivan","ivan","ivan@com.bg",2L, Position.Dealer));
-//      authService.addUser(new UserDTO("admin","admin","admin","admin","admin","admin@com.bg",1L, Position.Dealer));
-//       // TEST LOGIN
-////        LoginDTO loginDTO = new LoginDTO("admin","admin");
-////        ResponseEntity login = userController.login(loginDTO);
-//
-//
-//
-//
-//
-//        //
-////        //TEST EDIT USER
-////        userService.editUser("mechanic@abv.bg", Role.ADMIN,Position.Accountant,3L);
-////
-////        //TEST Authenticate USER
-////        userService.authenticate("owner","owner");
-////        //TEST USER Change Password
-////        userService.editUserPassword("mechanicPassword",3L);
-////        userService.authenticate("mechanic","mechanicPassword");
-////
-////
 //brandRepository.save(new Brand("AUDI"));
 ////        //създавам model
 //    modelRepository.save(new Model("Q5", brandRepository.findById(1L).get()));
@@ -321,5 +321,5 @@
 //        saleService.transformOfferToSale(1L);
 //
 //     System.out.println("aa");
-//   }
-//}
+}
+}

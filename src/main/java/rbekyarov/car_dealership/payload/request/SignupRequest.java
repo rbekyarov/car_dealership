@@ -2,23 +2,30 @@ package rbekyarov.car_dealership.payload.request;
 
 import java.util.Set;
 
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
  
 public class SignupRequest {
     @NotBlank
     @Size(min = 3, max = 20)
     private String username;
- 
+    @NotBlank
+    @Size(max = 50)
+    private String firstName;
+
+    @NotBlank
+    @Size(max = 50)
+    private String lastName;
     @NotBlank
     @Size(max = 50)
     @Email
     private String email;
-    
-    private Set<String> role;
-    
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
+    @NotBlank
+    @Size(min = 6, max = 40)
+    private String repeatPassword;
   
     public String getUsername() {
         return username;
@@ -43,12 +50,32 @@ public class SignupRequest {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    public Set<String> getRole() {
-      return this.role;
+
+
+    public String getFirstName() {
+        return firstName;
     }
-    
-    public void setRole(Set<String> role) {
-      this.role = role;
+
+    public SignupRequest setFirstName(String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public SignupRequest setLastName(String lastName) {
+        this.lastName = lastName;
+        return this;
+    }
+
+    public String getRepeatPassword() {
+        return repeatPassword;
+    }
+
+    public SignupRequest setRepeatPassword(String repeatPassword) {
+        this.repeatPassword = repeatPassword;
+        return this;
     }
 }

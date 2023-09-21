@@ -2,6 +2,7 @@ package rbekyarov.car_dealership.controllers;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -88,44 +89,22 @@ public class AuthController {
     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
       return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
     }
-
-    // Create new user's account
-    UserEntity userEntity = new UserEntity(signUpRequest.getUsername(),
-                         signUpRequest.getEmail(),
-                         encoder.encode(signUpRequest.getPassword()));
-
-    Set<String> strRoles = signUpRequest.getRole();
-    Set<Role> roles = new HashSet<>();
-
-    if (strRoles == null) {
-      Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-      roles.add(userRole);
-    } else {
-      strRoles.forEach(role -> {
-        switch (role) {
-        case "admin":
-          Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(adminRole);
-
-          break;
-        case "mod":
-          Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(modRole);
-
-          break;
-        default:
-          Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(userRole);
-        }
-      });
+    if (!Objects.equals(signUpRequest.getPassword(), signUpRequest.getRepeatPassword())) {
+      return ResponseEntity.badRequest().body(new MessageResponse("Error: Password mismatch!"));
     }
 
-    userEntity.setRoles(roles);
+    // Create new user's account
+
+    UserEntity userEntity = new UserEntity();
+    userEntity.setFirstName(signUpRequest.getFirstName());
+    userEntity.setLastName(signUpRequest.getLastName());
+    userEntity.setUsername(signUpRequest.getUsername());
+    userEntity.setEmail(signUpRequest.getEmail());
+    userEntity.setPassword(encoder.encode(signUpRequest.getPassword()));
+
     userRepository.save(userEntity);
+
+
 
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
