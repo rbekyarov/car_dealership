@@ -1,24 +1,24 @@
 import axios from "axios";
 import { Link, Outlet } from "react-router-dom";
 import { Forn, Container, Button } from "react-bootstrap";
-import { userState, React, useState,useEffect  } from "react";
+import { userState, React, useState, useEffect } from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const CarList = () => {
+const OfferList = () => {
 
-  const [cars, setCar] = useState([]);
+  const [offers, setOffers] = useState([]);
 
   useEffect(() => {
     // Извикваме API за данни за хора
-    axios.get('http://localhost:8080/api/cars') 
+    axios.get('http://localhost:8080/api/offers')
       .then(response => {
-        setCar(response.data);
+        setOffers(response.data);
       })
       .catch(error => {
         console.error('Грешка при извличане на данните:', error);
@@ -46,34 +46,55 @@ const CarList = () => {
       </Navbar>
       <Container>
         <div className="custom-container shadow-sm rounded">
-       
-        <h1>Car List</h1>
-        <Navbar.Brand as={Link} to={"/cars/add"}>Add Car</Navbar.Brand>
-      <table>
-        <thead>
-          <tr>
-          <th>ID</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Curency</th>
-            <th>Avaable</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cars.map(car => (
-            <tr key={car.id}>
-              <td>{car.id}</td>
-              <td>{car.name}</td>
-              <td>{car.priceSale}</td>
-              <td>{car.currency.name}</td>
-              <td>{car.statusAvailable}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+          <h1>Offer List</h1>
+          <Navbar.Brand as={Link} to={"/offers/add"}>Add Offers</Navbar.Brand>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Cars</th>
+                <th>Client</th>
+                <th>Discount</th>
+                <th>Price</th>
+                <th>Total Price</th>
+                <th>Currency</th>
+                <th>Status</th>
+
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {offers.map(offer => (
+                <tr key={offer.id}>
+                  <td>{offer.id}</td>
+
+                  <td>
+                    
+                      {offer.cars.map((car, index) => (
+                        <p key={index}>
+                          {car.name}<br />
+
+                        </p>
+                      ))}
+                    
+                  </td>
+
+                  <td>{offer.client.name}</td>
+                  <td>{offer.discount}</td>
+                  <td>{offer.price}</td>
+                  <td>{offer.totalPrice}</td>
+                  <td>{offer.currency.code}</td>
+                  <td>{offer.statusOffer}</td>
+
+                  <td>{offer.dateCreate}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </Container>
     </>
   );
 };
-export default CarList;
+export default OfferList;

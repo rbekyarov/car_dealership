@@ -11,12 +11,12 @@ const Layout = () => {
       <Navbar expand="lg" className="bg-body-tertiary position-sticky top-0" style={{ zIndex: 1 }}>
         <Container>
           <Navbar.Brand as={Link} to={"/"}>Home</Navbar.Brand>
-          <Navbar.Brand as={Link} to={"/api/cars"}>Cars</Navbar.Brand>
-          <Navbar.Brand as={Link} to={"/api/offers"}>Offers</Navbar.Brand>
-          <Navbar.Brand as={Link} to={"/api/sales"}>Sales</Navbar.Brand>
-          <Navbar.Brand as={Link} to={"/api/clients"}>Clients</Navbar.Brand>
-          <Navbar.Brand as={Link} to={"/api/vendors"}>Vendors</Navbar.Brand>
-          <Navbar.Brand as={Link} to={"/api/vendors"}>Settings</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/cars"}>Cars</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/offers"}>Offers</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/sales"}>Sales</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/clients"}>Clients</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/vendors"}>Vendors</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/vendors"}>Settings</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" />
           <Nav className="me-auto">
@@ -27,7 +27,7 @@ const Layout = () => {
       </Navbar>
       <Container>
       <div className="d-flex justify-content-center align-items-center" style={{ minHeight: "90vh" }}>
-        <p className="fs-1">Welcome to this page</p>
+        <p className="fs-1">Car Dailer App</p>
       </div>
     </Container>
       <Outlet/>

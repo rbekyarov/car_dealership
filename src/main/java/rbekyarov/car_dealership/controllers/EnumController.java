@@ -91,10 +91,46 @@ public class EnumController {
         String json = objectMapper.writeValueAsString(ServiceBook.values());
         return json;
     }
+    @GetMapping("/api/enumAirbags")
+    public String getAirbagsValues() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(Airbags.values());
+        return json;
+    }
+    @GetMapping("/api/enumElMirrors")
+    public String getElMirrorsValues() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(ElMirrors.values());
+        return json;
+    }
+    @GetMapping("/api/enumElWindows")
+    public String getElWindowsValues() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(ElWindows.values());
+        return json;
+    }
+    @GetMapping("/api/enumClimatic")
+    public String getClimaticValues() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(Climatic.values());
+        return json;
+    }
+    @GetMapping("/api/enumNavigation")
+    public String getNavigationValues() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(Navigation.values());
+        return json;
+    }
     @GetMapping("/api/enumParktronik")
     public String getParktronikValues() throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String json = objectMapper.writeValueAsString(Parktronik.values());
+        return json;
+    }
+    @GetMapping("/api/enumStatusAvailable")
+    public String getAvailableValues() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String json = objectMapper.writeValueAsString(StatusAvailable.values());
         return json;
     }
 }

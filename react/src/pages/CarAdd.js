@@ -1,6 +1,8 @@
 import axios, { HttpStatusCode } from "axios";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import Button from "react-bootstrap/Button";
 import { useState, useEffect } from "react";
 import React from "react";
@@ -13,13 +15,21 @@ import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 const AddCar = () => {
 
 
- 
+
 
   useEffect(() => {
     //MODEL
     axios.get('http://localhost:8080/api/models')
       .then(response => {
         SETModelE(response.data);
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+    //Vendor
+    axios.get('http://localhost:8080/api/vendors')
+      .then(response => {
+        SETVendorE(response.data);
       })
       .catch(error => {
         console.error('Грешка при извличане на данните:', error);
@@ -32,133 +42,191 @@ const AddCar = () => {
       .catch(error => {
         console.error('Грешка при извличане на данните:', error);
       });
-      // FUELTYPE
-      axios.get('http://localhost:8080/api/enumFuelType')
+    // FUELTYPE
+    axios.get('http://localhost:8080/api/enumFuelType')
       .then(response => {
         SETfuelTypeE(response.data);
-         
+
       })
       .catch(error => {
         console.error('Грешка при извличане на данните:', error);
       });
-      //COLOR
-      axios.get('http://localhost:8080/api/enumColor')
+    //COLOR
+    axios.get('http://localhost:8080/api/enumColor')
       .then(response => {
         SETcolorE(response.data);
-         
+
       })
       .catch(error => {
         console.error('Грешка при извличане на данните:', error);
       });
-      //DOORCOUNT
-      axios.get('http://localhost:8080/api/enumDoorCount')
+    //DOORCOUNT
+    axios.get('http://localhost:8080/api/enumDoorCount')
       .then(response => {
         SETdoorCountE(response.data);
-         
+
       })
       .catch(error => {
         console.error('Грешка при извличане на данните:', error);
       });
-       //ConditionCar
-       axios.get('http://localhost:8080/api/enumConditionCar')
-       .then(response => {
-         SETconditionCarE(response.data);
-          
-       })
-       .catch(error => {
-         console.error('Грешка при извличане на данните:', error);
-       });
+    //ConditionCar
+    axios.get('http://localhost:8080/api/enumConditionCar')
+      .then(response => {
+        SETconditionCarE(response.data);
 
-        //Eurostandard
-        axios.get('http://localhost:8080/api/enumEurostandard')
-        .then(response => {
-          SETeurostandardE(response.data);
-           
-        })
-        .catch(error => {
-          console.error('Грешка при извличане на данните:', error);
-        });
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
 
-        //category
-        axios.get('http://localhost:8080/api/enumCategory')
-        .then(response => {
-          SETcategoryE(response.data);
-           
-        })
-        .catch(error => {
-          console.error('Грешка при извличане на данните:', error);
-        });
-        //autoStartStop
-        axios.get('http://localhost:8080/api/enumAutoStartStop')
-        .then(response => {
-          SETautoStartStopE(response.data);
-           
-        })
-        .catch(error => {
-          console.error('Грешка при извличане на данните:', error);
-        });
-        //alarm
-        axios.get('http://localhost:8080/api/enumAlarm')
-        .then(response => {
-          SETalarmE(response.data);
-           
-        })
-        .catch(error => {
-          console.error('Грешка при извличане на данните:', error);
-        });
-        //metallic
-        axios.get('http://localhost:8080/api/enumMetallic')
-        .then(response => {
-          SETmetallicE(response.data);
-           
-        })
-        .catch(error => {
-          console.error('Грешка при извличане на данните:', error);
-        });
-        //leatherSalon
-        axios.get('http://localhost:8080/api/enumLeatherSalon')
-        .then(response => {
-          SETleatherSalonE(response.data);
-           
-        })
-        .catch(error => {
-          console.error('Грешка при извличане на данните:', error);
-        });
-        //halogenHeadlights
-        axios.get('http://localhost:8080/api/enumHalogenHeadlights')
-        .then(response => {
-          SEThalogenHeadlightsE(response.data);
-           
-        })
-        .catch(error => {
-          console.error('Грешка при извличане на данните:', error);
-        });
-        //serviceBook
-        axios.get('http://localhost:8080/api/enumServiceBook')
-        .then(response => {
-          SETserviceBookE(response.data);
-           
-        })
-        .catch(error => {
-          console.error('Грешка при извличане на данните:', error);
-        });
-        //parktronik
-        axios.get('http://localhost:8080/api/enumParktronik')
-        .then(response => {
-          SETparktronikE(response.data);
-           
-        })
-        .catch(error => {
-          console.error('Грешка при извличане на данните:', error);
-        });
+    //Eurostandard
+    axios.get('http://localhost:8080/api/enumEurostandard')
+      .then(response => {
+        SETeurostandardE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+
+    //category
+    axios.get('http://localhost:8080/api/enumCategory')
+      .then(response => {
+        SETcategoryE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+    //autoStartStop
+    axios.get('http://localhost:8080/api/enumAutoStartStop')
+      .then(response => {
+        SETautoStartStopE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+    //alarm
+    axios.get('http://localhost:8080/api/enumAlarm')
+      .then(response => {
+        SETalarmE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+    //metallic
+    axios.get('http://localhost:8080/api/enumMetallic')
+      .then(response => {
+        SETmetallicE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+    //leatherSalon
+    axios.get('http://localhost:8080/api/enumLeatherSalon')
+      .then(response => {
+        SETleatherSalonE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+    //halogenHeadlights
+    axios.get('http://localhost:8080/api/enumHalogenHeadlights')
+      .then(response => {
+        SEThalogenHeadlightsE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+    //serviceBook
+    axios.get('http://localhost:8080/api/enumServiceBook')
+      .then(response => {
+        SETserviceBookE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+    //parktronik
+    axios.get('http://localhost:8080/api/enumParktronik')
+      .then(response => {
+        SETparktronikE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+    //airbags
+    axios.get('http://localhost:8080/api/enumAirbags')
+      .then(response => {
+        SETairbagsE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+    //elMirrors
+    axios.get('http://localhost:8080/api/enumElMirrors')
+      .then(response => {
+        SETelMirrorsE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+    //elWindows
+    axios.get('http://localhost:8080/api/enumElWindows')
+      .then(response => {
+        SETelWindowsE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+    //climatic
+    axios.get('http://localhost:8080/api/enumClimatic')
+      .then(response => {
+        SETclimaticE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+    //navigation
+    axios.get('http://localhost:8080/api/enumNavigation')
+      .then(response => {
+        SETnavigationE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
+    //statusAvailable
+    axios.get('http://localhost:8080/api/enumStatusAvailable')
+      .then(response => {
+        SETstatusAvailableE(response.data);
+
+      })
+      .catch(error => {
+        console.error('Грешка при извличане на данните:', error);
+      });
 
   }, []);
 
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const [vinNumber, SETvinNumber] = useState("");
 
   const [modelId, SETmodelId] = useState("");
   const [modelE, SETModelE] = useState([]);
+
+  const [vendorId, SETvendorId] = useState("");
+  const [vendorE, SETVendorE] = useState([]);
 
   const [transmision, SETtransmision] = useState("");
   const [transmisionE, SETtransmisionE] = useState([]);
@@ -202,25 +270,96 @@ const AddCar = () => {
   const [parktronik, SETparktronik] = useState("");
   const [parktronikE, SETparktronikE] = useState([]);
 
+  const [airbags, SETairbags] = useState("");
+  const [airbagsE, SETairbagsE] = useState([]);
+
+  const [elMirrors, SETelMirrors] = useState("");
+  const [elMirrorsE, SETelMirrorsE] = useState([]);
+
+  const [elWindows, SETelWindows] = useState("");
+  const [elWindowsE, SETelWindowsE] = useState([]);
+
+  const [climatic, SETclimatic] = useState("");
+  const [climaticE, SETclimaticE] = useState([]);
+
+  const [navigation, SETnavigation] = useState("");
+  const [navigationE, SETnavigationE] = useState([]);
+
+  const [statusAvailable, SETstatusAvailable] = useState("");
+  const [statusAvailableE, SETstatusAvailableE] = useState([]);
+
+
 
   const [horsepower, SEThorsepower] = useState("");
   const [cubature, SETcubature] = useState("");
-  const [vendorId, SETvendorId] = useState("");
   const [comments, SETcomments] = useState("");
-  
-  
-  
-  const [airbags, SETairbags] = useState("");
-  const [elMirrors, SETelMirrors] = useState("");
-  const [elWindows, SETelWindows] = useState("");
-  const [climatic, SETclimatic] = useState("");
-  const [navigation, SETnavigation] = useState("");
-  const [statusAvailable, SETstatusAvailable] = useState("");
+  const [pricePurchase, SETpricePurchase] = useState("");
+
   const [regDate, SETregDate] = useState("");
   const [dateIncome, SETdateIncome] = useState("");
   const [datePurchase, SETdatePurchase] = useState("");
-  const [pricePurchase, SETpricePurchase] = useState("");
+
+
   const [error, setError] = useState("");
+
+
+  const HANDLEvinNumber = (event) => {
+    SETvinNumber(event.target.value);
+
+  };
+  const HANDLEhorsepower = (event) => {
+    SEThorsepower(event.target.value);
+
+  };
+  const HANDLEcubature = (event) => {
+    SETcubature(event.target.value);
+
+  };
+  const HANDLEcomments = (event) => {
+    SETcomments(event.target.value);
+
+  };
+  const HANDLEregDate = (event) => {
+    SETregDate(event);
+
+  };
+  const HANDLEdateIncome = (event) => {
+    SETdateIncome(event);
+
+  };
+  const HANDLEdatePurchase = (event) => {
+    SETdatePurchase(event.target.value);
+
+  };
+  const HANDLEpricePurchase = (event) => {
+    SETpricePurchase(event.target.value);
+
+  };
+
+  const HANDairbags = (event) => {
+    SETairbags(event.target.value);
+
+  };
+  const HANDelMirrors = (event) => {
+    SETelMirrors(event.target.value);
+
+  };
+  const HANDelWindows = (event) => {
+    SETelWindows(event.target.value);
+
+  };
+  const HANDclimatic = (event) => {
+    SETclimatic(event.target.value);
+
+  };
+  const HANDnavigation = (event) => {
+    SETnavigation(event.target.value);
+
+  };
+  const HANDstatusAvailable = (event) => {
+    SETstatusAvailable(event.target.value);
+
+  };
 
   const HANDhalogenHeadlights = (event) => {
     SEThalogenHeadlights(event.target.value);
@@ -235,12 +374,13 @@ const AddCar = () => {
 
   };
 
-  const HANDLEvinNumber = (event) => {
-    SETvinNumber(event.target.value);
 
-  };
   const HANDLEmodelId = (event) => {
     SETmodelId(event.target.value);
+
+  };
+  const HANDLEvendorId = (event) => {
+    SETvendorId(event.target.value);
 
   };
   const HANDLEtransmision = (event) => {
@@ -369,24 +509,20 @@ const AddCar = () => {
 
   return (
     <>
-      <Navbar
-        expand="lg"
-        className="bg-body-tertiary position-sticky top-0"
-        style={{ zIndex: 1 }}
-      >
+      <Navbar expand="lg" className="bg-body-tertiary position-sticky top-0" style={{ zIndex: 1 }}>
         <Container>
-          <Navbar.Brand as={Link} to={"/"}>
-            Home
-          </Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/"}>Home</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/cars"}>Cars</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/offers"}>Offers</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/sales"}>Sales</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/clients"}>Clients</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/vendors"}>Vendors</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/vendors"}>Settings</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" />
           <Nav className="me-auto">
-            <Nav.Link as={Link} to={"/register"}>
-              Register
-            </Nav.Link>
-            <Nav.Link as={Link} to={"/login"}>
-              Login
-            </Nav.Link>
+            <Nav.Link as={Link} to={"/register"}>Register</Nav.Link>
+            <Nav.Link as={Link} to={"/login"}>Login</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -404,20 +540,64 @@ const AddCar = () => {
                 onChange={HANDLEvinNumber}
               />
             </Form.Group>
-            
+
             <Form.Group className="mb-3" controlId="modelId">
               <Form.Label>Model</Form.Label>
               <Form.Select value={modelId} onChange={HANDLEmodelId}>
-              
+
                 <option value="">Select</option>
                 {modelE.map(model => (
                   <option key={model.id} value={model.name}>
                     {model.name}
                   </option>
                 ))}
-              
+
               </Form.Select>
             </Form.Group>
+
+            <Form.Group className="mb-3" controlId="vendorId">
+              <Form.Label>Vendor</Form.Label>
+              <Form.Select value={vendorId} onChange={HANDLEvendorId}>
+
+                <option value="">Select</option>
+                {vendorE.map(model => (
+                  <option key={model.id} value={model.name}>
+                    {model.name}
+                  </option>
+                ))}
+
+              </Form.Select>
+            </Form.Group>
+
+
+
+            <Form.Group className="mb-3">
+              <Form.Label >Registration Date:</Form.Label>
+              <DatePicker className="mb-3"
+
+                selected={regDate}
+                onChange={HANDLEregDate}
+                dateFormat="dd.MM.yyyy" // Формат на датата
+                placeholderText="Select Date"
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label >Income Date:</Form.Label>
+              <DatePicker className="mb-3"
+
+                selected={dateIncome}
+                onChange={HANDLEdateIncome}
+                dateFormat="dd.MM.yyyy" // Формат на датата
+                placeholderText="Select Date"
+              />
+            </Form.Group>
+
+
+
+
+
+
 
             <Form.Group className="mb-3" controlId="transmision">
               <Form.Label>Transmision</Form.Label>
@@ -585,6 +765,86 @@ const AddCar = () => {
                   </option>
                 ))}
               </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="airbags">
+              <Form.Label>Airbags</Form.Label>
+              <Form.Select value={airbags} onChange={HANDairbags} >
+                <option value="">Select</option>
+                {airbagsE.map((value, index) => (
+                  <option key={index} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="elMirrors">
+              <Form.Label>ElMirrors</Form.Label>
+              <Form.Select value={elMirrors} onChange={HANDelMirrors} >
+                <option value="">Select</option>
+                {elMirrorsE.map((value, index) => (
+                  <option key={index} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="elWindows">
+              <Form.Label>ElWindows</Form.Label>
+              <Form.Select value={elWindows} onChange={HANDelWindows} >
+                <option value="">Select</option>
+                {elWindowsE.map((value, index) => (
+                  <option key={index} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="climatic">
+              <Form.Label>Climatic</Form.Label>
+              <Form.Select value={climatic} onChange={HANDclimatic} >
+                <option value="">Select</option>
+                {climaticE.map((value, index) => (
+                  <option key={index} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="navigation">
+              <Form.Label>Navigation</Form.Label>
+              <Form.Select value={navigation} onChange={HANDnavigation} >
+                <option value="">Select</option>
+                {navigationE.map((value, index) => (
+                  <option key={index} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="statusAvailable">
+              <Form.Label>Status Available</Form.Label>
+              <Form.Select value={statusAvailable} onChange={HANDstatusAvailable} >
+                <option value="">Select</option>
+                {statusAvailableE.map((value, index) => (
+                  <option key={index} value={value}>
+                    {value}
+                  </option>
+                ))}
+              </Form.Select>
+            </Form.Group>
+
+
+            <Form.Group className="mb-3" controlId="comments">
+              <Form.Label>Comments</Form.Label>
+
+              <Form.Control
+                as="textarea"
+                rows={4}
+                value={comments}
+                onChange={HANDLEcomments}
+                placeholder=""
+              />
+
             </Form.Group>
 
 

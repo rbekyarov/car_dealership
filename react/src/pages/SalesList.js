@@ -1,24 +1,24 @@
 import axios from "axios";
 import { Link, Outlet } from "react-router-dom";
 import { Forn, Container, Button } from "react-bootstrap";
-import { userState, React, useState,useEffect  } from "react";
+import { userState, React, useState, useEffect } from "react";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-const CarList = () => {
+const SalesList = () => {
 
-  const [cars, setCar] = useState([]);
+  const [sales, setSales] = useState([]);
 
   useEffect(() => {
     // Извикваме API за данни за хора
-    axios.get('http://localhost:8080/api/cars') 
+    axios.get('http://localhost:8080/api/sales')
       .then(response => {
-        setCar(response.data);
+        setSales(response.data);
       })
       .catch(error => {
         console.error('Грешка при извличане на данните:', error);
@@ -46,34 +46,55 @@ const CarList = () => {
       </Navbar>
       <Container>
         <div className="custom-container shadow-sm rounded">
-       
-        <h1>Car List</h1>
-        <Navbar.Brand as={Link} to={"/cars/add"}>Add Car</Navbar.Brand>
-      <table>
-        <thead>
-          <tr>
-          <th>ID</th>
-            <th>Name</th>
-            <th>Price</th>
-            <th>Curency</th>
-            <th>Avaable</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cars.map(car => (
-            <tr key={car.id}>
-              <td>{car.id}</td>
-              <td>{car.name}</td>
-              <td>{car.priceSale}</td>
-              <td>{car.currency.name}</td>
-              <td>{car.statusAvailable}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+          <h1>Sales List</h1>
+          <Navbar.Brand as={Link} to={"/sales/add"}>Add Sale</Navbar.Brand>
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Cars</th>
+                <th>Client</th>
+                <th>Discount</th>
+                <th>Price</th>
+                <th>Total Price</th>
+                <th>Currency</th>
+                <th>Status Invoiced</th>
+                <th>Saller</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sales.map(sale => (
+                <tr key={sale.id}>
+                  <td>{sale.id}</td>
+
+                  <td>
+                    
+                      {sale.cars.map((car, index) => (
+                        <p key={index}>
+                          {car.name}<br />
+
+                        </p>
+                      ))}
+                    
+                  </td>
+
+                  <td>{sale.client.name}</td>
+                  <td>{sale.discount}</td>
+                  <td>{sale.price}</td>
+                  <td>{sale.totalPrice}</td>
+                  <td>{sale.currency.code}</td>
+                  <td>{sale.statusSalesInvoiced}</td>
+                  <td>{sale.seller.firstName}</td>
+                  <td>{sale.dateCreate}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </Container>
     </>
   );
 };
-export default CarList;
+export default SalesList;
