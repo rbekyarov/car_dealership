@@ -11,6 +11,12 @@ const Layout = () => {
       <Navbar expand="lg" className="bg-body-tertiary position-sticky top-0" style={{ zIndex: 1 }}>
         <Container>
           <Navbar.Brand as={Link} to={"/"}>Home</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/api/cars"}>Cars</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/api/offers"}>Offers</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/api/sales"}>Sales</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/api/clients"}>Clients</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/api/vendors"}>Vendors</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/api/vendors"}>Settings</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" />
           <Nav className="me-auto">
