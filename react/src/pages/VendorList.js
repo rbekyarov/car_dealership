@@ -64,8 +64,10 @@ const VendorsList = () => {
                 <th>ID</th>
                 <th>Name</th>
                 <th>Vat</th>
+                <th>City</th>
+                <th>Address</th>
                 <th>Email</th>
-                <th>Phone</th>
+                
                 
               
                 <th>Date</th>
@@ -77,9 +79,11 @@ const VendorsList = () => {
                   <td>{vendor.id}</td>
 
                   <td>{vendor.name}</td>
-                  <td>{vendor.vatOrId}</td>
+                  <td>{vendor.vatNumber}</td>
+                  <td>{vendor.city}</td>
+                  <td>{vendor.address}</td>
                   <td>{vendor.email}</td>
-                  <td>{vendor.phone}</td>
+                
                   <td>{vendor.dateCreate}</td>
                   
                 </tr>

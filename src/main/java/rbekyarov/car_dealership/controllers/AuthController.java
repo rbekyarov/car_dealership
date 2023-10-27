@@ -1,9 +1,6 @@
 package rbekyarov.car_dealership.controllers;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
@@ -72,12 +69,14 @@ public class AuthController {
     List<String> roles = userDetails.getAuthorities().stream()
         .map(item -> item.getAuthority())
         .collect(Collectors.toList());
+    Map<String, Object> responseMap = new HashMap<>();
+    responseMap.put("token", jwtCookie.getValue());
+    responseMap.put("id", userDetails.getId());
+    responseMap.put("username", userDetails.getUsername());
+    responseMap.put("email", userDetails.getEmail());
+    responseMap.put("roles", roles);
 
-    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-        .body(new UserInfoResponse(userDetails.getId(),
-                                   userDetails.getUsername(),
-                                   userDetails.getEmail(),
-                                   roles));
+    return ResponseEntity.ok().body(responseMap);
   }
 
   @PostMapping("/register")

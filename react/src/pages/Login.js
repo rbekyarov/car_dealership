@@ -41,9 +41,11 @@ const Login = () => {
       setPassword("");
 
       sessionStorage.setItem('token',response.data.token);
+      
       sessionStorage.setItem('username', response.data.username);
       sessionStorage.setItem('user_id',response.data.id);
       axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+      
       navigate("/");
 
     } catch(error){

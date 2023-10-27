@@ -13,14 +13,16 @@ import { Link, Outlet } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import {useNavigate} from "react-router-dom";
-const VendorAdd = () => {
+const ClientAdd = () => {
   
+
   const navigate = useNavigate();
+  
   const [name, SETname] = useState("");
-  const [country, SETcountry] = useState("");
+  const [phone, SETphone] = useState("");
   const [city, SETcity] = useState("");
   const [address, SETaddress] = useState("");
-  const [vatNumber, SETvatNumber] = useState("");
+  const [vatOrId, SETvatOrId] = useState("");
   const [email, SETemail] = useState("");
 
 
@@ -31,8 +33,8 @@ const VendorAdd = () => {
     SETname(event.target.value);
 
   };
-  const HANDLEcountry = (event) => {
-    SETcountry(event.target.value);
+  const HANDLEphone = (event) => {
+    SETphone(event.target.value);
 
   };
   const HANDLEcity = (event) => {
@@ -43,8 +45,8 @@ const VendorAdd = () => {
     SETaddress(event.target.value);
 
   };
-  const HANDLEvatNumber = (event) => {
-    SETvatNumber(event.target.value);
+  const HANDLEvatOrId = (event) => {
+    SETvatOrId(event.target.value);
 
   };
   const HANDLEemail = (event) => {
@@ -52,17 +54,17 @@ const VendorAdd = () => {
 
   };
 
+  
 
-
-  const handleVendorData = async (event) => {
+  const handleClientData = async (event) => {
     event.preventDefault();
 
     const data = {
       name: name,
-      country: country,
+      phone: phone,
       city: city,
       address: address,
-      vatNumber: vatNumber,
+      vatOrId: vatOrId,
       email: email
 
     };
@@ -70,23 +72,27 @@ const VendorAdd = () => {
     try {
       
       const token = sessionStorage.getItem('token');
+    
+      
       const config = {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       };
-      const response = await axios.post("http://localhost:8080/api/vendors", data, config);
+    
+      
+      const response = await axios.post("http://localhost:8080/api/clients", data, config);
     
       
       SETname("");
-      SETcountry("");
+      SETphone("");
       SETcity("");
       SETaddress("");
-      SETvatNumber("");
+      SETvatOrId("");
       SETemail("");
     
       
-      navigate("/vendors");
+      navigate("/clients");
     
     } catch (error) {
       setError("The email or username you entered is already registered");
@@ -126,10 +132,10 @@ const VendorAdd = () => {
       <Container>
 
         <div className="custom-container shadow-sm rounded">
-          <h1 className="mb-3 text-center">Add Vendor</h1>
-          <Form onSubmit={handleVendorData}>
+          <h1 className="mb-3 text-center">Add Client</h1>
+          <Form onSubmit={handleClientData}>
             <Form.Group className="mb-3" controlId="name">
-              <Form.Label>Name Vendor</Form.Label>
+              <Form.Label>Name</Form.Label>
               <Form.Control
                 value={name}
                 type="name"
@@ -139,13 +145,13 @@ const VendorAdd = () => {
             </Form.Group>
 
 
-            <Form.Group className="mb-3" controlId="country">
-              <Form.Label>Country</Form.Label>
+            <Form.Group className="mb-3" controlId="phone">
+              <Form.Label>Phone</Form.Label>
               <Form.Control
-                value={country}
-                type="country"
+                value={phone}
+                type="phone"
                 placeholder="Enter Country"
-                onChange={HANDLEcountry}
+                onChange={HANDLEphone}
               />
             </Form.Group>
 
@@ -169,13 +175,13 @@ const VendorAdd = () => {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="vatNumber">
+            <Form.Group className="mb-3" controlId="vatOrId">
               <Form.Label>Vat Number</Form.Label>
               <Form.Control
-                value={vatNumber}
-                type="vatNumber"
+                value={vatOrId}
+                type="vatOrId"
                 placeholder="Enter Vat Number"
-                onChange={HANDLEvatNumber}
+                onChange={HANDLEvatOrId}
               />
             </Form.Group>
 
@@ -192,7 +198,7 @@ const VendorAdd = () => {
 
             <div className="d-flex justify-content-end">
               <Button className="mt-2" variant="primary" type="submit">
-                Add Vendor
+                Add Client
               </Button>
             </div>
           </Form>
@@ -204,4 +210,4 @@ const VendorAdd = () => {
   );
 };
 
-export default VendorAdd;
+export default ClientAdd;
