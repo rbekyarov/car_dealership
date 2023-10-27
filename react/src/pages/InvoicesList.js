@@ -10,15 +10,15 @@ import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 
-const SalesList = () => {
+const InvoicesList = () => {
 
-  const [sales, setSales] = useState([]);
+  const [invoices, setInvoices] = useState([]);
 
   useEffect(() => {
     // Извикваме API за данни за хора
-    axios.get('http://localhost:8080/api/sales')
+    axios.get('http://localhost:8080/api/invoices')
       .then(response => {
-        setSales(response.data);
+        setInvoices(response.data);
       })
       .catch(error => {
         console.error('Грешка при извличане на данните:', error);
@@ -27,7 +27,7 @@ const SalesList = () => {
 
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary position-sticky top-0" style={{ zIndex: 1 }}>
+     <Navbar expand="lg" className="bg-body-tertiary position-sticky top-0" style={{ zIndex: 1 }}>
         <Container>
           <Navbar.Brand as={Link} to={"/"}>Home</Navbar.Brand>
           <Navbar.Brand as={Link} to={"/cars"}>Cars</Navbar.Brand>
@@ -56,47 +56,39 @@ const SalesList = () => {
       <Container>
         <div className="custom-container shadow-sm rounded">
 
-          <h1>Sales List</h1>
-          <Navbar.Brand as={Link} to={"/sales/add"}>Add Sale</Navbar.Brand>
+          <h1>Invoices List</h1>
+        
           <table>
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Cars</th>
                 <th>Client</th>
-                <th>Discount</th>
-                <th>Price</th>
-                <th>Total Price</th>
-                <th>Currency</th>
-                <th>Status Invoiced</th>
-                <th>Saller</th>
+              
+                <th>Company</th>
+                <th>totalPrice</th>
+                <th>currencyCode</th>
+                <th>Cancellation</th>
+              
+                <th>authorName</th>
+                
+              
                 <th>Date</th>
               </tr>
             </thead>
             <tbody>
-              {sales.map(sale => (
-                <tr key={sale.id}>
-                  <td>{sale.id}</td>
+              {invoices.map(invoice => (
+                <tr key={invoice.id}>
+                  <td>{invoice.id}</td>
 
-                  <td>
-
-                    {sale.cars.map((car, index) => (
-                      <p key={index}>
-                        {car.name}<br />
-
-                      </p>
-                    ))}
-
-                  </td>
-
-                  <td>{sale.client.name}</td>
-                  <td>{sale.discount}</td>
-                  <td>{sale.price}</td>
-                  <td>{sale.totalPrice}</td>
-                  <td>{sale.currency.code}</td>
-                  <td>{sale.statusSalesInvoiced}</td>
-                  <td>{sale.seller.firstName}</td>
-                  <td>{sale.dateCreate}</td>
+                  <td>{invoice.clientName}</td>
+                  
+                  <td>{invoice.companyName}</td>
+                  <td>{invoice.totalPrice}</td>
+                  <td>{invoice.currencyCode}</td>
+                  <td>{invoice.cancellationInvoice}</td>
+                  <td>{invoice.authorName}</td>
+                  <td>{invoice.dateCreate}</td>
+                  
                 </tr>
               ))}
             </tbody>
@@ -106,4 +98,4 @@ const SalesList = () => {
     </>
   );
 };
-export default SalesList;
+export default InvoicesList;

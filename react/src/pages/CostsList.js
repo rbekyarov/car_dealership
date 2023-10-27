@@ -10,15 +10,15 @@ import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 
-const SalesList = () => {
+const CostsList = () => {
 
-  const [sales, setSales] = useState([]);
+  const [costs, setCosts] = useState([]);
 
   useEffect(() => {
     // Извикваме API за данни за хора
-    axios.get('http://localhost:8080/api/sales')
+    axios.get('http://localhost:8080/api/costs')
       .then(response => {
-        setSales(response.data);
+        setCosts(response.data);
       })
       .catch(error => {
         console.error('Грешка при извличане на данните:', error);
@@ -27,7 +27,7 @@ const SalesList = () => {
 
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary position-sticky top-0" style={{ zIndex: 1 }}>
+     <Navbar expand="lg" className="bg-body-tertiary position-sticky top-0" style={{ zIndex: 1 }}>
         <Container>
           <Navbar.Brand as={Link} to={"/"}>Home</Navbar.Brand>
           <Navbar.Brand as={Link} to={"/cars"}>Cars</Navbar.Brand>
@@ -55,48 +55,36 @@ const SalesList = () => {
       </Navbar>
       <Container>
         <div className="custom-container shadow-sm rounded">
-
-          <h1>Sales List</h1>
-          <Navbar.Brand as={Link} to={"/sales/add"}>Add Sale</Navbar.Brand>
+        <Navbar.Brand as={Link} to={"/costs/add"}>Add Cost</Navbar.Brand>
+          <h1>Costs List</h1>
+        
           <table>
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Cars</th>
-                <th>Client</th>
-                <th>Discount</th>
-                <th>Price</th>
-                <th>Total Price</th>
+                <th>vendor</th>
+                
+                <th>Description</th>
+                <th>InvoiceNo</th>
+                <th>Amount</th>
                 <th>Currency</th>
-                <th>Status Invoiced</th>
-                <th>Saller</th>
+                
                 <th>Date</th>
               </tr>
             </thead>
             <tbody>
-              {sales.map(sale => (
-                <tr key={sale.id}>
-                  <td>{sale.id}</td>
-
-                  <td>
-
-                    {sale.cars.map((car, index) => (
-                      <p key={index}>
-                        {car.name}<br />
-
-                      </p>
-                    ))}
-
-                  </td>
-
-                  <td>{sale.client.name}</td>
-                  <td>{sale.discount}</td>
-                  <td>{sale.price}</td>
-                  <td>{sale.totalPrice}</td>
-                  <td>{sale.currency.code}</td>
-                  <td>{sale.statusSalesInvoiced}</td>
-                  <td>{sale.seller.firstName}</td>
-                  <td>{sale.dateCreate}</td>
+              {costs.map(cost => (
+                <tr key={cost.id}>
+                  <td>{cost.id}</td>
+                  <td>{cost.vendor.id}</td>
+                  
+                  <td>{cost.description}</td>
+                  <td>{cost.invoiceNo}</td>
+                  <td>{cost.amount}</td>
+                  <td>{cost.currency.code}</td>
+                  
+                  <td>{cost.dateCost}</td>
+                  
                 </tr>
               ))}
             </tbody>
@@ -106,4 +94,4 @@ const SalesList = () => {
     </>
   );
 };
-export default SalesList;
+export default CostsList;

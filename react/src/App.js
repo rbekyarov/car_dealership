@@ -10,6 +10,15 @@ import OfferList from "./pages/OfferList";
 import SalesList from "./pages/SalesList";
 import ClientsList from "./pages/ClientList";
 import VendorsList from "./pages/VendorList";
+import VendorAdd from "./pages/VendorAdd";
+import CompaniesList from "./pages/CompaniesList";
+import InvoicesList from "./pages/InvoicesList";
+import CostsList from "./pages/CostsList";
+import BankAccountList from "./pages/BankAccountList";
+import CurrenciesList from "./pages/CurrenciesList";
+import UsersList from "./pages/UsersList";
+import SellersList from "./pages/SellersList";
+import PrincingsList from "./pages/PrincingsList";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import React from "react";
 
@@ -27,6 +36,15 @@ function App() {
           <Route path="/sales" element={<SalesList />} />
           <Route path="/clients" element={<ClientsList />} />
           <Route path="/vendors" element={<VendorsList />} />
+          <Route path="/vendors/add" element={<VendorAdd />} />
+          <Route path="/companies" element={<CompaniesList />} />
+          <Route path="/invoices" element={<InvoicesList />} />
+          <Route path="/costs" element={<CostsList />} />
+          <Route path="/bankAccounts" element={<BankAccountList />} />
+          <Route path="/currencies" element={<CurrenciesList />} />
+          <Route path="/users" element={<UsersList />} />
+          <Route path="/sellers" element={<SellersList />} />
+          <Route path="/princings" element={<PrincingsList />} />
         </Routes>
       </BrowserRouter>
     </div>

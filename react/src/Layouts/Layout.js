@@ -3,6 +3,7 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import React from "react";
+import { Forn, Button, NavDropdown } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Layout = () => {
@@ -14,9 +15,18 @@ const Layout = () => {
           <Navbar.Brand as={Link} to={"/cars"}>Cars</Navbar.Brand>
           <Navbar.Brand as={Link} to={"/offers"}>Offers</Navbar.Brand>
           <Navbar.Brand as={Link} to={"/sales"}>Sales</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/invoices"}>Invoices</Navbar.Brand>
           <Navbar.Brand as={Link} to={"/clients"}>Clients</Navbar.Brand>
           <Navbar.Brand as={Link} to={"/vendors"}>Vendors</Navbar.Brand>
-          <Navbar.Brand as={Link} to={"/vendors"}>Settings</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/costs"}>Costs</Navbar.Brand>
+          <NavDropdown title="Settings" id="basic-nav-dropdown" className="bg-body-tertiary position-sticky top-0">
+            <NavDropdown.Item as={Link} to={"/companies"}>My Companies</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to={"/bankAccounts"}>Bank Accounts</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to={"/currencies"}>Currencies</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to={"/users"}>Users</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to={"/sellers"}>Sellers</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to={"/princings"}>Princing</NavDropdown.Item>
+          </NavDropdown>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" />
           <Nav className="me-auto">

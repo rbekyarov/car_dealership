@@ -1,6 +1,7 @@
 import axios, { HttpStatusCode } from "axios";
 import Form from "react-bootstrap/Form";
 import Container from "react-bootstrap/Container";
+import { NavDropdown } from "react-bootstrap";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Button from "react-bootstrap/Button";
@@ -430,7 +431,7 @@ const AddCar = () => {
 
 
 
-  const handleRegister = async (event) => {
+  const handleCarData = async (event) => {
     event.preventDefault();
 
     const data = {
@@ -509,15 +510,24 @@ const AddCar = () => {
 
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary position-sticky top-0" style={{ zIndex: 1 }}>
+     <Navbar expand="lg" className="bg-body-tertiary position-sticky top-0" style={{ zIndex: 1 }}>
         <Container>
           <Navbar.Brand as={Link} to={"/"}>Home</Navbar.Brand>
           <Navbar.Brand as={Link} to={"/cars"}>Cars</Navbar.Brand>
           <Navbar.Brand as={Link} to={"/offers"}>Offers</Navbar.Brand>
           <Navbar.Brand as={Link} to={"/sales"}>Sales</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/invoices"}>Invoices</Navbar.Brand>
           <Navbar.Brand as={Link} to={"/clients"}>Clients</Navbar.Brand>
           <Navbar.Brand as={Link} to={"/vendors"}>Vendors</Navbar.Brand>
-          <Navbar.Brand as={Link} to={"/vendors"}>Settings</Navbar.Brand>
+          <Navbar.Brand as={Link} to={"/costs"}>Costs</Navbar.Brand>
+          <NavDropdown title="Settings" id="basic-nav-dropdown" className="bg-body-tertiary position-sticky top-0">
+            <NavDropdown.Item as={Link} to={"/companies"}>My Companies</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to={"/bankAccounts"}>Bank Accounts</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to={"/currencies"}>Currencies</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to={"/users"}>Users</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to={"/sellers"}>Sellers</NavDropdown.Item>
+            <NavDropdown.Item as={Link} to={"/princings"}>Princing</NavDropdown.Item>
+          </NavDropdown>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav" />
           <Nav className="me-auto">
@@ -530,7 +540,7 @@ const AddCar = () => {
 
         <div className="custom-container shadow-sm rounded">
           <h1 className="mb-3 text-center">Add car</h1>
-          <Form onSubmit={HANDLEvinNumber}>
+          <Form onSubmit={handleCarData}>
             <Form.Group className="mb-3" controlId="vinNumber">
               <Form.Label>Vin Number</Form.Label>
               <Form.Control

@@ -59,7 +59,7 @@ public class VendorDTO {
     public String getVatNumber() {
         return vatNumber;
     }
-    @NotNull
+
     public void setVatNumber(String vatNumber) {
         this.vatNumber = vatNumber;
     }

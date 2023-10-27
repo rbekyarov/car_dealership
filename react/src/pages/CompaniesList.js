@@ -10,15 +10,15 @@ import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 
-const SalesList = () => {
+const CompaniesList = () => {
 
-  const [sales, setSales] = useState([]);
+  const [companies, setCompanies] = useState([]);
 
   useEffect(() => {
     // Извикваме API за данни за хора
-    axios.get('http://localhost:8080/api/sales')
+    axios.get('http://localhost:8080/api/companies')
       .then(response => {
-        setSales(response.data);
+        setCompanies(response.data);
       })
       .catch(error => {
         console.error('Грешка при извличане на данните:', error);
@@ -56,47 +56,34 @@ const SalesList = () => {
       <Container>
         <div className="custom-container shadow-sm rounded">
 
-          <h1>Sales List</h1>
-          <Navbar.Brand as={Link} to={"/sales/add"}>Add Sale</Navbar.Brand>
+          <h1>Companies List</h1>
+          <Navbar.Brand as={Link} to={"/companies/add"}>Add Company</Navbar.Brand>
           <table>
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Cars</th>
-                <th>Client</th>
-                <th>Discount</th>
-                <th>Price</th>
-                <th>Total Price</th>
-                <th>Currency</th>
-                <th>Status Invoiced</th>
-                <th>Saller</th>
+                <th>Name</th>
+                <th>Vat</th>
+                <th>City</th>
+                <th>Email</th>
+                <th>Manager Name</th>
+                
+              
                 <th>Date</th>
               </tr>
             </thead>
             <tbody>
-              {sales.map(sale => (
-                <tr key={sale.id}>
-                  <td>{sale.id}</td>
+              {companies.map(company => (
+                <tr key={company.id}>
+                  <td>{company.id}</td>
 
-                  <td>
-
-                    {sale.cars.map((car, index) => (
-                      <p key={index}>
-                        {car.name}<br />
-
-                      </p>
-                    ))}
-
-                  </td>
-
-                  <td>{sale.client.name}</td>
-                  <td>{sale.discount}</td>
-                  <td>{sale.price}</td>
-                  <td>{sale.totalPrice}</td>
-                  <td>{sale.currency.code}</td>
-                  <td>{sale.statusSalesInvoiced}</td>
-                  <td>{sale.seller.firstName}</td>
-                  <td>{sale.dateCreate}</td>
+                  <td>{company.name}</td>
+                  <td>{company.vatOrId}</td>
+                  <td>{company.city}</td>
+                  <td>{company.email}</td>
+                  <td>{company.managerName}</td>
+                  <td>{company.dateCreate}</td>
+                  
                 </tr>
               ))}
             </tbody>
@@ -106,4 +93,4 @@ const SalesList = () => {
     </>
   );
 };
-export default SalesList;
+export default CompaniesList;

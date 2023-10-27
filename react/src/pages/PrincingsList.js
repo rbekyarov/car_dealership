@@ -10,15 +10,15 @@ import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useNavigate } from "react-router-dom";
 
-const SalesList = () => {
+const PrincingsList = () => {
 
-  const [sales, setSales] = useState([]);
+  const [princings, setPrincings] = useState([]);
 
   useEffect(() => {
     // Извикваме API за данни за хора
-    axios.get('http://localhost:8080/api/sales')
+    axios.get('http://localhost:8080/api/pricing_percent_dates')
       .then(response => {
-        setSales(response.data);
+        setPrincings(response.data);
       })
       .catch(error => {
         console.error('Грешка при извличане на данните:', error);
@@ -27,7 +27,7 @@ const SalesList = () => {
 
   return (
     <>
-      <Navbar expand="lg" className="bg-body-tertiary position-sticky top-0" style={{ zIndex: 1 }}>
+     <Navbar expand="lg" className="bg-body-tertiary position-sticky top-0" style={{ zIndex: 1 }}>
         <Container>
           <Navbar.Brand as={Link} to={"/"}>Home</Navbar.Brand>
           <Navbar.Brand as={Link} to={"/cars"}>Cars</Navbar.Brand>
@@ -55,48 +55,36 @@ const SalesList = () => {
       </Navbar>
       <Container>
         <div className="custom-container shadow-sm rounded">
-
-          <h1>Sales List</h1>
-          <Navbar.Brand as={Link} to={"/sales/add"}>Add Sale</Navbar.Brand>
+        <Navbar.Brand as={Link} to={"/princings/add"}>Add Princings</Navbar.Brand>
+          <h1>Princings List</h1>
+        
           <table>
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Cars</th>
-                <th>Client</th>
-                <th>Discount</th>
-                <th>Price</th>
-                <th>Total Price</th>
-                <th>Currency</th>
-                <th>Status Invoiced</th>
-                <th>Saller</th>
+                <th>Sale Price %</th>
+                
+                <th>Min Sale Price %</th>
+                <th>Commission %</th>
+                <th>Active</th>
+                <th>VAT %</th>
+                <th>author</th>
                 <th>Date</th>
               </tr>
             </thead>
             <tbody>
-              {sales.map(sale => (
-                <tr key={sale.id}>
-                  <td>{sale.id}</td>
-
-                  <td>
-
-                    {sale.cars.map((car, index) => (
-                      <p key={index}>
-                        {car.name}<br />
-
-                      </p>
-                    ))}
-
-                  </td>
-
-                  <td>{sale.client.name}</td>
-                  <td>{sale.discount}</td>
-                  <td>{sale.price}</td>
-                  <td>{sale.totalPrice}</td>
-                  <td>{sale.currency.code}</td>
-                  <td>{sale.statusSalesInvoiced}</td>
-                  <td>{sale.seller.firstName}</td>
-                  <td>{sale.dateCreate}</td>
+              {princings.map(princing => (
+                <tr key={princing.id}>
+                  <td>{princing.id}</td>
+                  <td>{princing.percentSaleCar}</td>
+                  
+                  <td>{princing.percentSaleCarMin}</td>
+                  <td>{princing.percentCommission}</td>
+                  <td>{princing.activePricingPercentData}</td>
+                  <td>{princing.percentVAT}</td>
+                  <td>{princing.author}</td>
+                  <td>{princing.dateCreate}</td>
+                  
                 </tr>
               ))}
             </tbody>
@@ -106,4 +94,4 @@ const SalesList = () => {
     </>
   );
 };
-export default SalesList;
+export default PrincingsList;
